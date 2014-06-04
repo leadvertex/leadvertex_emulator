@@ -2,6 +2,7 @@
 class Renderer {
   protected $data;
   protected $buttonText;
+  protected $basePath;
   protected $form;
   protected $fields;
   protected $scripts = array();
@@ -12,11 +13,10 @@ class Renderer {
   private $_fields;
   private $_options = [];
 
-  const VERSION = 2.5;
+  const VERSION = 2.6;
 
   function __construct($data = array(), $fields = array(), $form = array(), $buttonText = 'Оформить заказ')
   {
-
     $formDefault = array(
       'fio' => array(
         'name' => 'Ф.И.О.',
@@ -183,21 +183,7 @@ class Renderer {
 
     $this->buttonText = $buttonText;
   }
-  private function registerFile($filename,$onTop = false)
-  {
-    $filename = strtolower($filename);
-    $ext = substr(strrchr($filename, '.'), 1);
-    if (!isset($this->scripts[$filename]) || 1==1) {
-      if ($onTop === true) {
-        if ($ext == 'js') $this->_html = str_ireplace('<title', '<script type="text/javascript" src="'.$filename.'"></script><title', $this->_html);
-        else $this->_html = str_ireplace('<title', '<link rel="stylesheet" href="'.$filename.'"/><title', $this->_html);
-      } else {
-        if ($ext == 'js') $this->_html = str_ireplace('<title', '<script type="text/javascript" src="'.$filename.'"></script><title', $this->_html);
-        else $this->_html = str_ireplace('<title', '<link rel="stylesheet" href="'.$filename.'"/><title', $this->_html);
-      }
-      $this->scripts[$filename] = $filename;
-    }
-  }
+
   public function formRender($number,$no_css = true)
   {
     $form = $this->form;
@@ -298,25 +284,38 @@ class Renderer {
     }
   }
   private function tagPrice($tag,$sumPrice) {
-      if (preg_match_all('~(?:\{\{(?:'.$tag.')(?:(\+|\-)(\d+)(%)?)?(?: (\w+)="([^"]{1,200})")?\}\})~ui', $this->_html, $prices_all, PREG_SET_ORDER) > 0) {
-        foreach ($prices_all as $matches) {
+    if (preg_match_all('~(?:\{\{(?:'.$tag.')(?:(\+|\-|\*|/)(\d+)(%)?)?(?: (\w+)="([^"]{1,200})")?(?: for=(\d{1,10}))?\}\})~ui', $this->_html, $prices_all, PREG_SET_ORDER) > 0) {
+      foreach ($prices_all as $matches) {
           $price = $sumPrice;
           if (isset($matches[1])) {
             $sum = $matches[2];
             if (isset($matches[3])) $sum = round($price / 100 * $matches[2]);
-            if ($matches[1] == '-') $price = $price - $sum;
-            else $price = $price + $sum;
+            switch ($matches[1]) {
+              case '-': $price = $price - $sum; break;
+              case '+': $price = $price + $sum; break;
+              case '*': $price = $price * $sum; break;
+              case '/': $price = round($price / $sum); break;
+            }
           }
+
+        //Ценовые опции
           if (isset($matches[4]) && isset($matches[5]))
             if (isset($this->_options[$matches[4]]) && isset($this->_options[$matches[4]][$matches[5]]))
               if ($tag == 'price_option') $price = $this->_options[$matches[4]][$matches[5]];
               else $price += $this->_options[$matches[4]][$matches[5]];
 
+          if (isset($matches[6])) {
+            $price = $price*$matches[6];
+            $discountPercent = $this->calcDiscount($matches[6]);
+            $discountPercent = $discountPercent['discount'];
+            $price = $price-($price/100*$discountPercent);
+          }
+
           if ($tag == 'total_price|price_total') $price = '<span class="lv-total-price">' . $price . '</span>';
           if ($tag == 'price_multi') $price = '<span class="lv-multi-price">' . $price . '</span>';
           $this->_html = str_ireplace($matches[0], $price, $this->_html);
         }
-      }
+    }
   }
   private function tagDeliveryPrice()
   {
@@ -443,7 +442,7 @@ class Renderer {
     }
   }
   private function tagFiles(){
-    $this->_html = str_ireplace('{{files}}', '/template/files', $this->_html);
+    $this->_html = str_ireplace('{{files}}', '/'.$this->data['basePath'].'/files', $this->_html);
   }
   private function tagUserVars(&$data){
     if (preg_match_all('~(?:\{\{([a-z\d_-]+)="([^\}"]*)"\}\})~ui', $this->_html, $matches_all, PREG_SET_ORDER) > 0) {
@@ -491,6 +490,38 @@ class Renderer {
     $this->tagUserVars($this->data);
 
     foreach ($this->data as $key => $value) if (!in_array(gettype($value),array('object','array'))) $this->_html = str_ireplace('{{' . $key . '}}', $value, $this->_html);
+    $this->renderDebugBar();
     echo $this->_html;
+  }
+
+
+
+  protected function renderDebugBar()
+  {
+    $base = __DIR__.'/templates';
+    $dirFileList = scandir($base);
+    unset($dirFileList[0]);
+    unset($dirFileList[1]);
+    $dirList = [];
+    foreach ($dirFileList as $dir) if (is_dir($base.'/'.$dir)) $dirList[] = '<option>'.$dir.'</option>';
+
+    $errors = $this->checkDirectory();
+    $errorStr = '';
+    if (is_array($errors)) foreach ($errors as $error) $errorStr.='<li>'.$error.'</li>';
+    if (!empty($errorStr)) $errorStr = '<ul id="lv_errors">'.$errorStr.'</ul>';
+
+    $html = '
+    <div id="lv_debug_bar">
+      <div id="lv_toggle"></div>
+      <select id="lv_landing">'.implode('',$dirList).'</select>
+    '.$errorStr.'
+    </div>
+    ';
+    $this->registerFile('/assets/jquery-1.9.1.js',true);
+    $this->registerFile('/assets/debug.css');
+    $this->registerFile('/assets/debug.js');
+
+
+    $this->_html = str_ireplace('</body>',$html.'</body>',$this->_html);
   }
 }

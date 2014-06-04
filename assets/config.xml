@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<emulator>
+    <price>
+        <price>1690</price>
+        <price_old>3900</price_old>
+        <!-- Параметр «forEach» включает/выключает умножение цены доставки на количество товаров -->
+        <price_delivery forEach="0">100</price_delivery>
+    </price>
+    <discount>
+        <discount quantity="2" sum="0" discount="20" round="1" />
+        <discount quantity="3" sum="0" discount="30" round="1" />
+        <discount quantity="5" sum="0" discount="40" round="1" />
+    </discount>
+    <form fields="fio,country,phone,additional1,quantity,checkboxPersonalData" button-text="Оформить заказ">
+        <field name="fio" required="1" error="0" type="string">
+            <caption>Ф.И.О.</caption>
+            <error>Ф.И.О. заполненно неверно</error>
+            <pattern>~.*~</pattern>
+        </field>
+        <field name="country" required="1" error="0" type="dropdown">
+            <caption>Страна</caption>
+            <error>Страна указана неверно</error>
+            <pattern>Россия, Украина, Казахстан</pattern>
+        </field>
+        <field name="postIndex" required="0" error="0" type="string">
+            <caption>Индекс</caption>
+            <error>Почтовый индекс неверно</error>
+            <pattern>~\d{5,6}~</pattern>
+        </field>
+        <field name="region" required="0" error="0" type="string">
+            <caption>Край/регион/область</caption>
+            <error>Край/регион/область заполненно неверно</error>
+            <pattern>~.*~</pattern>
+        </field>
+        <field name="city" required="0" error="0" type="string">
+            <caption>Город</caption>
+            <error>Город указан неверно</error>
+            <pattern>~.*~</pattern>
+        </field>
+        <field name="address" required="0" error="0" type="text">
+            <caption>Адрес</caption>
+            <error>Адрес указан неверно</error>
+            <pattern>~.*~</pattern>
+        </field>
+        <field name="phone" required="1" error="0" type="string">
+            <caption>Телефон</caption>
+            <error>Телефон указан неверно</error>
+            <pattern>~^\+?\d{10,15}$~</pattern>
+        </field>
+        <field name="email" required="1" error="0" type="string">
+            <caption>Email</caption>
+            <error>Email указан неверно</error>
+            <pattern>~^[-.\w]+@(?:[a-z\d]{2,}\.)+[a-z]{2,6}$~</pattern>
+        </field>
+        <field name="quantity" required="1" error="0" type="dropdown">
+            <caption>Количество</caption>
+            <error>Количество указано неверно</error>
+            <pattern>1, 2, 3, 4, 5, 6, 7, 8, 9, 10</pattern>
+        </field>
+        <field name="comment" required="0" error="0" type="text">
+            <caption>Комментарий</caption>
+            <error>Комментарий указан неверно</error>
+            <pattern>~.*~</pattern>
+        </field>
+        <field name="checkboxPersonalData" required="1" error="0" type="checkbox">
+            <caption>Согласен на обработку персональных данных</caption>
+            <error>Для оформления заказа вы должны дать согласие на обработку своих персональных данных</error>
+            <pattern>~.*~</pattern>
+        </field>
+        <field name="checkboxAgreeTerms" required="1" error="0" type="checkbox">
+            <caption>С условиями покупки согласен</caption>
+            <error>Вы должны согласиться с условиями покупки</error>
+            <pattern>~.*~</pattern>
+        </field>
+        <field name="additional1" required="1" error="0" type="dropdown">
+            <caption>Комплектация</caption>
+            <error>Такой комплектации нет</error>
+            <pattern>Базовая, Расширенная {{1000}}, Топовая {{3500}}</pattern>
+        </field>
+        <field name="additional2" required="0" error="0" type="string">
+            <caption>Доп.поле #2</caption>
+            <error>Доп.поле #2 заполненно неверно</error>
+            <pattern>~.*~</pattern>
+        </field>
+        <field name="additiona3" required="0" error="0" type="string">
+            <caption>Доп.поле #3</caption>
+            <error>Доп.поле #3 заполненно неверно</error>
+            <pattern>~.*~</pattern>
+        </field>
+        <field name="additional4" required="0" error="0" type="string">
+            <caption>Доп.поле #4</caption>
+            <error>Доп.поле #4 заполненно неверно</error>
+            <pattern>~.*~</pattern>
+        </field>
+    </form>
+    <config>
+        <!-- Валюта -->
+        <param name="currency.price" value="руб"/>
+        <!-- Количество товара по умолчанию -->
+        <param name="quantity.default" value="1"/>
+        <!-- Телефон -->
+        <param name="application.phone" value="+7(495) 555 55 55"/>
+        <!-- Email -->
+        <param name="application.email" value="email@example.com"/>
+        <!-- Название оффера -->
+        <param name="application.name" value="Мой новый оффер"/>
+        <!-- Мета-описание -->
+        <param name="application.meta.description" value="Сервис для создания продающих страниц с партнерской программой и полным функционалом управления продажами"/>
+        <!-- Мета-ключевые слова -->
+        <param name="application.meta.keywords" value="продажа, оффер, одностраничник, лендинг, купить, leadvertex - супер"/>
+    </config>
+</emulator>
