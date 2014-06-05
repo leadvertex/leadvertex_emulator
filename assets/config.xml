@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Это файл конфигурации для эмулятора шаблонизатора LeadVertex. Этот файл можно смело удалить -->
 <emulator>
     <price>
         <price>1690</price>
         <price_old>3900</price_old>
-        <!-- Параметр «forEach» включает/выключает умножение цены доставки на количество товаров -->
-        <price_delivery forEach="0">100</price_delivery>
     </price>
     <discount>
         <discount quantity="2" sum="0" discount="20" round="1" />
@@ -96,8 +95,14 @@
     <config>
         <!-- Валюта -->
         <param name="currency.price" value="руб"/>
+        <!-- Цена доставки -->
+        <param name="delivery.price" value="100"/>
+        <!-- Умножать цену доставки на количество товаров -->
+        <param name="delivery.forEach" value="0"/>
         <!-- Количество товара по умолчанию -->
         <param name="quantity.default" value="1"/>
+        <!-- Единица измерения товара -->
+        <param name="quantity.unit" value=" шт."/>
         <!-- Телефон -->
         <param name="application.phone" value="+7(495) 555 55 55"/>
         <!-- Email -->

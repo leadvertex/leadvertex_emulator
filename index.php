@@ -1,4 +1,6 @@
 <?php
+
+
 include_once('engine/LvBaseRenderer.php');
 include_once('engine/EmulatorRenderer.php');
 
@@ -17,6 +19,17 @@ if (isset($_COOKIE['lv_landing']) && !empty($_COOKIE['lv_landing'])) $landing=$_
 else $landing = 'demo';
 
 $basePath = __DIR__.'/templates/'.$landing;
+
+if (isset($_GET['tar']) && $_GET['tar']==1 && is_dir($basePath)) {
+  $filename = $basePath.'.tar';
+  $phar = new PharData($filename);
+  $phar->buildFromDirectory($basePath);
+  header('Content-Description: File Transfer');
+  header('Content-Type: application/octet-stream');
+  header('Content-Length: ' . filesize($filename));
+  header('Content-Disposition: attachment; filename=' . basename($filename));
+  readfile($filename);
+}
 
 $renderer = new EmulatorRenderer($basePath);
 $renderer->render($page,[]);

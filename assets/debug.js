@@ -35,7 +35,9 @@ $(document).ready(function () {
     }
 
     var $debugBar = $('#lv_debug_bar');
-    if (localStorage.getItem('lv_minimized')) $debugBar.addClass('lv_minimize');
+    if (localStorage.getItem('lv_minimized')) {
+        if ($('ul#lv_errors').length == 0) $debugBar.addClass('lv_minimize');
+    }
     $('#lv_toggle').click(function () {
         $debugBar.toggleClass('lv_minimize');
         localStorage.setItem('lv_minimized',$debugBar.hasClass('lv_minimize'));

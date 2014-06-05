@@ -137,9 +137,11 @@ $(document).ready(function(){
         var price = parseInt(window.leadvertex.selling.price['price']) + calcAdditionalSum();
         var discountPercent = 0;
         var discountRound = true;
+        var discountSum = 0;
         if (discountObject[quantity]) {
             discountPercent = discountObject[quantity]['discount'];
             discountRound = discountObject[quantity]['round'];
+            discountSum = discountObject[quantity]['sum'];
         } else {
             var index = -1;
             for (var i in discountObject) if (quantity>=i) {
@@ -148,16 +150,20 @@ $(document).ready(function(){
             if (index == -1) {
                 discountPercent = 0;
                 discountRound = true;
+                discountSum = 0;
             } else {
                 discountPercent = discountObject[index]['discount'];
                 discountRound = discountObject[index]['round'];
+                discountSum = 0;
             }
         }
         var newPrice = parseFloat((price * quantity / 100) * (100-discountPercent)).toFixed(2);
-        var discountSum = price*quantity-newPrice;
+        if (discountSum>0) newPrice = discountSum;
+
+        var discountResultSum = price*quantity-newPrice;
         price = newPrice;
         if (discountRound) price = Math.round(price);
-        $('.lv-quantity-discount-sum').text(parseInt(discountSum));
+        $('.lv-quantity-discount-sum').text(parseInt(discountResultSum));
         $('.lv-quantity-discount-percent').text(parseInt(discountPercent));
         $('.lv-total-price').text(parseInt(delivery)+parseFloat(price));
     };
