@@ -35,12 +35,12 @@ $(document).ready(function () {
     }
 
     var $debugBar = $('#lv_debug_bar');
-    if (localStorage.getItem('lv_minimized')) {
+    if (localStorage.getItem('lv_minimized')==1) {
         if ($('ul#lv_errors').length == 0) $debugBar.addClass('lv_minimize');
     }
     $('#lv_toggle').click(function () {
         $debugBar.toggleClass('lv_minimize');
-        localStorage.setItem('lv_minimized',$debugBar.hasClass('lv_minimize'));
+        localStorage.setItem('lv_minimized',($debugBar.hasClass('lv_minimize') ? 1 : 0));
     });
 
     var $landing = $('#lv_landing');

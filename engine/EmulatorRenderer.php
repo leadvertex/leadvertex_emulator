@@ -1,5 +1,7 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
+  const VERSION = 1.0;
+
   protected $scripts = array();
   protected $config = array();
   /** @var \SimpleXMLElement */
@@ -318,7 +320,7 @@ class EmulatorRenderer extends LvBaseRenderer {
     $this->registerFile('/assets/jquery-1.9.1.js',true);
     $this->registerFile('/assets/debug.css');
     $this->registerFile('/assets/debug.js');
-    $this->html = str_ireplace('</body>',$html.'</body>',$this->html);
+    if (preg_match('~<body[^>]*>~',$this->html,$matches)) $this->html = str_replace($matches[0],$matches[0].$html,$this->html);
   }
 
   public function renderPartial($html, $data = [])

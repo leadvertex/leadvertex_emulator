@@ -1,6 +1,5 @@
 <?php
 abstract class LvBaseRenderer {
-  const VERSION = 3.0;
 
   protected $html;
   protected $data;

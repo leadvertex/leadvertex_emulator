@@ -2,15 +2,33 @@
 <!-- Это файл конфигурации для эмулятора шаблонизатора LeadVertex. Этот файл можно смело удалить -->
 <emulator>
     <price>
+        <!-- Цена товара -->
         <price>1690</price>
+        <!-- Старая цена -->
         <price_old>3900</price_old>
     </price>
     <discount>
+        <!--
+        «Количественные» скидки. Атрибуты:
+         - quantity - количество товара. Целое число
+         - sum - принудительно заданная сумма товара за указанное кличество. Целое число
+         - discount - скидка в процентах. Если задана сумма, то все равно нужно указать примерную скидку в процентах для работоспособности некоторых тегов. Целое число
+         - round - округлять ли сумму скидки. Целое число, 0 или 1
+        В данном примере
+         - за 2 товара скидка 20%
+         - за 3 товара скидка 30%
+         - за 5 товаров скидка 59%, но будет параметр цены будет браться из sum.
+         -->
         <discount quantity="2" sum="0" discount="20" round="1" />
         <discount quantity="3" sum="0" discount="30" round="1" />
-        <discount quantity="5" sum="0" discount="40" round="1" />
+        <discount quantity="5" sum="5000" discount="59" round="1" />
     </discount>
     <form fields="fio,country,phone,additional1,quantity,checkboxPersonalData" button-text="Оформить заказ">
+        <!-- Атрибуты:
+            required - является ли поле обязательным
+            error - выводить ли сообщение об ошибке (нужно только для стилизации ошибок через css)
+            type - string (input type="text"), dropdown (select), text (textarea), checkbox (input type="checkbox")
+        -->
         <field name="fio" required="1" error="0" type="string">
             <caption>Ф.И.О.</caption>
             <error>Ф.И.О. заполненно неверно</error>
@@ -81,7 +99,7 @@
             <error>Доп.поле #2 заполненно неверно</error>
             <pattern>~.*~</pattern>
         </field>
-        <field name="additiona3" required="0" error="0" type="string">
+        <field name="additional3" required="0" error="0" type="string">
             <caption>Доп.поле #3</caption>
             <error>Доп.поле #3 заполненно неверно</error>
             <pattern>~.*~</pattern>
