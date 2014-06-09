@@ -294,7 +294,9 @@ abstract class LvBaseRenderer {
   }
   public function render($view = 'index', $data = null)
   {
-    $layout = $this->getViewFile('index');
+    $layout = $this->getViewFile('layout');
+    if ($layout === false) $layout = $this->getViewFile('index');
+
     $html = $layout === false ? '{{content}}' : $layout;
 
     if (stripos($html, '{{content}}') !== false) {

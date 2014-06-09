@@ -19,6 +19,123 @@
     <div class="alert alert-info">
         Эта страница содержит техническую информацию для верстальщиков. Здесь описаны технические принципы и особенности работы нашего шаблонизатора
     </div>
+    <div class="alert">
+        Рекомендуем ознакомиться со страницей <a href="/landing.html">перенос лендинга</a> для понимания общих принципов работы. Также рекомендуем
+        ознакомиться с кодом этого демо-лендинга - в нем используются все возможности шаблонизатора.
+        <br/>
+        Не забывайте, что у нас есть <a href="https://github.com/XAKEPEHOK/leadvertex_emulator/">эмулятор нашего шаблонизатора</a>
+    </div>
+    <h2>Возможности шаблонизатора</h2>
+    <fieldset id="system">
+        <legend>Системные</legend>
+        <div class="alert alert-info">При создании собственных шаблонов обязательно учитывайте следующие особенности:</div>
+        <p>
+            <b>Все подключаемые ресурсы (стили, скрипты, изображения) должны находиться в папке <code>files/</code></b><br>
+            <code><span class="special">files</span></code> - возвращает путь к папке «files» шаблона. Имейте ввиду, что
+            простое прописывание в html-коде пути вида <code>&lt;img src=&quot;files/image.jpg&quot; /&gt;</code> приведет
+            к недоступности подключаемого ресурса. Необходимо использовать следующую конструкцию
+            <code>&lt;img src=&quot;<span class="special">files</span>/image.jpg&quot; /&gt;</code>
+        </p>
+
+        <p>
+            <code id="jquery"><span class="special">jquery</span></code> - подключает jQuery 1.9.1. Если васм нужна
+            библиотека jQuery подключайте ее именно таким образом. В противном случае возможны конфликты. Достаточно просто прописать
+            <span class="special">jquery</span> в любом месте кода. <b>Библиотека автоматически подключится в тег <code>&lt;head&gt;</code>,
+            перед тегом <code>&lt;title&gt;</code></b>. Данный тег подключит скрипт лишь единожды, повторный вызов не подключит скрипт второй раз
+        </p>
+
+        <p>
+            Ваши шаблоны должны быть в кодировке <b>UTF-8</b>
+        </p>
+        <p>
+            <code><span class="special">domain</span></code> - возвращает текущий домен. Текущее значение: «{{domain}}»
+        </p>
+        <p>
+            <code><span class="special">upsell</span></code> - возвращает параметры url для <a target="_blank"
+                href="http://blog.leadvertex.ru/otvechaem-na-voprosy/557-prodazha-dopolnitelnyx-tovarov-na-stranice-uspeshnogo-zakaza/">апселов</a>.
+            Текущее значение: «{{upsell}}».
+            Используется в тех случаях, когда на странице успешного заказа предлагается посмотреть другие офферы. В таком случае,
+            вы можете сделать ссылки на эти офферы партнерскими, и лиды, совершенные на них будут засчитаны от веб-мастера, который привел
+            текущего покупателя, в метках будет указано то, что это upsell, а также форма заказа на upsell-оффере уже будет заполнена
+            ранее введенными данными. Пример того, что может возвращать параметр <code><span class="special">upsell</span></code>:<br/>
+            <code>?f=2&utm_source=offer&utm_medium=upsell&fio=Иванов Иван Иванович&phone=+79871234567</code>
+        </p>
+        <p>
+            <code><span class="special">webmaster</span></code> - возвращает ID вебмастера. Текущее значение: «{{webmaster}}».
+            Используется в тех случаях, когда на странице успешного заказа предлагается посмотреть другие офферы. В таком случае,
+            вы можете сделать ссылки на эти офферы партнерскими, и лиды, совершенные на них будут засчитаны от веб-мастера, который привел
+            текущего покупателя. Например, ссылка на другой оффер может быть вида http://demo-1.leadvertex.info/?f={{webmaster}}
+        </p>
+        <p>
+            <code><span class="special">order_number</span></code> - возвращает номер текущего заказа пользователя.
+        </p>
+        <p>
+            <code><span class="special">content</span></code> - В корне папки каждого домена есть главный файл layout.html -
+            это шаблон основной страницы, в которую обычно включается шапка и подвал, а контент прочих страниц загружается
+            из
+            отдельных файлов. Тег <span class="special">content</span> включает в содержимое главного файла layout.html
+            содержимое файла,
+            находящегося в папке pages. Т.е. запрос вида {{domain}}/page.html выведет внутри главного файла layout.html
+            содержимое файла
+            pages/page.html
+        </p>
+        <p>
+            <code><span class="special">no_layout</span></code> - если этот тег прописан в коде страницы из папки <code>pages/</code>,
+            то содержимое этой страницы будет отображено само по себе, т.е. без использования главного файла index.html
+            <br/>
+            Пример можете посмотреть на <a href="/success.html">странице успешного заказа</a>
+        </p>
+
+    </fieldset>
+    <fieldset id="variables">
+        <legend>Настраиваемые переменные</legend>
+        <p>
+            <code><span class="special">title</span></code> - возвращает заголовок, указанный в конфигурации проекта.
+            Текущее значение: «{{title}}»
+        </p>
+
+        <p>
+            <code><span class="special">meta_description</span></code> - возвращает мета-описание страницы, указанное в
+            конфигурации проекта.
+            Текущее значение: «{{meta_description}}»
+        </p>
+
+        <p>
+            <code><span class="special">meta_keywords</span></code> - возвращает мета-ключевые слова страницы, указаные в
+            конфигурации проекта.
+            Текущее значение: «{{meta_keywords}}»
+        </p>
+
+        <p>
+            <code><span class="special">email</span></code> - возвращает email администратора, указаный в конфигурации
+            проекта.
+            Текущее значение: «{{email}}». Может принимать следующие параметры:
+
+        <ul>
+            <li><code><span class="special">email|protected</span></code> - возвращает email-адрес, защищенный от
+                спам-ботов.
+                Выглядит на странице как обычно: «{{email|protected}}», но посмотрите код страницы
+            <li><code><span class="special">email="email@example.com"</span></code> - возвращает значение:
+                «{{email="email@example.com"}}»
+            </li>
+            <li><code><span class="special">email="email@example.com"|protected"</span></code> - возвращает произвольный
+                email,
+                защищенный от спама: «{{email="email@example.com"|protected}}»
+            </li>
+        </ul>
+        </p>
+        <p>
+            <code><span class="special">phone</span></code> - возвращает телефон, указаный в конфигурации проекта.
+            Текущее значение: «{{phone}}»
+        </p>
+
+        <div class="alert alert-info">
+            Вы можете переопределять переменные из файлов шаблонов. Например, вы хотите изменить <code><span class="special">title</span></code>
+            для страницы. Для этого в начале страницы пропишите <code><span class="special">title="Ваш текст"</span></code>
+            <br/>
+            Рекомендуем посмотреть код этого демо-лендинга. Он наглядно это иллюстрирует на примере заголовков страниц и активных пунктов меню
+        </div>
+    </fieldset>
 
     <fieldset id="prices">
         <legend>Цены</legend>
@@ -135,121 +252,6 @@
             <code><span class="special">currency</span></code> - возвращает валюту продаваемого товара.
             Текущее значение: «{{currency}}».
         </p>
-    </fieldset>
-
-    <div class="alert">
-        Рекомендуем ознакомиться со страницей <a href="/landing.html">перенос лендинга</a> для понимания общих принципов работы. Также рекомендуем
-        ознакомиться с кодом этого демо-лендинга - в нем используются все возможности шаблонизатора.
-        <br/>
-        Не забывайте, что у нас есть <a href="https://github.com/XAKEPEHOK/leadvertex_emulator/">эмулятор нашего шаблонизатора</a>
-    </div>
-    <h2>Возможности шаблонизатора</h2>
-    <fieldset id="system">
-        <legend>Системные</legend>
-        <div class="alert alert-info">При создании собственных шаблонов обязательно учитывайте следующие особенности:</div>
-        <p>
-            <b>Все подключаемые ресурсы (стили, скрипты, изображения) должны находиться в папке <code>files/</code></b><br>
-            <code><span class="special">files</span></code> - возвращает путь к папке «files» шаблона. Имейте ввиду, что
-            простое прописывание в html-коде пути вида <code>&lt;img src=&quot;files/image.jpg&quot; /&gt;</code> приведет
-            к недоступности подключаемого ресурса. Необходимо использовать следующую конструкцию
-            <code>&lt;img src=&quot;<span class="special">files</span>/image.jpg&quot; /&gt;</code>
-        </p>
-
-        <p>
-            <code id="jquery"><span class="special">jquery</span></code> - подключает jQuery 1.9.1. Если васм нужна
-            библиотека jQuery подключайте ее именно таким образом. В противном случае возможны конфликты. Достаточно просто прописать
-            <span class="special">jquery</span> в любом месте кода. <b>Библиотека автоматически подключится в тег <code>&lt;head&gt;</code>,
-            перед тегом <code>&lt;title&gt;</code></b>. Данный тег подключит скрипт лишь единожды, повторный вызов не подключит скрипт второй раз
-        </p>
-
-        <p>
-            <code><span class="special">domain</span></code> - возвращает текущий домен. Текущее значение: «{{domain}}»
-        </p>
-        <p>
-            <code><span class="special">upsell</span></code> - возвращает параметры url для <a target="_blank"
-                href="http://blog.leadvertex.ru/otvechaem-na-voprosy/557-prodazha-dopolnitelnyx-tovarov-na-stranice-uspeshnogo-zakaza/">апселов</a>.
-            Текущее значение: «{{upsell}}».
-            Используется в тех случаях, когда на странице успешного заказа предлагается посмотреть другие офферы. В таком случае,
-            вы можете сделать ссылки на эти офферы партнерскими, и лиды, совершенные на них будут засчитаны от веб-мастера, который привел
-            текущего покупателя, в метках будет указано то, что это upsell, а также форма заказа на upsell-оффере уже будет заполнена
-            ранее введенными данными. Пример того, что может возвращать параметр <code><span class="special">upsell</span></code>:<br/>
-            <code>?f=2&utm_source=offer&utm_medium=upsell&fio=Иванов Иван Иванович&phone=+79871234567</code>
-        </p>
-        <p>
-            <code><span class="special">webmaster</span></code> - возвращает ID вебмастера. Текущее значение: «{{webmaster}}».
-            Используется в тех случаях, когда на странице успешного заказа предлагается посмотреть другие офферы. В таком случае,
-            вы можете сделать ссылки на эти офферы партнерскими, и лиды, совершенные на них будут засчитаны от веб-мастера, который привел
-            текущего покупателя. Например, ссылка на другой оффер может быть вида http://demo-1.leadvertex.info/?f={{webmaster}}
-        </p>
-        <p>
-            <code><span class="special">order_number</span></code> - возвращает номер текущего заказа пользователя.
-        </p>
-        <p>
-            <code><span class="special">content</span></code> - В корне папки каждого домена есть главный файл index.html -
-            это шаблон основной страницы, в которую обычно включается шапка и подвал, а контент прочих страниц загружается
-            из
-            отдельных файлов. Тег <span class="special">content</span> включает в содержимое главного файла index.html
-            содержимое файла,
-            находящегося в папке pages. Т.е. запрос вида {{domain}}/page.html выведет внутри главного файла index.html
-            содержимое файла
-            pages/page.html
-        </p>
-        <p>
-            <code><span class="special">no_layout</span></code> - если этот тег прописан в коде страницы из папки <code>pages/</code>,
-            то содержимое этой страницы будет отображено само по себе, т.е. без использования главного файла index.html
-            <br/>
-            Пример можете посмотреть на <a href="/success.html">странице успешного заказа</a>
-        </p>
-
-    </fieldset>
-    <fieldset id="variables">
-        <legend>Настраиваемые переменные</legend>
-        <p>
-            <code><span class="special">title</span></code> - возвращает заголовок, указанный в конфигурации проекта.
-            Текущее значение: «{{title}}»
-        </p>
-
-        <p>
-            <code><span class="special">meta_description</span></code> - возвращает мета-описание страницы, указанное в
-            конфигурации проекта.
-            Текущее значение: «{{meta_description}}»
-        </p>
-
-        <p>
-            <code><span class="special">meta_keywords</span></code> - возвращает мета-ключевые слова страницы, указаные в
-            конфигурации проекта.
-            Текущее значение: «{{meta_keywords}}»
-        </p>
-
-        <p>
-            <code><span class="special">email</span></code> - возвращает email администратора, указаный в конфигурации
-            проекта.
-            Текущее значение: «{{email}}». Может принимать следующие параметры:
-
-        <ul>
-            <li><code><span class="special">email|protected</span></code> - возвращает email-адрес, защищенный от
-                спам-ботов.
-                Выглядит на странице как обычно: «{{email|protected}}», но посмотрите код страницы
-            <li><code><span class="special">email="email@example.com"</span></code> - возвращает значение:
-                «{{email="email@example.com"}}»
-            </li>
-            <li><code><span class="special">email="email@example.com"|protected"</span></code> - возвращает произвольный
-                email,
-                защищенный от спама: «{{email="email@example.com"|protected}}»
-            </li>
-        </ul>
-        </p>
-        <p>
-            <code><span class="special">phone</span></code> - возвращает телефон, указаный в конфигурации проекта.
-            Текущее значение: «{{phone}}»
-        </p>
-
-        <div class="alert alert-info">
-            Вы можете переопределять переменные из файлов шаблонов. Например, вы хотите изменить <code><span class="special">title</span></code>
-            для страницы. Для этого в начале страницы пропишите <code><span class="special">title="Ваш текст"</span></code>
-            <br/>
-            Рекомендуем посмотреть код этого демо-лендинга. Он наглядно это иллюстрирует на примере заголовков страниц и активных пунктов меню
-        </div>
     </fieldset>
 
     <fieldset id="datetime">

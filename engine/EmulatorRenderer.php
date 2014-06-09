@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 1.0;
+  const VERSION = 3.0;
 
   protected $scripts = array();
   protected $config = array();
@@ -305,10 +305,39 @@ class EmulatorRenderer extends LvBaseRenderer {
     foreach ($dirFileList as $dir) if (is_dir($base.'/'.$dir)) $dirList[] = '<option>'.$dir.'</option>';
 
     $errors = $this->checkDirectory();
+
+    if (!preg_match('~<html[^>]*>~i',$this->html)) {
+      $errors[] = 'На вашем лендинге отутствует обязательный открывающий тег &lt;html&gt;';
+      $this->html = '<html>'.$this->html;
+    }
+    if (!preg_match('~</html>~i',$this->html)) {
+      $errors[] = 'На вашем лендинге отутствует обязательный закрывающий тег &lt;/html&gt;';
+      $this->html = $this->html.'</html>';
+    }
+    if (!preg_match('~<body[^>]*>~i',$this->html)) {
+      $errors[] = 'На вашем лендинге отутствует обязательный открывающий тег &lt;body&gt;';
+      if (preg_match('~<html[^>]*>~i',$this->html,$matches)) $this->html = str_replace($matches[0],$matches[0].'<body>',$this->html);
+    }
+    if (!preg_match('~</body>~i',$this->html)) {
+      $errors[] = 'На вашем лендинге отутствует обязательный закрывающий тег &lt;/body&gt;';
+      if (preg_match('~</html>~i',$this->html,$matches)) $this->html = str_replace($matches[0],'</body>'.$matches[0],$this->html);
+    }
+    if (!preg_match('~<head[^>]*>~i',$this->html)) {
+      $errors[] = 'На вашем лендинге отутствует обязательный открывающий тег &lt;head&gt;';
+      if (preg_match('~<html[^>]*>~i',$this->html,$matches)) $this->html = str_replace($matches[0],$matches[0].'<head>',$this->html);
+    }
+    if (!preg_match('~</head>~i',$this->html)) {
+      $errors[] = 'На вашем лендинге отутствует обязательный закрывающий тег &lt;/head&gt;';
+      if (preg_match('~<body[^>]*>~i',$this->html,$matches)) $this->html = str_replace($matches[0],'</head>'.$matches[0],$this->html);
+    }
+    if (!preg_match('~<title[^>]*>~i',$this->html)) {
+      $errors[] = 'На вашем лендинге отутствует обязательный тег &lt;title&gt;';
+      if (preg_match('~<head[^>]*>~i',$this->html,$matches)) $this->html = str_replace($matches[0],$matches[0].'<title></title>',$this->html);
+    }
+
     $errorStr = '';
     if (is_array($errors)) foreach ($errors as $error) $errorStr.='<li>'.$error.'</li>';
     if (!empty($errorStr)) $errorStr = '<ul id="lv_errors">'.$errorStr.'</ul>';
-
     $html = '
     <div id="lv_debug_bar">
       <div id="lv_toggle" title="Свернуть или развернуть отладочную панель"></div>
@@ -317,10 +346,11 @@ class EmulatorRenderer extends LvBaseRenderer {
     '.$errorStr.'
     </div>
     ';
+
+    if (preg_match('~<body[^>]*>~',$this->html,$matches)) $this->html = str_replace($matches[0],$matches[0].$html,$this->html);
     $this->registerFile('/assets/jquery-1.9.1.js',true);
     $this->registerFile('/assets/debug.css');
     $this->registerFile('/assets/debug.js');
-    if (preg_match('~<body[^>]*>~',$this->html,$matches)) $this->html = str_replace($matches[0],$matches[0].$html,$this->html);
   }
 
   public function renderPartial($html, $data = [])
@@ -330,11 +360,14 @@ class EmulatorRenderer extends LvBaseRenderer {
     $this->renderDebugBar();
     return $this->html;
   }
+  public function noLanding()
+  {
+    return file_get_contents(__DIR__.'/../assets/no_landing.html');
+  }
   public function render($view = 'index', $data = null)
   {
-    $layout = $this->getViewFile('index');
+    $layout = $this->getViewFile('layout');
     $html = $layout === false ? '{{content}}' : $layout;
-
     if ($this->_landing) {
       if (stripos($html, '{{content}}') !== false) {
         $viewFile = $this->getViewFile('pages/' . $view);
@@ -347,7 +380,9 @@ class EmulatorRenderer extends LvBaseRenderer {
         if (stripos($page, '{{no_layout}}') === false) $html = str_ireplace('{{content}}', $page, $html);
         else $html = str_ireplace('{{no_layout}}', '', $page);
       }
-    } else $html = file_get_contents(__DIR__.'/../assets/no_landing.html');
+    } else $html = $this->noLanding();
+    if (file_exists($this->themePath.'/layout.html') == false && file_exists($this->themePath.'/pages/index.html') == false)
+      $html = $this->noLanding();
 
     echo $this->renderPartial($html, $data);
   }
