@@ -10,8 +10,9 @@ if (!isset($_COOKIE['lv_lastcheck'])) {
     $actualCode = @file_get_contents('https://raw.github.com/XAKEPEHOK/leadvertex_emulator/master/engine/EmulatorRenderer.php');
     if (preg_match('~const VERSION = (\d+\.\d+);~u',$actualCode,$matches)) {
       if ($matches[1] > EmulatorRenderer::VERSION) {
-        echo 'Вышла новая версия шаблонизатора. Просьба использовать именно её. О новых возможностях шаблонизатора читайте в README.md <br>';
-        die('<a href="https://github.com/XAKEPEHOK/leadvertex_emulator/">https://github.com/XAKEPEHOK/leadvertex_emulator/</a>');
+        echo '<html><head><title>Вышла новая версия шаблонизатора</title></head><body>';
+        echo 'Вышла новая версия шаблонизатора. Просьба использовать именно её. О новых возможностях шаблонизатора читайте в <a href="https://github.com/XAKEPEHOK/leadvertex_emulator/blob/master/README.md">README.md</a><br>';
+        die('<a href="https://github.com/XAKEPEHOK/leadvertex_emulator/">https://github.com/XAKEPEHOK/leadvertex_emulator/</a></body></html>');
       } else $checked = true;
     } else $checked = true;
   } catch (Exception $e) {

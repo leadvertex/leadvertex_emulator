@@ -63,50 +63,50 @@ abstract class LvBaseRenderer {
   }
   protected function tagPrice($tag,$sumPrice) {
     if (preg_match_all('~(?:\{\{(?:'.$tag.')(?:(\+|\-|\*|/)(\d+)(%)?)?(?: (\w+)="([^"]{1,200})")?(?: for=(\d{1,10}))?\}\})~ui', $this->html, $prices_all, PREG_SET_ORDER) > 0) {
-      foreach ($prices_all as $matches) {
-        $price = $sumPrice;
-        if (isset($matches[1])) {
-          $sum = $matches[2];
-          if (isset($matches[3])) {
-            $sum = round($price / 100 * $matches[2]);
+        foreach ($prices_all as $matches) {
+          $price = $sumPrice;
+          if (isset($matches[1])) {
+            $sum = $matches[2];
+            if (isset($matches[3])) {
+              $sum = round($price / 100 * $matches[2]);
+            }
+            switch ($matches[1]) {
+              case '-': $price = $price - $sum; break;
+              case '+': $price = $price + $sum; break;
+              case '*': $price = $price * $sum; break;
+              case '/': $price = round($price / $sum); break;
+            }
           }
-          switch ($matches[1]) {
-            case '-': $price = $price - $sum; break;
-            case '+': $price = $price + $sum; break;
-            case '*': $price = $price * $sum; break;
-            case '/': $price = round($price / $sum); break;
+
+          //Ценовые опции
+          if (isset($matches[4]) && isset($matches[5]))
+            if (isset($this->priceOptions[$matches[4]]) && isset($this->priceOptions[$matches[4]][$matches[5]]))
+              if ($tag == 'price_option') $price = $this->priceOptions[$matches[4]][$matches[5]];
+                else $price+=$this->priceOptions[$matches[4]][$matches[5]];
+
+          if (isset($matches[6])) {
+            $price = $price*$matches[6];
+            $discountPercent = $this->getDiscountOptions($matches[6])['discount'];
+            $price = $price-($price/100*$discountPercent);
           }
+
+          if ($tag == 'total_price|price_total') $price = '<span class="lv-total-price">'.$price.'</span>';
+          if ($tag == 'price_multi') $price = '<span class="lv-multi-price">'.$price.'</span>';
+          $this->html = str_ireplace($matches[0], $price, $this->html);
         }
-
-        //Ценовые опции
-        if (isset($matches[4]) && isset($matches[5]))
-          if (isset($this->priceOptions[$matches[4]]) && isset($this->priceOptions[$matches[4]][$matches[5]]))
-            if ($tag == 'price_option') $price = $this->priceOptions[$matches[4]][$matches[5]];
-            else $price+=$this->priceOptions[$matches[4]][$matches[5]];
-
-        if (isset($matches[6])) {
-          $price = $price*$matches[6];
-          $discountPercent = $this->getDiscountOptions($matches[6])['discount'];
-          $price = $price-($price/100*$discountPercent);
-        }
-
-        if ($tag == 'total_price|price_total') $price = '<span class="lv-total-price">'.$price.'</span>';
-        if ($tag == 'price_multi') $price = '<span class="lv-multi-price">'.$price.'</span>';
-        $this->html = str_ireplace($matches[0], $price, $this->html);
       }
-    }
   }
   protected function tagDeliveryPrice()
   {
     if (preg_match_all('~(?:\{\{(?:delivery_price|price_delivery)(?:=(\d+))?\}\})~ui', $this->html, $matches_all, PREG_SET_ORDER) > 0) {
-      foreach ($matches_all as $matches) {
-        $isSetQuantity = isset($matches[1]) && !empty($matches[1]);
-        $price = $isSetQuantity ? $this->getDeliveryPrice($matches[1]) : $this->getDeliveryPrice();
-        if ($isSetQuantity) $replace = $price;
-        else $replace = '<span class="lv-delivery-price">'.$price.'</span>';
-        $this->html = str_ireplace($matches[0], $replace, $this->html);
+        foreach ($matches_all as $matches) {
+          $isSetQuantity = isset($matches[1]) && !empty($matches[1]);
+          $price = $isSetQuantity ? $this->getDeliveryPrice($matches[1]) : $this->getDeliveryPrice();
+          if ($isSetQuantity) $replace = $price;
+          else $replace = '<span class="lv-delivery-price">'.$price.'</span>';
+          $this->html = str_ireplace($matches[0], $replace, $this->html);
+        }
       }
-    }
   }
   protected function tagDiffPrice()
   {
@@ -121,62 +121,62 @@ abstract class LvBaseRenderer {
   }
   protected function tagQuantityDiscount(){
     if (preg_match_all('~(?:\{\{quantity_discount_(sum|percent)(?:=(\d+))?\}\})~ui', $this->html, $matches_all, PREG_SET_ORDER) > 0) {
-      foreach ($matches_all as $matches) {
-        $matches[1] = strtolower($matches[1]);
-        $isSetQuantity = isset($matches[2]) && !empty($matches[2]);
-        $quantity = $isSetQuantity ? (int)$matches[2] : $this->getConfigParam('quantity.default');
-        $discountArray = $this->getDiscountOptions($quantity);
-        $discount = $discountArray['discount'];
-        if ($matches[1] == 'sum') {
-          $discount = round($this->getPrice()*$quantity/100*$discount);
-          if ($discountArray['sum']>0) $discount = round($this->getPrice()*$quantity-$discountArray['sum']);
+        foreach ($matches_all as $matches) {
+          $matches[1] = strtolower($matches[1]);
+          $isSetQuantity = isset($matches[2]) && !empty($matches[2]);
+          $quantity = $isSetQuantity ? (int)$matches[2] : $this->getConfigParam('quantity.default');
+          $discountArray = $this->getDiscountOptions($quantity);
+          $discount = $discountArray['discount'];
+          if ($matches[1] == 'sum') {
+            $discount = round($this->getPrice()*$quantity/100*$discount);
+            if ($discountArray['sum']>0) $discount = round($this->getPrice()*$quantity-$discountArray['sum']);
+          }
+          if ($isSetQuantity) $replace = $discount;
+          else $replace = '<span class="lv-quantity-discount-'.$matches[1].'">'.$discount.'</span>';
+          $this->html = str_ireplace($matches[0], $replace, $this->html);
         }
-        if ($isSetQuantity) $replace = $discount;
-        else $replace = '<span class="lv-quantity-discount-'.$matches[1].'">'.$discount.'</span>';
-        $this->html = str_ireplace($matches[0], $replace, $this->html);
       }
-    }
   }
   protected function tagFromTo(){
     if (preg_match_all('~(?:\{\{from_to(?:=(\d+))?\}\})~ui', $this->html, $matches_all, PREG_SET_ORDER) > 0) {
-      foreach ($matches_all as $matches) {
-        $discountDuration = (isset($matches[1]) && !empty($matches[1])) ? (int)$matches[1] : 7;
-        $oldDate = time() - $discountDuration * (60 * 60 * 24);
-        $fromMonth = $this->getMonthName($oldDate);
-        $toMonth = $this->getMonthName(time());
+        foreach ($matches_all as $matches) {
+          $discountDuration = (isset($matches[1]) && !empty($matches[1])) ? (int)$matches[1] : 7;
+          $oldDate = time() - $discountDuration * (60 * 60 * 24);
+          $fromMonth = $this->getMonthName($oldDate);
+          $toMonth = $this->getMonthName(time());
 
-        if ($fromMonth != $toMonth) $from_to = date('j', $oldDate) . ' ' . $fromMonth . ' по ' . date('j') . ' ' . $toMonth;
-        else $from_to = date('j', $oldDate) . ' по ' . date('j') . ' ' . $toMonth;
-        $this->html = str_ireplace($matches[0], $from_to, $this->html);
+          if ($fromMonth != $toMonth) $from_to = date('j', $oldDate) . ' ' . $fromMonth . ' по ' . date('j') . ' ' . $toMonth;
+          else $from_to = date('j', $oldDate) . ' по ' . date('j') . ' ' . $toMonth;
+          $this->html = str_ireplace($matches[0], $from_to, $this->html);
+        }
       }
-    }
   }
   protected function tagOnlyTo(){
     if (preg_match_all('~(?:\{\{only_to(?:=(\d+))?\}\})~ui', $this->html, $matches_all, PREG_SET_ORDER) > 0) {
-      foreach ($matches_all as $matches) {
-        $discountDuration = (isset($matches[1]) && !empty($matches[1])) ? (int)$matches[1] : 2;
-        $toDate = time() + $discountDuration * 86400;
-        $toMonth = $this->getMonthName($toDate);
-        $to = date('j', $toDate) . ' ' . $toMonth;
-        $this->html = str_ireplace($matches[0], $to, $this->html);
+        foreach ($matches_all as $matches) {
+          $discountDuration = (isset($matches[1]) && !empty($matches[1])) ? (int)$matches[1] : 2;
+          $toDate = time() + $discountDuration * 86400;
+          $toMonth = $this->getMonthName($toDate);
+          $to = date('j', $toDate) . ' ' . $toMonth;
+          $this->html = str_ireplace($matches[0], $to, $this->html);
+        }
       }
-    }
   }
   protected function tagForm(){
     $forms = [];
     $regexp = '~\{\{form(?:_?(\d{1}))?(?:\|(no_css))?\}\}~i';
     $this->html = preg_replace_callback($regexp,function ($matches) use (&$forms){
-      if (isset($matches[1])) {
-        $number = $matches[1];
-        if ($number<2) $number = 1;
-        if (in_array($number,$forms)) $number = max($forms)+1;
-      } elseif (count($forms)>0) $number = max($forms)+1;
-      else $number = 1;
-      $noCss = isset($matches[2]);
-      $forms[] = $number;
-      if ($number==1) $number = '';
-      return $this->renderForm($this->data['__model'],$number,$noCss);
-    },$this->html);
+        if (isset($matches[1])) {
+          $number = $matches[1];
+          if ($number<2) $number = 1;
+          if (in_array($number,$forms)) $number = max($forms)+1;
+        } elseif (count($forms)>0) $number = max($forms)+1;
+            else $number = 1;
+        $noCss = isset($matches[2]);
+        $forms[] = $number;
+        if ($number==1) $number = '';
+        return $this->renderForm($this->data['__model'],$number,$noCss);
+      },$this->html);
   }
   protected function tagGeo()
   {
@@ -224,7 +224,6 @@ abstract class LvBaseRenderer {
   protected function tagCountdownJs($script = '/js/countdown.js')
   {
     if (stripos($this->html, '{{countdown.js}}') !== false) {
-      $this->registerJQuery();
       $this->registerScriptFile($script);
       $this->html = str_ireplace('{{countdown.js}}','',$this->html);
     }

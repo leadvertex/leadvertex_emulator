@@ -1,4 +1,4 @@
-$(document).ready(function () {
+lvjq1(document).ready(function () {
     function getCookie(name) {
         var matches = document.cookie.match(new RegExp(
             "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -34,25 +34,25 @@ $(document).ready(function () {
         document.cookie = updatedCookie;
     }
 
-    var $debugBar = $('#lv_debug_bar');
+    var $debugBar = lvjq1('#lv_debug_bar');
     if (localStorage.getItem('lv_minimized')==1) {
-        if ($('ul#lv_errors').length == 0) $debugBar.addClass('lv_minimize');
+        if (lvjq1('ul#lv_errors').length == 0) $debugBar.addClass('lv_minimize');
     }
-    $('#lv_toggle').click(function () {
+    lvjq1('#lv_toggle').click(function () {
         $debugBar.toggleClass('lv_minimize');
         localStorage.setItem('lv_minimized',($debugBar.hasClass('lv_minimize') ? 1 : 0));
     });
 
-    var $landing = $('#lv_landing');
+    var $landing = lvjq1('#lv_landing');
     var landing = getCookie('lv_landing');
     if (landing) $landing.val(landing);
     $landing.change(function () {
-        setCookie('lv_landing', $(this).val(), {expire: 60 * 60 * 24 * 30 * 365});
+        setCookie('lv_landing', lvjq1(this).val(), {expire: 60 * 60 * 24 * 30 * 365});
         window.location.href = '/';
     });
     $landing.click(function(){
-        if ($(this).find('option').size()==1) {
-            setCookie('lv_landing', $(this).val(), {expire: 60 * 60 * 24 * 30 * 365});
+        if (lvjq1(this).find('option').size()==1) {
+            setCookie('lv_landing', lvjq1(this).val(), {expire: 60 * 60 * 24 * 30 * 365});
             window.location.href = '/';
         }
     });

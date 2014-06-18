@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.0;
+  const VERSION = 3.1;
 
   protected $scripts = array();
   protected $config = array();
@@ -29,11 +29,11 @@ class EmulatorRenderer extends LvBaseRenderer {
     $ext = substr(strrchr($filename, '.'), 1);
     if (!isset($this->scripts[$filename])) {
       if ($onTop === true) {
-        if ($ext == 'js') $this->html = str_ireplace('<title', '<script type="text/javascript" src="'.$filename.'"></script><title', $this->html);
+        if ($ext == 'js') $this->html = str_ireplace('<title', '<script type="text/javascript" src="'.$filename.'"></script>'."\n".'<title', $this->html);
         else $this->html = str_ireplace('<title', '<link rel="stylesheet" href="'.$filename.'"/><title', $this->html);
       } else {
-        if ($ext == 'js') $this->html = str_ireplace('<title', '<script type="text/javascript" src="'.$filename.'"></script><title', $this->html);
-        else $this->html = str_ireplace('<title', '<link rel="stylesheet" href="'.$filename.'"/><title', $this->html);
+        if ($ext == 'js') $this->html = str_ireplace('<title', '<script type="text/javascript" src="'.$filename.'"></script>'."\n".'<title', $this->html);
+        else $this->html = str_ireplace('<title', '<link rel="stylesheet" href="'.$filename.'"/>'."\n".'<title', $this->html);
       }
       $this->scripts[$filename] = $filename;
     }
@@ -43,10 +43,11 @@ class EmulatorRenderer extends LvBaseRenderer {
   {
     $this->registerFile('/assets/jquery-1.9.1.js',true);
   }
-  protected function registerScript($id,$script)
+  protected function registerScript($id,$script,$overhead = false)
   {
     if (!isset($this->scripts['*inline_'.$id])) {
-      if (preg_match('~<body[^>]*>~',$this->html,$matches)) $this->html = str_replace($matches[0],$matches[0].'<script>'.$script.'</script>',$this->html);
+      $regexp = $overhead ? '~<head[^>]*>~' : '~<body[^>]*>~';
+      if (preg_match($regexp,$this->html,$matches)) $this->html = str_replace($matches[0],$matches[0]."\n".'<script>'.$script.'</script>',$this->html);
       $this->scripts['*inline_'.$id] = '*inline_'.$id;
     }
   }
@@ -237,7 +238,6 @@ class EmulatorRenderer extends LvBaseRenderer {
   protected function tagForm()
   {
     parent::tagForm();
-    $this->registerJQuery();
     $this->registerFile('/assets/placeholders.min.js');
     $this->registerFile('/assets/formHelper.js');
     $this->registerFile('/assets/form.css');
@@ -348,7 +348,6 @@ class EmulatorRenderer extends LvBaseRenderer {
     ';
 
     if (preg_match('~<body[^>]*>~',$this->html,$matches)) $this->html = str_replace($matches[0],$matches[0].$html,$this->html);
-    $this->registerFile('/assets/jquery-1.9.1.js',true);
     $this->registerFile('/assets/debug.css');
     $this->registerFile('/assets/debug.js');
   }
@@ -358,6 +357,10 @@ class EmulatorRenderer extends LvBaseRenderer {
     $data['__model'] = true;
     $this->html = parent::renderPartial($html, $data);
     $this->renderDebugBar();
+
+    $this->registerScript('lvjq1-noconflict',"document.write('<scr'+'ipt type=\"text/javascript\">lvjq1 = jQu'+'ery.noConflict(true);</scr'+'ipt>');",true);
+    $this->registerScript('lvjq1',"document.write('<scr'+'ipt type=\"text/javascript\" src=\"/assets/jquery-1.9.1.js\">'+'</scr'+'ipt>');",true);
+
     return $this->html;
   }
   public function noLanding()
