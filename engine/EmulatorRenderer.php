@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.1;
+  const VERSION = 3.2;
 
   protected $scripts = array();
   protected $config = array();
@@ -217,6 +217,14 @@ class EmulatorRenderer extends LvBaseRenderer {
   protected function getGeoRegion()
   {
     return 'Московская область';
+  }
+  protected function getGeoCountry()
+  {
+    return 'Россия';
+  }
+  protected function getGeoCountryCode()
+  {
+    return 'RU';
   }
   protected function getOrderNumber()
   {

@@ -26,6 +26,8 @@ abstract class LvBaseRenderer {
   abstract protected function getDeliveryPrice($quantity = null);
   abstract protected function getGeoCity();
   abstract protected function getGeoRegion();
+  abstract protected function getGeoCountry();
+  abstract protected function getGeoCountryCode();
   abstract protected function getOrderNumber();
   abstract protected function getWebmaster();
   abstract protected function getUpsell();
@@ -61,40 +63,58 @@ abstract class LvBaseRenderer {
       $this->registerJQuery();
     }
   }
-  protected function tagPrice($tag,$sumPrice) {
-    if (preg_match_all('~(?:\{\{(?:'.$tag.')(?:(\+|\-|\*|/)(\d+)(%)?)?(?: (\w+)="([^"]{1,200})")?(?: for=(\d{1,10}))?\}\})~ui', $this->html, $prices_all, PREG_SET_ORDER) > 0) {
-        foreach ($prices_all as $matches) {
-          $price = $sumPrice;
-          if (isset($matches[1])) {
-            $sum = $matches[2];
-            if (isset($matches[3])) {
-              $sum = round($price / 100 * $matches[2]);
-            }
-            switch ($matches[1]) {
-              case '-': $price = $price - $sum; break;
-              case '+': $price = $price + $sum; break;
-              case '*': $price = $price * $sum; break;
-              case '/': $price = round($price / $sum); break;
-            }
+
+  protected function tagPrice($tag, $sumPrice)
+  {
+    if (preg_match_all('~(?:\{\{(?:' . $tag . ')(?:(\+|\-|\*|/)(\d+)(%)?)?(?: (\w+)="([^"]{1,200})")?(?: for=(\d{1,10}))?\}\})~ui', $this->html, $prices_all, PREG_SET_ORDER) > 0) {
+      $data_operation = '+';
+      $data_sum = 0;
+      $data_percent = 0;
+      foreach ($prices_all as $matches) {
+        $price = $sumPrice;
+        if (isset($matches[1])) { //Арифметическая операция
+          $data_operation = $matches[1];
+          $sum = $matches[2]; //Сумма
+          $data_sum = $sum;
+          if (isset($matches[3])) { //Проценты
+            $data_percent = 1;
+            $sum = round($price / 100 * $matches[2]);
           }
-
-          //Ценовые опции
-          if (isset($matches[4]) && isset($matches[5]))
-            if (isset($this->priceOptions[$matches[4]]) && isset($this->priceOptions[$matches[4]][$matches[5]]))
-              if ($tag == 'price_option') $price = $this->priceOptions[$matches[4]][$matches[5]];
-                else $price+=$this->priceOptions[$matches[4]][$matches[5]];
-
-          if (isset($matches[6])) {
-            $price = $price*$matches[6];
-            $discountPercent = $this->getDiscountOptions($matches[6])['discount'];
-            $price = $price-($price/100*$discountPercent);
+          switch ($matches[1]) {
+            case '-':
+              $price = $price - $sum;
+              break;
+            case '+':
+              $price = $price + $sum;
+              break;
+            case '*':
+              $price = $price * $sum;
+              break;
+            case '/':
+              $price = round($price / $sum);
+              break;
           }
-
-          if ($tag == 'total_price|price_total') $price = '<span class="lv-total-price">'.$price.'</span>';
-          if ($tag == 'price_multi') $price = '<span class="lv-multi-price">'.$price.'</span>';
-          $this->html = str_ireplace($matches[0], $price, $this->html);
         }
+
+        //Ценовые опции
+        if (isset($matches[4]) && isset($matches[5]))
+          if (isset($this->priceOptions[$matches[4]]) && isset($this->priceOptions[$matches[4]][$matches[5]]))
+            if ($tag == 'price_option') $price = $this->priceOptions[$matches[4]][$matches[5]];
+            else $price += $this->priceOptions[$matches[4]][$matches[5]];
+
+        if (isset($matches[6])) {
+          $price = $price * $matches[6];
+          $discount = $this->getDiscountOptions($matches[6]);
+          $price = $discount['sum'] > 0 ? $discount['sum'] : $price - ($price / 100 * $discount['discount']);
+        }
+
+        if ($tag == 'total_price|price_total') {
+          $price = '<span class="lv-total-price" data-operation="'.$data_operation.'" data-sum="'.$data_sum.'" data-percent="'.$data_percent.'">' . $price . '</span>';
+        }
+        if ($tag == 'price_multi') $price = '<span class="lv-multi-price">' . $price . '</span>';
+        $this->html = str_ireplace($matches[0], $price, $this->html);
       }
+    }
   }
   protected function tagDeliveryPrice()
   {
@@ -182,6 +202,8 @@ abstract class LvBaseRenderer {
   {
     if (stripos($this->html, '{{geo_city}}') !== false) $this->html = str_ireplace('{{geo_city}}', $this->getGeoCity(), $this->html);
     if (stripos($this->html, '{{geo_region}}') !== false) $this->html = str_ireplace('{{geo_region}}', $this->getGeoRegion(), $this->html);
+    if (stripos($this->html, '{{geo_country}}') !== false) $this->html = str_ireplace('{{geo_country}}', $this->getGeoCountry(), $this->html);
+    if (stripos($this->html, '{{geo_country_code}}') !== false) $this->html = str_ireplace('{{geo_country_code}}', $this->getGeoCountryCode(), $this->html);
   }
   protected function tagOrderNumber()
   {

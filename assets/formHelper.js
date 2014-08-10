@@ -55,6 +55,9 @@ window.leadvertex.form.validation = function($form, data, hasError) {
         }
     } else {
         $form.trigger('lv-validated');
+        if (window.jQuery) {
+            jQuery($form).trigger('lv-validated');
+        }
     }
     return true;
 }
@@ -167,6 +170,20 @@ lvjq1(document).ready(function(){
         if (discountRound) price = Math.round(price);
         lvjq1('.lv-quantity-discount-sum').text(parseInt(discountResultSum));
         lvjq1('.lv-quantity-discount-percent').text(parseInt(discountPercent));
-        lvjq1('.lv-total-price').text(parseInt(delivery)+parseFloat(price));
+        lvjq1('.lv-total-price').each(function(i,e){
+            var $elem = $(e);
+            var total = parseInt(delivery)+parseInt(price);
+            var sum = parseInt($elem.attr('data-sum'));
+            var operation = $elem.attr('data-operation');
+            var percent = parseInt($elem.attr('data-percent'));
+            if (percent == 1) sum = total / 100 * percent;
+            switch (operation) {
+                case '+': total = total + sum; break;
+                case '-': total = total - sum; break;
+                case '*': total = total * sum; break;
+                case '/': total = total / sum; break;
+            }
+            $elem.text(parseInt(total));
+        });
     };
 });
