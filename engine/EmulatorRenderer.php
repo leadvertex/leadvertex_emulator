@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.2;
+  const VERSION = 3.21;
 
   protected $scripts = array();
   protected $config = array();
@@ -154,12 +154,19 @@ class EmulatorRenderer extends LvBaseRenderer {
         $fieldName = (string)$field['name'];
         if ($field['type'] == 'dropdown') {
           $options = explode(',',(string)$field->pattern);
-          foreach ($options as $paramKey=>$paramValue)
-            if (preg_match('~\{\{(\d+)\}\}~', $paramValue, $matches)) $this->priceOptions[$fieldName][$paramKey] = $matches[1];
+          foreach ($options as $paramValue) {
+            $paramKey = trim($paramValue);
+            if (preg_match('~\{\{(\d+)\}\}~', $paramValue, $matches)) {
+              $paramKey = trim(str_replace('{{'.$matches[1].'}}','',$paramValue));
+              $this->priceOptions[$fieldName][$paramKey] = $matches[1];
+            }
             else $this->priceOptions[$fieldName][$paramKey] = 0;
+          }
         }
       }
     }
+    //print_r($this->priceOptions);
+    //die;
     return $this->priceOptions;
   }
   protected function getDiscountOptions($quantity = null)
