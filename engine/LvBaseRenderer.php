@@ -206,7 +206,7 @@ abstract class LvBaseRenderer {
   {
     $forms = [];
     $regexp = '~\{\{form(?:_?(\d{1}))?(?:\|(no_css))?\}\}~i';
-    if ($this->tagExists(['form','form_1','form_2','form_3','form_4','form_5','form_6','form_7','form_8','form_9']))
+    if ($this->tagExists(['form','form1','form2','form3','form4','form5','form6','form7','form8','form9','form_1','form_2','form_3','form_4','form_5','form_6','form_7','form_8','form_9']))
       $this->html = preg_replace_callback($regexp,function ($matches) use (&$forms){
         if (isset($matches[1])) {
           $number = $matches[1];
