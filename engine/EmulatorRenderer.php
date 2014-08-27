@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.21;
+  const VERSION = 3.3;
 
   protected $scripts = array();
   protected $config = array();
@@ -125,6 +125,85 @@ class EmulatorRenderer extends LvBaseRenderer {
         $html.='</div>';
       }
       $html.='<div class="lv-error"><div class="lv-error-text" id="lv-form'.$number.'-'.$field.'_em_" style="'.$error.'">'.$message.'</div></div>';
+      $html.='</div>';
+    }
+    $html.='<div class="lv-form-submit"><input class="lv-order-button" type="submit" name="yt0" value="'.$buttonText.'"></div>';
+    $html.= '</form>';
+    return $html;
+  }
+  protected function renderFormUpdate($model,$noCss)
+  {
+    $fields = (string)$this->_xml->form['fields_update'];
+    $fields = explode(',',$fields);
+    $fields = array_map('trim',$fields);
+    $fields = array_combine($fields,$fields);
+    $fields = array_filter($fields,function($value){return $value;});
+    $this->_fields = $fields;
+
+    if (empty($fields)) return '';
+
+    $form = [];
+    foreach ($this->_xml->form->field as $field)
+    {
+      $name = (string)$field['name'];
+      $form[$name] = [
+        'name' => (string)$field->caption,
+        'message' => (string)$field->error,
+        'error' => (string)$field['error'],
+        'required' => (string)$field['required'],
+        'type' => (string)$field['type'],
+        'pattern' => (string)$field->pattern,
+      ];
+      if ($name == 'quantity') $form[$name]['unit'] = $this->getConfigParam('quantity.unit');
+    }
+    $buttonText = (string)$this->_xml->form['button-text'];
+
+    $html = '<form id="lv-form-update" class="lv-order-form'.($noCss ? '' : ' lv-order-form-css').'" data-form-number="'.$number.'" action="/success.html" method="post">';
+
+    foreach ($fields as $field) {
+      $name = $form[$field]['name'];
+      $message = $form[$field]['message'];
+      $error = $form[$field]['error'] ? '' : 'display:none;';
+      $errorClass = $form[$field]['error'] ? ' lv-row-error ' : '';
+      $required = $form[$field]['required'];
+      $type = $form[$field]['type'];
+      $pattern = $form[$field]['pattern'];
+
+      $html.='<div class="lv-row lv-row-'.$field.' '.($type == 'checkbox' ? 'lv-row-checkbox' : 'lv-row-input').$errorClass.'" data-name="'.$field.'" data-required="'.(int)$required.'">';
+      if ($type == 'checkbox') {
+        $html.='<div class="lv-label">';
+        $html.='<input name="Order['.$field.']" id="lv-form-'.$field.'" value="1" type="checkbox" class="lv-input-'.$field.'" data-required="'.(int)$required.'">';
+        $html.='<label for="lv-form-'.$field.'">С условиями покупки согласен</label>';
+        $html.='</div>';
+      }
+      else {
+        $html.='<div class="lv-label"><label for="form_'.$field.'">'.$name.($required ? ' <span class="required">*</span>' : '').'</label></div>';
+        $html.='<div class="lv-field">';
+
+        if ($type == 'dropdown') {
+          $html.='<select data-label="'.$name.'" name="Order['.$field.']" id="lv-form-'.$field.'" class="lv-input-'.$field.'" data-required="'.(int)$required.'">';
+          $items = explode(',',$pattern);
+          foreach ($items as $item) {
+            $item = trim($item);
+            if ($field == 'quantity') $item = $item . $form[$field]['unit'];
+            $matches = [];
+            $sum = 0;
+            if (preg_match('~\{\{(\d+)\}\}~', $item, $matches)) {
+              $value = str_replace('{{' . $matches[1] . '}}', '', $item);
+              $item = str_replace('{{' . $matches[1] . '}}', ' (+' . $matches[1] . ' руб.)', $item);
+              $item = trim(str_replace('  ', ' ', $item));
+              $sum = $matches[1];
+            } else $value = $item;
+            $html .= '<option value="'.(int)trim($value).'" data-sum="'.$sum.'">' . $item . '</option>';
+          }
+          $html.='</select>';
+        }
+        elseif ($type == 'string') $html.='<input data-label="'.$name.'" name="Order['.$field.']" id="lv-form-'.$field.'" class="lv-input-'.$field.'" type="text" maxlength="255" data-required="'.(int)$required.'"/>';
+        elseif ($type == 'text') $html.='<textarea data-label="'.$name.'" name="Order['.$field.']" id="lv-form-'.$field.'" class="lv-input-'.$field.'" data-required="'.(int)$required.'"></textarea>';
+
+        $html.='</div>';
+      }
+      $html.='<div class="lv-error"><div class="lv-error-text" id="lv-form-'.$field.'_em_" style="'.$error.'">'.$message.'</div></div>';
       $html.='</div>';
     }
     $html.='<div class="lv-form-submit"><input class="lv-order-button" type="submit" name="yt0" value="'.$buttonText.'"></div>';

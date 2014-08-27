@@ -16,6 +16,7 @@ abstract class LvBaseRenderer {
   abstract protected function registerScriptFile($path);
   abstract protected function registerScript($id,$script);
   abstract protected function renderForm($model,$number,$noCss);
+  abstract protected function renderFormUpdate($model,$noCss);
 
   abstract protected function getConfigParam($param);
   abstract protected function getFiles();
@@ -202,11 +203,29 @@ abstract class LvBaseRenderer {
         }
       }
   }
+  protected function tagGeo()
+  {
+    if ($this->tagExists('geo_city')) $this->html = str_replace('{{geo_city}}', $this->getGeoCity(), $this->html);
+    if ($this->tagExists('geo_region')) $this->html = str_replace('{{geo_region}}', $this->getGeoRegion(), $this->html);
+    if ($this->tagExists('geo_country')) $this->html = str_replace('{{geo_country}}', $this->getGeoCountry(), $this->html);
+    if ($this->tagExists('geo_country_code')) $this->html = str_replace('{{geo_country_code}}', $this->getGeoCountryCode(), $this->html);
+  }
+  protected function tagOrderNumber()
+  {
+    if ($this->tagExists('order_number'))
+      $this->html = str_replace('{{order_number}}', $this->getOrderNumber(), $this->html);
+  }
+
+  //Форма
+  private function formTagExists()
+  {
+    return $this->tagExists(['form','form1','form2','form3','form4','form5','form6','form7','form8','form9','form_1','form_2','form_3','form_4','form_5','form_6','form_7','form_8','form_9']);
+  }
   protected function tagForm()
   {
     $forms = [];
     $regexp = '~\{\{form(?:_?(\d{1}))?(?:\|(no_css))?\}\}~i';
-    if ($this->tagExists(['form','form1','form2','form3','form4','form5','form6','form7','form8','form9','form_1','form_2','form_3','form_4','form_5','form_6','form_7','form_8','form_9']))
+    if ($this->formTagExists())
       $this->html = preg_replace_callback($regexp,function ($matches) use (&$forms){
         if (isset($matches[1])) {
           $number = $matches[1];
@@ -220,17 +239,16 @@ abstract class LvBaseRenderer {
         return $this->renderForm($this->data['__model'],$number,$noCss);
       },$this->html);
   }
-  protected function tagGeo()
+  protected function tagFormUpdate()
   {
-    if ($this->tagExists('geo_city')) $this->html = str_replace('{{geo_city}}', $this->getGeoCity(), $this->html);
-    if ($this->tagExists('geo_region')) $this->html = str_replace('{{geo_region}}', $this->getGeoRegion(), $this->html);
-    if ($this->tagExists('geo_country')) $this->html = str_replace('{{geo_country}}', $this->getGeoCountry(), $this->html);
-    if ($this->tagExists('geo_country_code')) $this->html = str_replace('{{geo_country_code}}', $this->getGeoCountryCode(), $this->html);
-  }
-  protected function tagOrderNumber()
-  {
-    if ($this->tagExists('order_number'))
-      $this->html = str_replace('{{order_number}}', $this->getOrderNumber(), $this->html);
+    if ($this->formTagExists()) return false;
+    $regexp = '~\{\{form_update(?:\|(no_css))?\}\}~i';
+    if ($this->tagExists('form_update'))
+      $this->registerScriptFile('/js/formHelper.js');
+      $this->html = preg_replace_callback($regexp,function ($matches){
+        $noCss = isset($matches[1]);
+        return $this->renderFormUpdate($this->data['__update'],$noCss);
+      },$this->html);
   }
 
   protected function tagPhone()
@@ -341,6 +359,7 @@ abstract class LvBaseRenderer {
     $this->tagUpsell();
 
     $this->tagForm();
+    $this->tagFormUpdate();
     $this->tagUserVars();
 
     $this->registerScript('window.leadvertex','if (!window.leadvertex) window.leadvertex = {};');

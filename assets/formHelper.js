@@ -100,13 +100,13 @@ lvjq1(document).ready(function(){
         if (position == 'after') $element.after(lvjq1(e));
     });
 
-
+    if (lvjq1('#lv-form-update').length == 0) lvjq1('#lv-update').hide();
 
     function calcAdditionalSum()
     {
         window.leadvertex.selling.additionalSum = 0;
         for (var i in window.leadvertex.selling.additional)
-            window.leadvertex.selling.additionalSum+= window.leadvertex.selling.additional[i];
+            window.leadvertex.selling.additionalSum+= parseInt(window.leadvertex.selling.additional[i]);
         return parseInt(window.leadvertex.selling.additionalSum);
     }
 

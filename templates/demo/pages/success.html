@@ -1,6 +1,6 @@
+<!DOCTYPE html>
 {{page="Заказ оформлен"}}
 {{no_layout}}
-
 <html>
 <head>
     <script type="text/javascript" src="//yandex.st/jquery/1.9.1/jquery.min.js"></script>
@@ -11,10 +11,6 @@
     </script>
     <title>Спасибо за ваш заказ - Энергетический браслет.</title>
     <style>
-        body, html {
-            height: 100%;
-            overflow: hidden;
-        }
         body {
             background: #d5d5d5;
             color: white;
@@ -23,8 +19,8 @@
         .thanks {
             background: green;
             width: 60%;
-            margin: 80px auto;
-            padding: 80px;
+            margin: 50px auto;
+            padding: 50px 80px;
             text-align: center;
             border: 5px solid #ffffff;
         }
@@ -33,7 +29,7 @@
             margin-top: 0;
             font-size: 50px;
         }
-        p {
+        p.lead {
             font-size: 25px;
             margin-bottom: 0;
         }
@@ -45,7 +41,15 @@
         }
         hr {
             padding: 0;
-            margin: 25px 0;
+            margin: 20px 0;
+        }
+        #lv-form-update {
+            width: 50%;
+            margin: 0 auto;
+            color: #000000;
+            background: white;
+            text-align: left;
+            border: 5px solid #00b200;
         }
     </style>
 
@@ -60,12 +64,19 @@
 <body>
 <div class="thanks">
     <h1>Спасибо за ваш заказ!</h1>
-    <p>
+    <p class="lead">
         Номер вашего заказа #{{order_number}}
     </p>
-    <p>
+    <p class="lead">
         Наши операторы свяжутся с вами в ближайшее время для уточнения подробностей вашего заказа
     </p>
+
+    <div id="lv-update">
+        <hr/>
+        <p>Вы можете ускорить обработку вашего заказа заполнив следующие данные:</p>
+        {{form_update}}
+    </div>
+
     <hr/>
     <p>
         Рекомендуем ознакомиться с другими нашими офферами:

@@ -1,3 +1,17 @@
+(function ($) {
+    $(function () {
+        var $spoilers = $('.spoiler-btn'),
+            $spoilerBodies = $('.spoiler-body');
+
+        $spoilerBodies.collapse();
+
+        $spoilers.on('click', function() {
+            var $target = $(this).parent().find('.spoiler-body');
+            $target.collapse('toggle');
+        });
+    });
+})(jQuery);
+
 $(document).ready(function () {
     $('.sourceCode').each(function (i, e) {
         var html = $(e).html();

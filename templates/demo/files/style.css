@@ -6,6 +6,29 @@ p {
     text-align: justify !important;
 }
 
+.spoiler {
+    display: block;
+}
+
+.spoiler .spoiler-btn {
+    display: inline;
+    color: #0088cc;
+    border-bottom: thin dashed #0088cc;
+    cursor: pointer;
+}
+
+.spoiler .spoiler-body {
+    opacity: 0;
+}
+
+.spoiler .spoiler-body.in {
+    opacity: 1;
+    background: #F7F7F9;
+    border: thin solid #E1E1E8;
+    border-radius: 3px;
+    padding: 10px;
+}
+
 span.special {
     color: darkred
 }
