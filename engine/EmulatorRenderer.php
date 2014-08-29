@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.3;
+  const VERSION = 3.31;
 
   protected $scripts = array();
   protected $config = array();
@@ -391,6 +391,7 @@ class EmulatorRenderer extends LvBaseRenderer {
   }
   protected function renderDebugBar()
   {
+    if (TEMPLATE) return true;
     $base = __DIR__.'/../templates';
     $dirFileList = scandir($base);
     unset($dirFileList[0]);

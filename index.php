@@ -1,17 +1,16 @@
 <?php
-
-
+define('TEMPLATE',false);
 include_once('engine/LvBaseRenderer.php');
 include_once('engine/EmulatorRenderer.php');
 
-if (!isset($_COOKIE['lv_lastcheck'])) {
+if (!TEMPLATE && !isset($_COOKIE['lv_lastcheck'])) {
   $checked = false;
   try {
     $actualCode = @file_get_contents('https://raw.github.com/XAKEPEHOK/leadvertex_emulator/master/engine/EmulatorRenderer.php');
     if (preg_match('~const VERSION = (\d+\.\d+);~u',$actualCode,$matches)) {
-      if ($matches[1] > EmulatorRenderer::VERSION) {
-        echo '<html><head><title>Вышла новая версия шаблонизатора</title></head><body>';
-        echo 'Вышла новая версия шаблонизатора. Просьба использовать именно её. О новых возможностях шаблонизатора читайте в <a href="https://github.com/XAKEPEHOK/leadvertex_emulator/blob/master/README.md">README.md</a><br>';
+      if (round($matches[1],1) > round(EmulatorRenderer::VERSION,1)) {
+        echo '<html><head><title>Вышла новая версия шаблонизатора '.$matches[1].'</title></head><body>';
+        echo 'Вышла новая версия шаблонизатора v'.$matches[1].'. Просьба использовать именно её. О новых возможностях шаблонизатора читайте в <a href="https://github.com/XAKEPEHOK/leadvertex_emulator/blob/master/README.md">README.md</a><br>';
         die('<a href="https://github.com/XAKEPEHOK/leadvertex_emulator/">https://github.com/XAKEPEHOK/leadvertex_emulator/</a></body></html>');
       } else $checked = true;
     } else $checked = true;
@@ -24,10 +23,11 @@ if (!isset($_COOKIE['lv_lastcheck'])) {
 $page = @empty($_GET['page']) ? 'index' : $_GET['page'];
 if (isset($_COOKIE['lv_landing']) && !empty($_COOKIE['lv_landing'])) $landing=$_COOKIE['lv_landing'];
 else $landing = 'demo';
+if (TEMPLATE) $landing = TEMPLATE;
 
 $basePath = __DIR__.'/templates/'.$landing;
 
-if (isset($_GET['tar']) && $_GET['tar']==1 && is_dir($basePath)) {
+if (!TEMPLATE && isset($_GET['tar']) && $_GET['tar']==1 && is_dir($basePath)) {
   $filename = $basePath.'.tar';
   $phar = new PharData($filename);
   $phar->buildFromDirectory($basePath);
