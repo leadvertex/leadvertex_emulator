@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.31;
+  const VERSION = 3.35;
 
   protected $scripts = array();
   protected $config = array();
