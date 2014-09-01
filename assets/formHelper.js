@@ -17,6 +17,7 @@ window.leadvertex.form.label = function(field,name,form){
 };
 window.leadvertex.form.subLabel = function(field,text,form){
     if (!form) form = ''; else if (form<2) form = '';
+    if (form == 'update') form = '-update';
     lvjq1(document).ready(function(){
         lvjq1('#lv-form'+form+' div.lv-row-'+field +'>.lv-field').after('<div class="lv-sub-label"><label for="lv-form'+form+'-'+field +'">'+text+'</label></div>');
     });
@@ -24,6 +25,7 @@ window.leadvertex.form.subLabel = function(field,text,form){
 
 window.leadvertex.form.buttonText = function(text,form){
     if (!form) form = ''; else if (form<2) form = '';
+    if (form == 'update') form = '-update';
     lvjq1(document).ready(function(){
         lvjq1('#lv-form'+form +' .lv-order-button').val(text);
     });
@@ -31,12 +33,14 @@ window.leadvertex.form.buttonText = function(text,form){
 
 window.leadvertex.form.placeholder = function(field,placeholder,form){
     if (!form) form = ''; else if (form<2) form = '';
+    if (form == 'update') form = '';
     lvjq1(document).ready(function(){
         lvjq1('#lv-form'+form+'-'+field).attr('placeholder',placeholder);
     });
 };
 window.leadvertex.form.placeholderOnly = function(form){
     if (!form) form = ''; else if (form<2) form = '';
+    if (form == 'update') form = '-update';
     lvjq1(document).ready(function(){
         lvjq1('#lv-form'+form+' .lv-row.lv-row-input').each(function(i,e){
             lvjq1(e).find('.lv-label').hide();
@@ -63,6 +67,7 @@ window.leadvertex.form.validation = function($form, data, hasError) {
 }
 window.leadvertex.form.validationByAlert = function(form){
     if (!form) form = ''; else if (form<2) form = '';
+    if (form == 'update') form = '-update';
     lvjq1(document).ready(function(){
         var $form = lvjq1('#lv-form'+form);
         $form.attr('data-validation-by-alert',1);
@@ -72,6 +77,7 @@ window.leadvertex.form.validationByAlert = function(form){
 
 window.leadvertex.form.showOnly = function (fields,form){
     if (!form) form = ''; else if (form<2) form = '';
+    if (form == 'update') form = '-update';
     lvjq1(document).ready(function(){
         var $form = lvjq1('#lv-form'+form);
         $form.find('.lv-row').each(function(i,e){
@@ -91,6 +97,7 @@ lvjq1(document).ready(function(){
     lvjq1('.lv-move').each(function(i,e){
         var form = lvjq1(e).attr('data-form');
         if (!form || form==1) form = '';
+        if (form == 'update') form = '-update';
         var position = lvjq1(e).attr('data-position').toString().toLowerCase();
         var field = lvjq1(e).attr('data-field').toString().toLowerCase();
         if (field == 'submit') field = 'div.lv-form-submit';
