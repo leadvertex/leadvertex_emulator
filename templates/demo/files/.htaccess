@@ -1,0 +1,6 @@
+# Нужен для лендингов с подключаемыми шрифтами, на тарифах с FTP. Иначе браузеры не подключают шрифты с других хостов
+<FilesMatch "\.(ttf|eot|woff|svg)$">
+    <IfModule mod_headers.c>
+        Header set Access-Control-Allow-Origin "*"
+    </IfModule>
+</FilesMatch>

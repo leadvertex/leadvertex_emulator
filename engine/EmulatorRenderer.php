@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.35;
+  const VERSION = 3.36;
 
   protected $scripts = array();
   protected $config = array();
@@ -361,7 +361,7 @@ class EmulatorRenderer extends LvBaseRenderer {
   {
     if (!$this->_landing) return false;
     $extensions = array(
-      'code' => array('css', 'js', 'htm', 'html', 'txt', 'less', 'xml', 'htc'),
+      'code' => array('css', 'js', 'htm', 'html', 'txt', 'less', 'xml', 'htc', 'htaccess'),
       'image' => array('jpg', 'jpeg', 'png', 'gif', 'svg', 'ico'),
       'other' => array(
         'ttf', 'eot', 'woff',
@@ -371,7 +371,6 @@ class EmulatorRenderer extends LvBaseRenderer {
       )
     );
     $extensions = array_merge($extensions['code'], $extensions['image'], $extensions['other']);
-    $extRegExp = implode('|', $extensions);
     $errors = [];
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->themePath), RecursiveIteratorIterator::SELF_FIRST);
     foreach($objects as $name => $object){
@@ -383,7 +382,7 @@ class EmulatorRenderer extends LvBaseRenderer {
           if (preg_match('~^[a-z\d\-_][a-z\d\-_\x20\.]*$~i', $basename)==false) $errors[] = 'Неверное имя каталога: '.$shortName."\n";
         } else {
           $extRegExp = implode('|', $extensions);
-          if (preg_match('~^[a-z\d\-_][a-z\d\-_\.\x20@]*\.(' . $extRegExp . ')$~ui', $basename)==false) $errors[] = 'Неверное имя файла: '.$shortName."\n";
+          if (preg_match('~(^[a-z\d\-_][a-z\d\-_\.\x20@]*\.(' . $extRegExp . '))|(\.htaccess)$~ui', $basename)==false) $errors[] = 'Неверное имя файла: '.$shortName."\n";
         }
       }
     }
@@ -397,7 +396,12 @@ class EmulatorRenderer extends LvBaseRenderer {
     unset($dirFileList[0]);
     unset($dirFileList[1]);
     $dirList = [];
-    foreach ($dirFileList as $dir) if (is_dir($base.'/'.$dir)) $dirList[] = '<option>'.$dir.'</option>';
+    foreach ($dirFileList as $dir) {
+      if (is_dir($base.'/'.$dir)) {
+        $selected = $dir == LV_LANDING ? ' selected="selected"' : '';
+        $dirList[] = '<option'.$selected.'>'.$dir.'</option>';
+      }
+    }
 
     $errors = $this->checkDirectory();
 

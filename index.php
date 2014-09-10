@@ -24,8 +24,9 @@ $page = @empty($_GET['page']) ? 'index' : $_GET['page'];
 if (isset($_COOKIE['lv_landing']) && !empty($_COOKIE['lv_landing'])) $landing=$_COOKIE['lv_landing'];
 else $landing = 'demo';
 if (TEMPLATE) $landing = TEMPLATE;
+define('LV_LANDING',$landing);
 
-$basePath = __DIR__.'/templates/'.$landing;
+$basePath = __DIR__.'/templates/'.LV_LANDING;
 
 if (!TEMPLATE && isset($_GET['tar']) && $_GET['tar']==1 && is_dir($basePath)) {
   $filename = $basePath.'.tar';
