@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.36;
+  const VERSION = 3.40;
 
   protected $scripts = array();
   protected $config = array();
@@ -327,6 +327,19 @@ class EmulatorRenderer extends LvBaseRenderer {
   protected function getDomain()
   {
     return isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'http://example/';
+  }
+  protected function getUtmArray($label=null)
+  {
+    $utm = [
+      'utm_source' => 'source_label',
+      'utm_medium' => 'medium_label',
+      'utm_term' => 'term_label',
+      'utm_content' => 'content_label',
+      'utm_campaign' => 'campaign_label',
+    ];
+    if ($label===null) return $utm;
+    if (isset($utm[$label])) return $utm[$label];
+    else throw new Exception('Такой метки не существует');
   }
 
   protected function tagForm()

@@ -34,6 +34,7 @@ abstract class LvBaseRenderer {
   abstract protected function getWebmaster();
   abstract protected function getUpsell();
   abstract protected function getDomain();
+  abstract protected function getUtmArray($label = null);
   protected function getMonthName($timestamp)
   {
     $month = (int)date('m', $timestamp);
@@ -215,6 +216,12 @@ abstract class LvBaseRenderer {
     if ($this->tagExists('order_number'))
       $this->html = str_replace('{{order_number}}', $this->getOrderNumber(), $this->html);
   }
+  protected function tagUtm($label)
+  {
+    $label = 'utm_'.$label;
+    if ($this->tagExists($label))
+      $this->html = str_replace('{{'.$label.'}}', $this->getUtmArray($label), $this->html);
+  }
 
   //Форма
   private function formTagExists()
@@ -245,10 +252,10 @@ abstract class LvBaseRenderer {
     $regexp = '~\{\{form_update(?:\|(no_css))?\}\}~i';
     if ($this->tagExists('form_update'))
       $this->registerScriptFile('/js/formHelper.js');
-      $this->html = preg_replace_callback($regexp,function ($matches){
-        $noCss = isset($matches[1]);
-        return $this->renderFormUpdate($this->data['__update'],$noCss);
-      },$this->html);
+    $this->html = preg_replace_callback($regexp,function ($matches){
+      $noCss = isset($matches[1]);
+      return $this->renderFormUpdate($this->data['__update'],$noCss);
+    },$this->html);
   }
 
   protected function tagPhone()
@@ -357,6 +364,12 @@ abstract class LvBaseRenderer {
     $this->tagFiles();
     $this->tagWebmaster();
     $this->tagUpsell();
+
+    $this->tagUtm('source');
+    $this->tagUtm('medium');
+    $this->tagUtm('term');
+    $this->tagUtm('content');
+    $this->tagUtm('campaign');
 
     $this->tagForm();
     $this->tagFormUpdate();
