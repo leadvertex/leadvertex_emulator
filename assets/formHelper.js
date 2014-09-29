@@ -49,6 +49,11 @@ window.leadvertex.form.placeholderOnly = function(form){
         });
     });
 };
+window.leadvertex.form.setTotal = function(sum){
+    lvjq1(document).ready(function(){
+        lvjq1('.lv-form-manual-total').val(sum);
+    });
+};
 
 window.leadvertex.form.validation = function($form, data, hasError) {
     if (hasError) {

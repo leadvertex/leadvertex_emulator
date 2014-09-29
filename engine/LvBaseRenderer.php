@@ -15,7 +15,7 @@ abstract class LvBaseRenderer {
   abstract protected function registerJQuery();
   abstract protected function registerScriptFile($path);
   abstract protected function registerScript($id,$script);
-  abstract protected function renderForm($model,$number,$noCss);
+  abstract protected function renderForm($model,$number,$noCss,$allowSetTotal);
   abstract protected function renderFormUpdate($model,$noCss);
 
   abstract protected function getConfigParam($param);
@@ -231,7 +231,7 @@ abstract class LvBaseRenderer {
   protected function tagForm()
   {
     $forms = [];
-    $regexp = '~\{\{form(?:_?(\d{1}))?(?:\|(no_css))?\}\}~i';
+    $regexp = '~\{\{form(?:_?(\d{1}))?(?:\|(no_css))?(?:\|(allow_set_total))?\}\}~i';
     if ($this->formTagExists())
       $this->html = preg_replace_callback($regexp,function ($matches) use (&$forms){
         if (isset($matches[1])) {
@@ -240,10 +240,11 @@ abstract class LvBaseRenderer {
           if (in_array($number,$forms)) $number = max($forms)+1;
         } elseif (count($forms)>0) $number = max($forms)+1;
         else $number = 1;
-        $noCss = isset($matches[2]);
+        $noCss = isset($matches[2]) && !empty($matches[2]);
+        $allowSetTotal = isset($matches[3]) && !empty($matches[3]);
         $forms[] = $number;
         if ($number==1) $number = '';
-        return $this->renderForm($this->data['__model'],$number,$noCss);
+        return $this->renderForm($this->data['__model'],$number,$noCss,$allowSetTotal);
       },$this->html);
   }
   protected function tagFormUpdate()
@@ -399,5 +400,15 @@ abstract class LvBaseRenderer {
       else $html = str_replace('{{no_layout}}', '', $page);
     }
     echo $this->renderPartial($html, $data);
+  }
+
+  /**
+   * @internal. Don't use directly
+   * You must override this method for use
+   */
+  public static function LvManualTotalHash()
+  {
+    //dummy hash
+    return md5(rand(1,9999));
   }
 }

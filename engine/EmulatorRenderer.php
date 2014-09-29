@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.40;
+  const VERSION = 3.41;
 
   protected $scripts = array();
   protected $config = array();
@@ -55,7 +55,7 @@ class EmulatorRenderer extends LvBaseRenderer {
   {
     $this->registerFile($path);
   }
-  protected function renderForm($model,$number,$noCss)
+  protected function renderForm($model,$number,$noCss,$allowSetTotal)
   {
     $fields = (string)$this->_xml->form['fields'];
     $fields = explode(',',$fields);
@@ -80,6 +80,11 @@ class EmulatorRenderer extends LvBaseRenderer {
     $buttonText = (string)$this->_xml->form['button-text'];
 
     $html = '<form id="lv-form'.$number.'" class="lv-order-form'.($noCss ? '' : ' lv-order-form-css').'" data-form-number="'.$number.'" action="/success.html" method="post">';
+
+    if ($allowSetTotal) {
+      echo '<input id="lv-form'.$number.'-manual-total" class="lv-form-manual-total" type="hidden" value="0" name="lv-form-manual-total">';
+      echo '<input id="lv-form'.$number.'-manual-total-hash" type="hidden" value="'.LvBaseRenderer::LvManualTotalHash().'" name="lv-form-manual-total-hash">';
+    }
 
     foreach ($fields as $field) {
       $name = $form[$field]['name'];
