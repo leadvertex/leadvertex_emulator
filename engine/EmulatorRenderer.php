@@ -384,7 +384,7 @@ class EmulatorRenderer extends LvBaseRenderer {
       'other' => array(
         'ttf', 'eot', 'woff',
         'rar', 'zip', '7z', 'exe', 'tar',
-        'mp4', 'flv', '3gp', 'swf',
+        'mp3', 'mp4', 'flv', '3gp', 'swf',
         'doc', 'docx', 'pdf',
       )
     );
