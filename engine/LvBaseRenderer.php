@@ -39,18 +39,18 @@ abstract class LvBaseRenderer {
   {
     $month = (int)date('m', $timestamp);
     $mArray = array(
-      1 => 'января',
-      2 => 'февраля',
-      3 => 'марта',
-      4 => 'апреля',
-      5 => 'мая',
-      6 => 'июня',
-      7 => 'июля',
-      8 => 'августа',
-      9 => 'сентября',
-      10 => 'октября',
-      11 => 'ноября',
-      12 => 'декабря',
+        1 => 'января',
+        2 => 'февраля',
+        3 => 'марта',
+        4 => 'апреля',
+        5 => 'мая',
+        6 => 'июня',
+        7 => 'июля',
+        8 => 'августа',
+        9 => 'сентября',
+        10 => 'октября',
+        11 => 'ноября',
+        12 => 'декабря',
     );
     return $mArray[$month];
   }
@@ -321,7 +321,7 @@ abstract class LvBaseRenderer {
   {
     $file = $this->themePath.'/'.$viewName.'.html';
     $file = str_replace('//','/',$file);
-    $exists = file_exists($file);
+    $exists = is_dir(dirname($file)) && file_exists($file);
     if ($exists === false) return false;
     try {
       return file_get_contents($file);
@@ -335,12 +335,12 @@ abstract class LvBaseRenderer {
     $this->matches = array_flip($this->matches[1]);
 
     $this->data = array_merge($data, array(
-      'title' => $this->getConfigParam('application.name'),
-      'meta_keywords' => $this->getConfigParam('application.meta.keywords'),
-      'meta_description' => $this->getConfigParam('application.meta.description'),
-      'domain' => $this->getDomain(),
-      'today' => date('j') . ' ' . $this->getMonthName(time()),
-      'year' => date('Y'),
+        'title' => $this->getConfigParam('application.name'),
+        'meta_keywords' => $this->getConfigParam('application.meta.keywords'),
+        'meta_description' => $this->getConfigParam('application.meta.description'),
+        'domain' => $this->getDomain(),
+        'today' => date('j') . ' ' . $this->getMonthName(time()),
+        'year' => date('Y'),
     ));
 
     $this->getPriceOptions();
