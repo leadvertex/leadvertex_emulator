@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.42;
+  const VERSION = 3.43;
 
   protected $scripts = array();
   protected $config = array();
@@ -320,6 +320,10 @@ class EmulatorRenderer extends LvBaseRenderer {
   protected function getOrderNumber()
   {
     return rand(100,1000);
+  }
+  protected function getOrderTotal()
+  {
+    return rand(1000,2000);
   }
   protected function getWebmaster()
   {

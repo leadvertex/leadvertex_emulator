@@ -31,6 +31,7 @@ abstract class LvBaseRenderer {
   abstract protected function getGeoCountry();
   abstract protected function getGeoCountryCode();
   abstract protected function getOrderNumber();
+  abstract protected function getOrderTotal();
   abstract protected function getWebmaster();
   abstract protected function getUpsell();
   abstract protected function getDomain();
@@ -216,6 +217,11 @@ abstract class LvBaseRenderer {
     if ($this->tagExists('order_number'))
       $this->html = str_replace('{{order_number}}', $this->getOrderNumber(), $this->html);
   }
+  protected function tagOrderTotal()
+  {
+    if ($this->tagExists('order_total'))
+      $this->html = str_replace('{{order_total}}', $this->getOrderTotal(), $this->html);
+  }
   protected function tagUtm($label)
   {
     $label = 'utm_'.$label;
@@ -360,6 +366,7 @@ abstract class LvBaseRenderer {
     $this->tagOnlyTo();
     $this->tagGeo();
     $this->tagOrderNumber();
+    $this->tagOrderTotal();
     $this->tagPhone();
     $this->tagEmail();
     $this->tagFiles();
