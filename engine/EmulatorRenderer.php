@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.43;
+  const VERSION = 3.45;
 
   protected $scripts = array();
   protected $config = array();
@@ -386,9 +386,9 @@ class EmulatorRenderer extends LvBaseRenderer {
       'code' => array('css', 'js', 'htm', 'html', 'txt', 'less', 'xml', 'htc', 'htaccess'),
       'image' => array('jpg', 'jpeg', 'png', 'gif', 'svg', 'ico'),
       'other' => array(
-        'ttf', 'eot', 'woff',
+        'ttf', 'eot', 'woff', 'woff2', 'otf',
         'rar', 'zip', '7z', 'exe', 'tar',
-        'mp3', 'mp4', 'flv', '3gp', 'swf',
+        'mp3', 'mp4', 'flv', '3gp', 'swf', 'ogg',
         'doc', 'docx', 'pdf',
       )
     );
@@ -459,14 +459,13 @@ class EmulatorRenderer extends LvBaseRenderer {
     $errorStr = '';
     if (is_array($errors)) foreach ($errors as $error) $errorStr.='<li>'.$error.'</li>';
     if (!empty($errorStr)) $errorStr = '<ul id="lv_errors">'.$errorStr.'</ul>';
-    $html = '
-    <div id="lv_debug_bar">
-      <div id="lv_toggle" title="Свернуть или развернуть отладочную панель"></div>
-      <a target="_blank" href="/index.php?tar=1" id="lv_download_as_tar" title="Скачать текущий лендинг в «*.tar» арохиве">Скачать как «*.tar»</a>
-      <select id="lv_landing">'.implode('',$dirList).'</select>
-    '.$errorStr.'
-    </div>
-    ';
+
+    $html = '<div id="lv_debug_bar">';
+    $html.= '    <div id="lv_toggle" title="Свернуть или развернуть отладочную панель"></div>';
+    $html.= '    <a target="_blank" href="/index.php?tar=1" id="lv_download_as_tar" title="Скачать текущий лендинг в «*.tar» арохиве">Скачать как «*.tar»</a>';
+    $html.= '    <select id="lv_landing">'.implode('',$dirList).'</select>';
+    $html.= '   '.$errorStr;
+    $html.= '</div>';
 
     if (preg_match('~<body[^>]*>~',$this->html,$matches)) $this->html = str_replace($matches[0],$matches[0].$html,$this->html);
     $this->registerFile('/assets/debug.css');
