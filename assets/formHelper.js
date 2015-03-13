@@ -198,4 +198,6 @@ lvjq1(document).ready(function(){
             $elem.text(parseInt(total));
         });
     };
+
+    reCalc();
 });
