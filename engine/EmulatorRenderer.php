@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.45;
+  const VERSION = 3.451;
 
   protected $scripts = array();
   protected $config = array();
@@ -383,12 +383,12 @@ class EmulatorRenderer extends LvBaseRenderer {
   {
     if (!$this->_landing) return false;
     $extensions = array(
-      'code' => array('css', 'js', 'htm', 'html', 'txt', 'less', 'xml', 'htc', 'htaccess'),
+      'code' => array('css', 'js', 'htm', 'html', 'txt', 'less', 'xml', 'htc','htaccess'),
       'image' => array('jpg', 'jpeg', 'png', 'gif', 'svg', 'ico'),
       'other' => array(
         'ttf', 'eot', 'woff', 'woff2', 'otf',
         'rar', 'zip', '7z', 'exe', 'tar',
-        'mp3', 'mp4', 'flv', '3gp', 'swf', 'ogg',
+        'mp3', 'mp4', 'flv', '3gp', 'swf', 'ogg', 'webm', 'ogv',
         'doc', 'docx', 'pdf',
       )
     );
