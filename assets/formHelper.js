@@ -6,6 +6,8 @@ if (!window.leadvertex.selling.price) window.leadvertex.selling.price = {};
 if (!window.leadvertex.selling.quantity) window.leadvertex.selling.quantity = 0;
 if (!window.leadvertex.selling.additional) window.leadvertex.selling.additional = {};
 if (!window.leadvertex.selling.additionalSum) window.leadvertex.selling.additionalSum = 0;
+if (!window.leadvertex.goods) window.leadvertex.goods = {};
+if (!window.leadvertex.goods.added) window.leadvertex.goods.added = {};
 
 window.leadvertex.form = {};
 
@@ -29,7 +31,7 @@ window.leadvertex.form.buttonText = function(text,form){
     lvjq1(document).ready(function(){
         lvjq1('#lv-form'+form +' .lv-order-button').val(text);
     });
-}
+};
 
 window.leadvertex.form.placeholder = function(field,placeholder,form){
     if (!form) form = ''; else if (form<2) form = '';
@@ -58,7 +60,7 @@ window.leadvertex.form.setTotal = function(sum){
 window.leadvertex.form.validation = function($form, data, hasError) {
     if (hasError) {
         var errors = '';
-        if ($form.attr('data-validation-by-alert')) {
+        if ($form.attr('data-validation-by-alert') || $form.hasClass('lv2-form-validation-by-alert')) {
             for (var i in data) errors+= data[i][0]+"\n\n";
             alert(errors);
         }
@@ -69,7 +71,7 @@ window.leadvertex.form.validation = function($form, data, hasError) {
         }
     }
     return true;
-}
+};
 window.leadvertex.form.validationByAlert = function(form){
     if (!form) form = ''; else if (form<2) form = '';
     if (form == 'update') form = '-update';
@@ -78,7 +80,7 @@ window.leadvertex.form.validationByAlert = function(form){
         $form.attr('data-validation-by-alert',1);
         $form.find('.lv-error').hide();
     });
-}
+};
 
 window.leadvertex.form.showOnly = function (fields,form){
     if (!form) form = ''; else if (form<2) form = '';
@@ -96,7 +98,7 @@ window.leadvertex.form.showOnly = function (fields,form){
             if (notShow && isRequired==0) lvjq1(e).hide();
         });
     });
-}
+};
 
 lvjq1(document).ready(function(){
     lvjq1('.lv-move').each(function(i,e){
@@ -123,12 +125,12 @@ lvjq1(document).ready(function(){
     }
 
     //Обновляем выпадающие списки на всех формах, т.к. именно они формируют цены
-    lvjq1('.lv-order-form select').change(function(){
+    lvjq1('.lv-order-form select').not('.lv-input-paymentOn').change(function(){
         lvjq1('.lv-order-form select.'+lvjq1(this).attr('class')).val(lvjq1(this).val());
         reCalc();
     });
 
-    lvjq1('.lv-order-form select').not('.lv-input-quantity').change(function(){
+    lvjq1('.lv-order-form select').not('.lv-input-quantity').not('.lv-input-paymentOn').change(function(){
         window.leadvertex.selling.additional[lvjq1(this).attr('class')] = lvjq1(this).find('option:selected').attr('data-sum');
         lvjq1('.lv-multi-price').text(window.leadvertex.selling.price['price']+calcAdditionalSum());
         reCalc();
@@ -198,6 +200,143 @@ lvjq1(document).ready(function(){
             $elem.text(parseInt(total));
         });
     };
-
     reCalc();
+
+    lvjq1('.lv-good-button').click(function() {
+        var alias = lvjq1(this).attr('data-lv-alias');
+        var addText = lvjq1(this).attr('data-lv-add-text');
+        var removeText = lvjq1(this).attr('data-lv-remove-text');
+        var addRemove = lvjq1(this).attr('data-lv-add-remove');
+        var sum = lvjq1(this).attr('data-lv-price');
+        var submitOnClick = lvjq1(this).attr('data-lv-submit');
+        var input = '.lv-input-goods';
+        var form = lvjq1(this).attr('data-lv-form');
+        if (form == 'update') {
+            form = 'Update';
+            input = '#lv-formLandingUpdate-goods';
+        } else {
+            form = parseInt(form);
+            if (form > 0) input = '#lv-formLanding' + form + '-goods';
+        }
+        switch (addRemove) {
+            case 'add':
+                lvjq1(this).text(removeText);
+                lvjq1(this).attr('data-lv-add-remove', 'remove');
+                addGood(alias, 1, sum, input, form, submitOnClick);
+                break;
+            case 'remove':
+                lvjq1(this).text(addText);
+                lvjq1(this).attr('data-lv-add-remove', 'add');
+                removeGood(alias, input, form);
+                break;
+        }
+    });
+    lvjq1('.lv-good-quantity').change(function () {
+        var alias = lvjq1(this).attr('data-lv-alias');
+        var prices = JSON.parse(lvjq1(this).attr('data-lv-prices'));
+        var maxQuantity = parseInt(lvjq1(this).attr('data-lv-max-quantity'));
+        var quantity = parseInt(lvjq1(this).val());
+        var input = '.lv-input-goods';
+        var form = lvjq1(this).attr('data-lv-form');
+        if (form == 'update') {
+            form = 'Update';
+            input = '#lv-formLandingUpdate-goods';
+        } else {
+            form = parseInt(form);
+            if (form > 0) input = '#lv-formLanding' + form + '-goods';
+        }
+        if (quantity > 0) {
+            if (prices[quantity]) {
+                addGood(alias, quantity, prices[quantity], input, form);
+            } else {
+                var nQuantity = 0;
+                var prevKey = 0;
+                for (var key in prices) {
+                    if (prices.hasOwnProperty(key)) {
+                        if (quantity < maxQuantity && quantity > prevKey) {
+                            nQuantity = prevKey;
+                        } else {
+                            nQuantity = maxQuantity;
+                        }
+                        prevKey = key;
+                    }
+                }
+                var price = parseInt((prices[nQuantity] / nQuantity) * quantity);
+                addGood(alias, quantity, price, input, form);
+            }
+        } else {
+            removeGood(alias, input, form);
+        }
+    });
+    lvjq1('.lv-good-select').change(function () {
+        var prices = JSON.parse(lvjq1(this).attr('data-lv-prices'));
+        var alias = lvjq1(this).val();
+        var input = '.lv-input-goods';
+        var form = lvjq1(this).attr('data-lv-form');
+        if (form == 'update') {
+            form = 'Update';
+            input = '#lv-formLandingUpdate-goods';
+        } else {
+            form = parseInt(form);
+            if (form > 0) input = '#lv-formLanding' + form + '-goods';
+        }
+        if (alias != 0) {
+            if (prices[alias]) {
+                for (var k in prices) {
+                    if (prices.hasOwnProperty(k)) {
+                        if (k != alias) removeGood(k, input, form);
+                    }
+                }
+                addGood(alias, 1, prices[alias], input, form);
+            }
+        } else {
+            for (var key in prices) {
+                if (prices.hasOwnProperty(key)) {
+                    removeGood(key, input, form);
+                }
+            }
+        }
+    });
+
+    function addGood(goodId, quantity, sum, input, form, submitOnClick) {
+        window.leadvertex.goods.added = lvjq1(input).val() != "" ? JSON.parse(lvjq1(input).val()) : {};
+        window.leadvertex.goods.added[goodId] = {
+            "quantity": quantity,
+            "sum": sum
+        };
+        console.log(window.leadvertex.goods.added);
+        lvjq1(input).val(JSON.stringify(window.leadvertex.goods.added));
+        if (submitOnClick == 1) {
+            form = '.lv2-form' + form;
+            console.log(form);
+            lvjq1(form).submit();
+        }
+        reCalcGoodPriceTotal(form);
+    }
+    function removeGood(goodId, input, form) {
+        window.leadvertex.goods.added = lvjq1(input).val() != "" ? JSON.parse(lvjq1(input).val()) : {};
+        if (window.leadvertex.goods.added[goodId]) delete window.leadvertex.goods.added[goodId];
+        console.log(window.leadvertex.goods.added);
+        lvjq1(input).val(JSON.stringify(window.leadvertex.goods.added));
+        reCalcGoodPriceTotal(form);
+    }
+    function reCalcGoodPriceTotal(form) {
+        console.log(form);
+        lvjq1('.lv-good-price-total').each(function (i, e) {
+            var formAttr = parseInt(lvjq1(e).attr('data-lv-form'));
+            if (formAttr == 'update') formAttr = 'Update';
+            if (formAttr == form) {
+                console.log(form);
+                var input = '#lv-formLanding' + form + '-goods';
+                var total = 0;
+                var values = JSON.parse(lvjq1(input).val());
+                for (var key in values) {
+                    if (values.hasOwnProperty(key)) {
+                        total += parseInt(values[key]['sum']);
+                    }
+                }
+                lvjq1(e).text(total);
+            }
+        });
+    }
 });

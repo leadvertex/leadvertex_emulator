@@ -136,4 +136,12 @@
         <!-- Мета-ключевые слова -->
         <param name="application.meta.keywords" value="продажа, оффер, одностраничник, лендинг, купить, leadvertex - супер"/>
     </config>
+    <goods>
+        <good id="watch" unity="шт." name="Часы" price="1:100,2:200,3:300"/>
+        <good id="id2" unity="шт." name="Браслет" price="1:100,2:200,3:300"/>
+        <good id="coffee" unity="шт." name="Кофе" price="1:100,2:200,3:300"/>
+        <good id="braslet" unity="шт." name="Браслет" price="1:100,2:200,3:300"/>
+        <good id="pochta" unity="шт." name="Доставка" price="1:300"/>
+        <good id="courier" unity="шт." name="Доставка курьером" price="1:500"/>
+    </goods>
 </emulator>

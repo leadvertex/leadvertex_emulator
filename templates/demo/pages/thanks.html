@@ -12,6 +12,7 @@
         /*]]>*/
     </script>
     <title>Спасибо за ваш заказ</title>
+    <link rel="stylesheet" href="//yandex.st/bootstrap/2.3.2/css/bootstrap.min.css"/>
     <style>
         body {
             background: #d5d5d5;
@@ -72,38 +73,6 @@
     <p class="lead">
         Наши операторы свяжутся с вами в ближайшее время для уточнения подробностей вашего заказа
     </p>
-
-    <hr/>
-    <p>Вы можете ускорить обработку вашего заказа заполнив следующие данные:</p>
-    <div class="lv-form-update">
-        {{formUpdateBegin class="lv-order-form lv-order-form-css" action="/success.html"}}
-        <div class="lv-row">
-            {{formUpdateLabel for="fio" label="ФИО"}}
-            {{formUpdateField name="fio" class="lv-input-fio" type="text" validator="~^.+$~" style="background-image: none; background-position: 0% 0%; background-repeat: repeat;"}}
-        </div>
-        <div class="lv-row">
-            {{formUpdateLabel for="country" label="Страна"}}
-            {{formUpdateField name="country" type="select" validator="Россия, Украина, Казахстан" style="background-image: none; background-position: 0% 0%; background-repeat: repeat;"}}
-        </div>
-        <div class="lv-row">
-            {{formUpdateLabel for="postIndex" label="Индекс"}}
-            {{formUpdateField name="postIndex" type="text" validator="~\d{6}~" style="background-image: none; background-position: 0% 0%; background-repeat: repeat;"}}
-            {{formUpdateError name="postIndex" text="Не верно заполнено поле «Индекс»."}}
-        </div>
-        <div class="lv-row">
-            {{formUpdateLabel for="address" label="Адрес"}}
-            {{formUpdateField name="address" type="textarea"  validator="~^.+$~" style="background-image: none; background-position: 0% 0%; background-repeat: repeat;"}}
-        </div>
-        <div class="lv-row">
-            {{formUpdateLabel for="phone" label="Телефон"}}
-            {{formUpdateField name="phone" type="text" validator="+7(999)999-99-99" style="background-image: none; background-position: 0% 0%; background-repeat: repeat;"}}
-            {{formUpdateError name="phone" text="Необходимо заполнить поле «Телефон»."}}
-        </div>
-        <div class="lv-form-submit">
-            <input class="lv-order-button" type="submit" name="yt0" value="Оформить заказ">
-        </div>
-        {{formUpdateEnd}}
-    </div>
 
     <hr/>
     <p>

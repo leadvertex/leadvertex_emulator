@@ -1,133 +1,133 @@
 {{page="Описание настройки формы заказа"}}
 {{active_form="active"}}
 <div>
-<div class="alert alert-info">
-    Эта страница содержит техническую информацию для верстальщиков. Здесь описаны технические принципы и особенности работы нашего шаблонизатора
-</div>
+    <div class="alert alert-info">
+        Эта страница содержит техническую информацию для верстальщиков. Здесь описаны технические принципы и особенности работы нашего шаблонизатора
+    </div>
 
-<div class="alert alert-error">
-    <b>Важно знать!</b><br/>
-    Форма заказа (поля, их названия и порядок следования) настраиваются в панели управления проектом, и не требуют от
-    предприниматля каких-либо специальных знаний верстки. Именно поэтому мы не рекоменуем искусственно изменять названия полей
-    при помощи js-скриптов
-</div>
+    <div class="alert alert-error">
+        <b>Важно знать!</b><br/>
+        Форма заказа (поля, их названия и порядок следования) настраиваются в панели управления проектом, и не требуют от
+        предприниматля каких-либо специальных знаний верстки. Именно поэтому мы не рекоменуем искусственно изменять названия полей
+        при помощи js-скриптов
+    </div>
 
-<fieldset>
-<legend>{{page}}</legend>
-<p><code><span class="special">form</span></code> - вставляет форму заказа. На одной странице может быть до 9 форм</p>
-<p>
-    Вы можете либо просто вставлять подряд неколько <span class="special">form</span> <span class="special">form</span>,
-    либо нумеровать их вручную <span class="special">form</span> <span class="special">form2</span>
-    <br/>
-    <span class="label label-info">Внимание:</span> первая форма <span class="special">form</span> не содержит в себе цифру «1»
-</p>
+    <fieldset>
+        <legend>{{page}}</legend>
+        <p><code><span class="special">form</span></code> - вставляет форму заказа. На одной странице может быть до 9 форм</p>
+        <p>
+            Вы можете либо просто вставлять подряд неколько <span class="special">form</span> <span class="special">form</span>,
+            либо нумеровать их вручную <span class="special">form</span> <span class="special">form2</span>
+            <br/>
+            <span class="label label-info">Внимание:</span> первая форма <span class="special">form</span> не содержит в себе цифру «1»
+        </p>
 
-<h3>Методы для работы с формой</h3>
+        <h3>Методы для работы с формой</h3>
 
-<p>
-    В форме заказа могут буть следующие поля:
-<ul id="formFields">
-    <li>fio</li>
-    <li>country</li>
-    <li>postIndex</li>
-    <li>region</li>
-    <li>city</li>
-    <li>address</li>
-    <li>house</li>
-    <li>flat</li>
-    <li>phone</li>
-    <li>email</li>
-    <li>quantity</li>
-    <li>comment</li>
-    <li>checkboxPersonalData</li>
-    <li>checkboxAgreeTerms</li>
-    <li>additional1</li>
-    <li>additional2</li>
-    <li>additional3</li>
-    <li>additional4</li>
-</ul>
-</p>
+        <p>
+            В форме заказа могут буть следующие поля:
+        <ul id="formFields">
+            <li>fio</li>
+            <li>country</li>
+            <li>postIndex</li>
+            <li>region</li>
+            <li>city</li>
+            <li>address</li>
+            <li>house</li>
+            <li>flat</li>
+            <li>phone</li>
+            <li>email</li>
+            <li>quantity</li>
+            <li>comment</li>
+            <li>checkboxPersonalData</li>
+            <li>checkboxAgreeTerms</li>
+            <li>additional1</li>
+            <li>additional2</li>
+            <li>additional3</li>
+            <li>additional4</li>
+        </ul>
+        </p>
 
-<h4>Javascript-методы</h4>
-<ul class="codeLi">
-    <li>
-        <code class="sourceCode">&lt;script&gt;window.leadvertex.form.label('fio','Как вас зовут?',2);&lt;/script&gt;</code>
-        Устанавливает альтернативный заголовок для поля <code>fio</code>. Последний параметр «2» подразумевает, что
-        заголовок будет установлен для <span class="special">form2</span>. Если параметр не передан, то заголовок будет применен
-        к <span class="special">form</span>. <b>Последний параметр ведет себя так во всех методах</b>
-    </li>
-    <li>
-        <code class="sourceCode">&lt;script&gt;window.leadvertex.form.subLabel('address','Пример: ул. Академика Королева',2);&lt;/script&gt;</code>
-        Устанавливает заданный текст под полем «address» как пояснение к полю
-    </li>
-    <li>
-        <code class="sourceCode">&lt;script&gt;window.leadvertex.form.buttonText('Заказать сейчас',2);&lt;/script&gt;</code>
-        Устанавливает текст кнопки оформления заказа для формы 2
-    </li>
-    <li>
-        <code class="sourceCode">&lt;script&gt;window.leadvertex.form.placeholder('fio','Фамилия Имя Отчество',2);&lt;/script&gt;</code>
-        Устанавливает placeholder для поля «fio». Placeholder - это текст, написанный в поле, который исчезает после того, как пользователь
-        начинает что-то писать в нем
-    </li>
-    <li>
-        <code class="sourceCode">&lt;script&gt;window.leadvertex.form.placeholderOnly(2);&lt;/script&gt;</code>
-        Устанавливает placeholder для всех полей формы. Значение placeholder'a берется из заголовка формы, а сам заголовок скрывается.
-        Передаваемый параметр подразумевает номер формы, для которой будут применены изменения. <a href="#example3">Пример</a>
-    </li>
-    <li>
-        <code class="sourceCode">&lt;script&gt;window.leadvertex.form.validationByAlert(2);&lt;/script&gt;</code>
-        Отображает сообщения об ошибках в заполнении формы во всплывающем сообщении, после нажатия кнопки оформления заказа
-        <a href="#example7">(Пример)</a>
-    </li>
-    <li>
-        Перемещение блоков с данными (например, ценой) осуществляется следующим образом (<a href="#example5">пример</a>):
-        <ul>
-            <li>Допишите к блоку класс <code>.lv-move</code></li>
+        <h4>Javascript-методы</h4>
+        <ul class="codeLi">
             <li>
-                Допишите к блоку атрибут <code>data-field="submit"</code>, который означает, относительно какого поля
-                формы будут происходить изменения. Это могут быть <a href="#formFields">поля формы</a> или кнопка заказа,
-                которая в данном случае именуется как «submit»
+                <code class="sourceCode">&lt;script&gt;window.leadvertex.form.label('fio','Как вас зовут?',2);&lt;/script&gt;</code>
+                Устанавливает альтернативный заголовок для поля <code>fio</code>. Последний параметр «2» подразумевает, что
+                заголовок будет установлен для <span class="special">form2</span>. Если параметр не передан, то заголовок будет применен
+                к <span class="special">form</span>. <b>Последний параметр ведет себя так во всех методах</b>
             </li>
             <li>
-                Допишите к атрибут <code>data-position="before"</code> или <code>data-position="after"</code>.
-                <code>before</code> - переместит блок <b>перед</b> полем, <code>after</code> - после поля
+                <code class="sourceCode">&lt;script&gt;window.leadvertex.form.subLabel('address','Пример: ул. Академика Королева',2);&lt;/script&gt;</code>
+                Устанавливает заданный текст под полем «address» как пояснение к полю
             </li>
             <li>
-                Допишите к атрибут <code>data-form="2"</code> определяет в какую форму заказа будет перемещен блок
+                <code class="sourceCode">&lt;script&gt;window.leadvertex.form.buttonText('Заказать сейчас',2);&lt;/script&gt;</code>
+                Устанавливает текст кнопки оформления заказа для формы 2
+            </li>
+            <li>
+                <code class="sourceCode">&lt;script&gt;window.leadvertex.form.placeholder('fio','Фамилия Имя Отчество',2);&lt;/script&gt;</code>
+                Устанавливает placeholder для поля «fio». Placeholder - это текст, написанный в поле, который исчезает после того, как пользователь
+                начинает что-то писать в нем
+            </li>
+            <li>
+                <code class="sourceCode">&lt;script&gt;window.leadvertex.form.placeholderOnly(2);&lt;/script&gt;</code>
+                Устанавливает placeholder для всех полей формы. Значение placeholder'a берется из заголовка формы, а сам заголовок скрывается.
+                Передаваемый параметр подразумевает номер формы, для которой будут применены изменения. <a href="#example3">Пример</a>
+            </li>
+            <li>
+                <code class="sourceCode">&lt;script&gt;window.leadvertex.form.validationByAlert(2);&lt;/script&gt;</code>
+                Отображает сообщения об ошибках в заполнении формы во всплывающем сообщении, после нажатия кнопки оформления заказа
+                <a href="#example7">(Пример)</a>
+            </li>
+            <li>
+                Перемещение блоков с данными (например, ценой) осуществляется следующим образом (<a href="#example5">пример</a>):
+                <ul>
+                    <li>Допишите к блоку класс <code>.lv-move</code></li>
+                    <li>
+                        Допишите к блоку атрибут <code>data-field="submit"</code>, который означает, относительно какого поля
+                        формы будут происходить изменения. Это могут быть <a href="#formFields">поля формы</a> или кнопка заказа,
+                        которая в данном случае именуется как «submit»
+                    </li>
+                    <li>
+                        Допишите к атрибут <code>data-position="before"</code> или <code>data-position="after"</code>.
+                        <code>before</code> - переместит блок <b>перед</b> полем, <code>after</code> - после поля
+                    </li>
+                    <li>
+                        Допишите к атрибут <code>data-form="2"</code> определяет в какую форму заказа будет перемещен блок
+                    </li>
+                </ul>
             </li>
         </ul>
-    </li>
-</ul>
 
-<span class="label label-info">Важно</span> Если вы используете <a href="/docs.html#form-update">форму уточнения заказа</a>,
-то вместо номера формы необходимо передавать значение <code>'update'</code>
-<hr/>
+        <span class="label label-info">Важно</span> Если вы используете <a href="/docs.html#form-update">форму уточнения заказа</a>,
+        то вместо номера формы необходимо передавать значение <code>'update'</code>
+        <hr/>
 
-<h3>Примеры</h3>
-<p>
-    На этой странице приведены различные варианты конфигурирования формы заказа. Вы можете комбинировать их как угодно,
-    для достижения нужного результата
-</p>
+        <h3>Примеры</h3>
+        <p>
+            На этой странице приведены различные варианты конфигурирования формы заказа. Вы можете комбинировать их как угодно,
+            для достижения нужного результата
+        </p>
 
 
-<h4>Обычная форма заказа</h4>
-<div class="row-fluid">
-    <div class="span5">{{form}}</div>
-    <div class="span7">
-        <h5>Код формы</h5>
-        <code class="sourceCode">
-            <span class="special">form</span>
-        </code>
-    </div>
-</div>
+        <h4>Обычная форма заказа</h4>
+        <div class="row-fluid">
+            <div class="span5">{{form}}</div>
+            <div class="span7">
+                <h5>Код формы</h5>
+                <code class="sourceCode">
+                    <span class="special">form</span>
+                </code>
+            </div>
+        </div>
 
-<hr/>
-<h4>Альтернативные названия полей, подписи под полями и <abbr title="Текст в поле, который исчезает при наборе текста">placeholder</abbr></h4>
-<p></p>
-<div class="row-fluid">
-    <div class="span5">{{form2}}</div>
-    <div class="span7">
-        <h5>Код формы</h5>
+        <hr/>
+        <h4>Альтернативные названия полей, подписи под полями и <abbr title="Текст в поле, который исчезает при наборе текста">placeholder</abbr></h4>
+        <p></p>
+        <div class="row-fluid">
+            <div class="span5">{{form2}}</div>
+            <div class="span7">
+                <h5>Код формы</h5>
                 <pre class="sourceCode">
                     [[form2]]
                     &lt;script&gt;
@@ -144,31 +144,31 @@
                         window.leadvertex.form.placeholder('fio','Фамилия Имя Отчество',2);
                     &lt;/script&gt;
                 </pre>
-        <script>
-            /* Альтернативный заголовок поля fio */
-            window.leadvertex.form.label('fio','Как вас зовут?',2);
+                <script>
+                    /* Альтернативный заголовок поля fio */
+                    window.leadvertex.form.label('fio','Как вас зовут?',2);
 
-            /* Пояснение под полем address */
-            window.leadvertex.form.subLabel('address','Пример: ул. Академика Королева',2);
+                    /* Пояснение под полем address */
+                    window.leadvertex.form.subLabel('address','Пример: ул. Академика Королева',2);
 
-            /* Текст кнопки оформления заказа */
-            window.leadvertex.form.buttonText('Заказать сейчас!',2);
+                    /* Текст кнопки оформления заказа */
+                    window.leadvertex.form.buttonText('Заказать сейчас!',2);
 
-            /* Placeholder для поля fio */
-            window.leadvertex.form.placeholder('fio','Фамилия Имя Отчество',2);
-        </script>
-    </div>
-</div>
+                    /* Placeholder для поля fio */
+                    window.leadvertex.form.placeholder('fio','Фамилия Имя Отчество',2);
+                </script>
+            </div>
+        </div>
 
-<hr/>
-<h4 id="example3">Placeholder вместо заголовка поля</h4>
-<p>Не переживайте за кроссбраузерность placeholder'a, ко всем формам автоматически подключается
-    <a href="https://github.com/jamesallardice/Placeholders.js/">Placeholders.js</a>
-</p>
-<div class="row-fluid">
-    <div class="span5">{{form3}}</div>
-    <div class="span7">
-        <h5>Код формы</h5>
+        <hr/>
+        <h4 id="example3">Placeholder вместо заголовка поля</h4>
+        <p>Не переживайте за кроссбраузерность placeholder'a, ко всем формам автоматически подключается
+            <a href="https://github.com/jamesallardice/Placeholders.js/">Placeholders.js</a>
+        </p>
+        <div class="row-fluid">
+            <div class="span5">{{form3}}</div>
+            <div class="span7">
+                <h5>Код формы</h5>
                 <pre class="sourceCode">
                     [[form3]]
                     &lt;script&gt;
@@ -179,23 +179,23 @@
                         window.leadvertex.form.placeholder('fio','Фамилия Имя Отчество',3);
                     &lt;/script&gt;
                 </pre>
-        <script>
-            /* Placeholder во всех полях вместо заголовка */
-            window.leadvertex.form.placeholderOnly(3);
+                <script>
+                    /* Placeholder во всех полях вместо заголовка */
+                    window.leadvertex.form.placeholderOnly(3);
 
-            /* Альтернативный placeholder для поля fio */
-            window.leadvertex.form.placeholder('fio','Фамилия Имя Отчество',3);
-        </script>
-    </div>
-</div>
+                    /* Альтернативный placeholder для поля fio */
+                    window.leadvertex.form.placeholder('fio','Фамилия Имя Отчество',3);
+                </script>
+            </div>
+        </div>
 
-<hr/>
-<h4>Название поля слева</h4>
-<p></p>
-<div class="row-fluid">
-    <div class="span5">{{form4}}</div>
-    <div class="span7">
-        <h5>Код формы</h5>
+        <hr/>
+        <h4>Название поля слева</h4>
+        <p></p>
+        <div class="row-fluid">
+            <div class="span5">{{form4}}</div>
+            <div class="span7">
+                <h5>Код формы</h5>
                 <pre class="sourceCode">
                     [[form4]]
                     &lt;style&gt;
@@ -209,38 +209,38 @@
                         }
                     &lt;/style&gt;
                 </pre>
-        <style>
-            #lv-form4 .lv-row-input .lv-label{
-                display: inline-block;
-                width: 30%;
-            }
-            #lv-form4 .lv-row-input .lv-field{
-                display: inline-block;
-                width: 70%;
-            }
-        </style>
-    </div>
-</div>
-
-<hr/>
-<h4 id="example5">Произвольный блок данных между полями</h4>
-<div class="row-fluid">
-    <div class="span5">
-        {{form5}}
-        <!-- Размещаем блок НАД кнопкой заказа -->
-        <div class="lv-move" data-position="before" data-form="5" data-field="submit">
-            <hr/><b>Цена:</b> {{price}} руб.<br>
-            <b>Доставка:</b> {{delivery_price}} руб.<br>
-            <b>Итого (доставка + НДС):</b> {{total_price}} руб.<hr/>
+                <style>
+                    #lv-form4 .lv-row-input .lv-label{
+                        display: inline-block;
+                        width: 30%;
+                    }
+                    #lv-form4 .lv-row-input .lv-field{
+                        display: inline-block;
+                        width: 70%;
+                    }
+                </style>
+            </div>
         </div>
 
-        <!-- Размещаем блок ПОД полем «телефон» -->
-        <div class="lv-move" data-position="after" data-form="5" data-field="fio">
-            <hr/><b>Акция!</b> Всего {{price}} руб лично для вас!<hr/>
-        </div>
-    </div>
-    <div class="span7">
-        <h5>Код формы</h5>
+        <hr/>
+        <h4 id="example5">Произвольный блок данных между полями</h4>
+        <div class="row-fluid">
+            <div class="span5">
+                {{form5}}
+                <!-- Размещаем блок НАД кнопкой заказа -->
+                <div class="lv-move" data-position="before" data-form="5" data-field="submit">
+                    <hr/><b>Цена:</b> {{price}} руб.<br>
+                    <b>Доставка:</b> {{delivery_price}} руб.<br>
+                    <b>Итого (доставка + НДС):</b> {{total_price}} руб.<hr/>
+                </div>
+
+                <!-- Размещаем блок ПОД полем «телефон» -->
+                <div class="lv-move" data-position="after" data-form="5" data-field="fio">
+                    <hr/><b>Акция!</b> Всего {{price}} руб лично для вас!<hr/>
+                </div>
+            </div>
+            <div class="span7">
+                <h5>Код формы</h5>
                 <pre class="sourceCode">
                     [[form5]]
                     &lt;!-- &#1056;&#1072;&#1079;&#1084;&#1077;&#1097;&#1072;&#1077;&#1084; &#1073;&#1083;&#1086;&#1082; &#1053;&#1040;&#1044; &#1082;&#1085;&#1086;&#1087;&#1082;&#1086;&#1081; &#1079;&#1072;&#1082;&#1072;&#1079;&#1072; --&gt;
@@ -255,26 +255,26 @@
                         &lt;hr/&gt;&lt;b&gt;&#1040;&#1082;&#1094;&#1080;&#1103;!&lt;/b&gt; &#1042;&#1089;&#1077;&#1075;&#1086; [[price]] &#1088;&#1091;&#1073; &#1083;&#1080;&#1095;&#1085;&#1086; &#1076;&#1083;&#1103; &#1074;&#1072;&#1089;!&lt;hr/&gt;
                     &lt;/div&gt;
                 </pre>
-    </div>
-</div>
+            </div>
+        </div>
 
-<hr/>
-<h4>Поля в 2 колонки</h4>
-<p></p>
-<div class="row-fluid">
-    <div class="span5">
-        {{form6}}
-        <style>
-            #lv-form6 .lv-row {
-                display: inline-block;
-                width: 46%;
-                margin: 0 2%;
-                vertical-align: top;
-            }
-        </style>
-    </div>
-    <div class="span7">
-        <h5 id="goto">Код формы</h5>
+        <hr/>
+        <h4>Поля в 2 колонки</h4>
+        <p></p>
+        <div class="row-fluid">
+            <div class="span5">
+                {{form6}}
+                <style>
+                    #lv-form6 .lv-row {
+                        display: inline-block;
+                        width: 46%;
+                        margin: 0 2%;
+                        vertical-align: top;
+                    }
+                </style>
+            </div>
+            <div class="span7">
+                <h5 id="goto">Код формы</h5>
                 <pre class="sourceCode">
                     [[form6]]
                     &lt;style&gt;
@@ -286,54 +286,54 @@
                         }
                     &lt;/style&gt;
                 </pre>
-    </div>
-</div>
+            </div>
+        </div>
 
 
-<hr/>
-<h4 id="example7">Сообщения об ошибках во всплывающем сообщении</h4>
-<div class="row-fluid">
-    <div class="span5">{{form7}}</div>
-    <div class="span7">
-        <h5>Код формы</h5>
+        <hr/>
+        <h4 id="example7">Сообщения об ошибках во всплывающем сообщении</h4>
+        <div class="row-fluid">
+            <div class="span5">{{form7}}</div>
+            <div class="span7">
+                <h5>Код формы</h5>
                 <pre class="sourceCode">
                     [[form7]]
                     &lt;script&gt;window.leadvertex.form.validationByAlert(7);&lt;/script&gt;
                 </pre>
-        <script>window.leadvertex.form.validationByAlert(7);</script>
-    </div>
-</div>
+                <script>window.leadvertex.form.validationByAlert(7);</script>
+            </div>
+        </div>
 
-<hr/>
-<h4 id="example8">Форма во всплывающем окне</h4>
-<p>
-    Используется виджет <a href="http://jqueryui.com/dialog/">Dialog jQuery UI</a>. Скопируйте код, указав в переменной <code>formNumber</code> номер формы, и допишите к
-    кнопке/ссылке, которая будет открывать форму класс <code>lv-popup-form</code>. Например,
-<pre class="sourceCode">&lt;button class=&quot;lv-popup-form&quot;&gt;&#1047;&#1072;&#1082;&#1072;&#1079;&#1072;&#1090;&#1100; &#1089;&#1077;&#1081;&#1095;&#1072;&#1089;!!!&lt;/button&gt;</pre>
-</p>
-<hr/>
-<div class="row-fluid">
-    <div class="span5">
-        <button class="btn btn-large lv-popup-form">Заказать сейчас!!!</button>
-        {{form8}}
-        <script src="http://yandex.st/jquery-ui/1.10.4/jquery-ui.js"></script>
-        <link rel="stylesheet" href="http://yandex.st/jquery-ui/1.10.4/themes/base/jquery-ui.min.css"/>
-        <script>
-            var formNumber = 8;
-            window.leadvertex.form.placeholderOnly(formNumber);
-            $(document).ready(function(){
-                $('#lv-form'+formNumber).dialog({
-                    autoOpen: false,
-                    title: 'Оформление заказа',
-                    width: '450',
-                    modal: true
-                });
-                $('.lv-popup-form').click(function(){$('#lv-form'+formNumber).dialog('open')});
-            });
-        </script>
-    </div>
-    <div class="span7">
-        <h5>Код формы</h5>
+        <hr/>
+        <h4 id="example8">Форма во всплывающем окне</h4>
+        <p>
+            Используется виджет <a href="http://jqueryui.com/dialog/">Dialog jQuery UI</a>. Скопируйте код, указав в переменной <code>formNumber</code> номер формы, и допишите к
+            кнопке/ссылке, которая будет открывать форму класс <code>lv-popup-form</code>. Например,
+            <pre class="sourceCode">&lt;button class=&quot;lv-popup-form&quot;&gt;&#1047;&#1072;&#1082;&#1072;&#1079;&#1072;&#1090;&#1100; &#1089;&#1077;&#1081;&#1095;&#1072;&#1089;!!!&lt;/button&gt;</pre>
+        </p>
+        <hr/>
+        <div class="row-fluid">
+            <div class="span5">
+                <button class="btn btn-large lv-popup-form">Заказать сейчас!!!</button>
+                {{form8}}
+                <script src="http://yandex.st/jquery-ui/1.10.4/jquery-ui.js"></script>
+                <link rel="stylesheet" href="http://yandex.st/jquery-ui/1.10.4/themes/base/jquery-ui.min.css"/>
+                <script>
+                    var formNumber = 8;
+                    window.leadvertex.form.placeholderOnly(formNumber);
+                    $(document).ready(function(){
+                        $('#lv-form'+formNumber).dialog({
+                            autoOpen: false,
+                            title: 'Оформление заказа',
+                            width: '450',
+                            modal: true
+                        });
+                        $('.lv-popup-form').click(function(){$('#lv-form'+formNumber).dialog('open')});
+                    });
+                </script>
+            </div>
+            <div class="span7">
+                <h5>Код формы</h5>
                 <pre class="sourceCode">
                     [[form8]]
                     &lt;script src=&quot;http://yandex.st/jquery-ui/1.10.4/jquery-ui.js&quot;&gt;&lt;/script&gt;
@@ -352,8 +352,8 @@
                         });
                     &lt;/script&gt;
                 </pre>
-    </div>
-</div>
+            </div>
+        </div>
 
-</fieldset>
+    </fieldset>
 </div>

@@ -1,0 +1,85 @@
+{{page="Демонстрация"}}
+{{active_demo="active"}}
+<div>
+    <h1>Форма заказа с товарами</h1>
+    <br>
+    <p>
+        Форма заказа тесно связана с настройками склада, поэтому для того, чтобы в полной мере оценить ее возможности и функционал
+        вам нужно либо перейти на <a href="http://demo-1.leadvertex.ru/demo.html">наш демо-лендинг</a>, либо настроить склад у себя
+        по следующей инструкции:
+
+    </p>
+
+    <p>
+        Перейдите в «Склад - Список товаров - Добавить новый»
+    </p>
+
+    <ul>
+        <li>
+            Добавьте на склад товар с алиасом «<b>coffee</b>». Укажите цены за 1, 2 и 5 штук. Поставьте галочку «Вести учет остатков этого товара»
+        </li>
+        <li>
+            Добавьте на склад товар с алиасом «<b>braslet</b>». Укажите цены за 1, 2 и 5 штук. Поставьте галочку «Вести учет остатков этого товара»
+        </li>
+        <li>
+            Добавьте на склад товар с алиасом «<b>watch</b>», названием «Часы», и укажите цену только за единицу.
+        </li>
+        <li>
+            Добавьте на склад товар с алиасом «<b>pochta</b>», названием «Почта», и укажите цену только за единицу. Уберите галочку «Вести учет остатков этого товара»
+        </li>
+        <li>
+            Добавьте на склад товар с алиасом «<b>courier</b>», названием «Курьер»,  и укажите цену только за единицу. Уберите галочку «Вести учет остатков этого товара»
+        </li>
+    </ul>
+
+    <p>
+        После этого форма заказа внизу этой страницы будет работать корректно
+    </p>
+
+
+    <h2>Форма заказа товара «coffee»</h2>
+    <div class="row">
+        <div class="span5">
+            {{form1Begin class="lv-order-form lv-order-form-css" alias="coffee, pochta" id="lv-form" action="/upsell.html"}}
+            <div class="lv-row">
+                {{form1Label for="fio" label="ФИО"}}
+                {{form1Field name="fio" class="lv-input-fio" type="text" placeholder="ФИО" validator="~^.+$~"}}
+                {{form1Error name="fio" text="Необходимо заполнить поле «ФИО»." style="color:red;"}}
+            </div>
+            <div class="lv-row">
+                {{form1Label for="phone" label="Телефон"}}
+                {{form1Field name="phone" type="text" placeholder="Телефон *" required="1" validator="+7(999)999-99-99"}}
+                {{form1Error name="phone" text="Необходимо заполнить поле «Телефон»." style="color:red;"}}
+            </div>
+            <div class="lv-row">
+                {{form1Label for="comment" label="Комментарий"}}
+                {{form1Field name="comment" type="textarea" placeholder="Комментарий" validator="~^.+$~"}}
+                {{form1Error name="phone" text="Необходимо заполнить поле «Комментарий»." style="color:red;"}}
+            </div>
+            <div class="lv-row">
+                <div>Количество</div>
+                {{good-quantity alias="coffee" form="1"}}
+            </div>
+            <div class="lv-row">
+                <div>Способ доставки</div>
+                {{good-select alias="pochta,courier" form="1"}}
+            </div>
+            <div class="lv-form-submit">
+                <input class="lv-order-button" type="submit" name="yt0" value="Оформить заказ">
+            </div>
+            {{form1End}}
+        </div>
+        <div class="span7">
+            <ul>
+                <li>1 {{good-unity alias="coffee"}} coffee стоит {{good-price alias="coffee"}} {{currency}}</li>
+                <li>2 {{good-unity alias="coffee"}} coffee стоят {{good-price alias="coffee" for="2"}} {{currency}}</li>
+                <li>4 {{good-unity alias="coffee"}} coffee стоят {{good-price alias="coffee" for="4"}} {{currency}} <i>(рассчиталось автоматически исходя из цены за 2 {{good-unity alias="coffee"}})</i></li>
+                <li>5 {{good-unity alias="coffee"}} coffee стоят {{good-price alias="coffee" for="5"}} {{currency}}</li>
+            </ul>
+            <hr>
+            {{good-button class="btn" form="1" alias="braslet" add="Добавить к заказу браслет" remove="Убрать браслет" add-class="btn-success"}}
+            <hr>
+            <h4>Итого: {{good-price-total form="1"}} {{currency}}</h4>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.451;
+  const VERSION = 3.5;
 
   protected $scripts = array();
   protected $config = array();
@@ -11,9 +11,9 @@ class EmulatorRenderer extends LvBaseRenderer {
 
   private $_landing = true;
 
-  public function __construct($themePath)
+  public function __construct($themePath, $page)
   {
-    parent::__construct($themePath);
+    parent::__construct($themePath, $page);
     if (file_exists($this->themePath.'/config.xml')) {
       $this->_xml = simplexml_load_file($this->themePath.'/config.xml');
     } else {
@@ -39,6 +39,117 @@ class EmulatorRenderer extends LvBaseRenderer {
     }
   }
 
+  protected function renderAttributes($attributes)
+  {
+    return self::renderAttrs($attributes);
+  }
+  private static function renderAttrs($htmlOptions, $renderSpecialAttributesValue = true)
+  {
+    static $specialAttributes=array(
+      'async'=>1,
+      'autofocus'=>1,
+      'autoplay'=>1,
+      'checked'=>1,
+      'controls'=>1,
+      'declare'=>1,
+      'default'=>1,
+      'defer'=>1,
+      'disabled'=>1,
+      'formnovalidate'=>1,
+      'hidden'=>1,
+      'ismap'=>1,
+      'loop'=>1,
+      'multiple'=>1,
+      'muted'=>1,
+      'nohref'=>1,
+      'noresize'=>1,
+      'novalidate'=>1,
+      'open'=>1,
+      'readonly'=>1,
+      'required'=>1,
+      'reversed'=>1,
+      'scoped'=>1,
+      'seamless'=>1,
+      'selected'=>1,
+      'typemustmatch'=>1,
+    );
+
+    if($htmlOptions===array())
+      return '';
+
+    $html='';
+    if(isset($htmlOptions['encode']))
+    {
+      $raw=!$htmlOptions['encode'];
+      unset($htmlOptions['encode']);
+    }
+    else
+      $raw=false;
+
+    foreach($htmlOptions as $name=>$value)
+    {
+      if(isset($specialAttributes[$name]))
+      {
+        if($value)
+        {
+          $html .= ' ' . $name;
+          if($renderSpecialAttributesValue)
+            $html .= '="' . $name . '"';
+        }
+      }
+      elseif($value!==null)
+        $html .= ' ' . $name . '="' . ($raw ? $value : $value) . '"';
+    }
+
+    return $html;
+  }
+
+  protected function getGoods()
+  {
+    $xmlParams = $this->_xml->goods->good;
+    /** @var $xmlParams [] SimpleXMLElement */
+    $goods = [];
+    foreach ($xmlParams as $xmlParam) {
+      $good = new Good();
+      $good->alias = (string)$xmlParam['id'];
+      $good->unity = (string)$xmlParam['unity'];
+      $good->price = (string)$xmlParam['price'];
+      $good->name = (string)$xmlParam['name'];
+      $goods[] = $good;
+    }
+    return $goods;
+  }
+  protected function getGoodPrices($price)
+  {
+    $lines = explode(',', $price);
+
+    $prices = [];
+    foreach ($lines as $line) {
+      $line = trim($line);
+      $matches = [];
+      preg_match('~^(\d+):(\d+)$~',$line,$matches);
+      $prices[$matches[1]] = $matches[2];
+    }
+
+    return $prices;
+  }
+  protected function getGoodPrice($good, $quantity)
+  {
+    $prices = $this->getGoodPrices($good->price);
+    return (isset($prices[$quantity])) ? $prices[$quantity] : 0;
+  }
+  protected function getGoodUnity($alias)
+  {
+    $goods = $this->getGoods();
+    $goods = ArrayHelper::index($goods,'alias');
+    if (isset($goods[$alias])) {
+      return $goods[$alias]->unity;
+    } else return '';
+  }
+  protected function getUpdateFormCookie()
+  {
+    return (isset($_COOKIE['orderUpdateTime']) && !empty($_COOKIE['orderUpdateTime'])) ? $_COOKIE['orderUpdateTime'] : null;
+  }
   protected function registerJQuery()
   {
     $this->registerFile('/assets/jquery-1.9.1.js',true);
@@ -214,6 +325,144 @@ class EmulatorRenderer extends LvBaseRenderer {
     $html.='<div class="lv-form-submit"><input class="lv-order-button" type="submit" name="yt0" value="'.$buttonText.'"></div>';
     $html.= '</form>';
     return $html;
+  }
+  protected function renderForms()
+  {
+    $this->getFormsData();
+
+    //скрываем форму уточнения заказа, если upsell_hide=1
+    if (isset($this->formCodes['Update']) && $this->getUpdateFormCookie() === null) {
+      $begin = key($this->formCodes['Update']);
+      $string = $this->getStringBetweenTags($begin, '{{formUpdateEnd}}', $this->html);
+      $this->html = $this->strReplaceOnce($begin . $string . '{{formUpdateEnd}}', '', $this->html);
+      unset($this->formCodes['Update']);
+    }
+
+    foreach ($this->formCodes as $formID => $form) {
+      foreach ($form as $code => $options) {
+        $fields = $options['fields'];
+        $options['id'] = (isset($options['id'])) ? $options['id'] : 'lv-formLanding' . $formID;
+        unset($options['fields']);
+        unset($options['tag']);
+        $alias = null;
+        if (isset($options['alias'])) {
+          $alias = $options['alias'];
+          unset($options['alias']);
+        }
+
+        $formAction = $options['action'];
+        unset($options['action']);
+
+        $validationByAlert = $options['validationByAlert'];
+        unset($options['validationByAlert']);
+
+        @$options['class'] .= ' lv2-form lv2-form' . $formID;
+        if ($validationByAlert == 1) {
+          $options['class'] .= ' lv2-form-validation-by-alert';
+        }
+
+        $options = $this->renderAttributes($options);
+        $formBegin = '<form method="post" action="'.$formAction.'" ' . $options . '>';
+        $this->html = str_replace($code, $formBegin, $this->html);
+
+        foreach ($fields as $fieldCode => $fieldsOptions) {
+          $tag = $fieldsOptions['tag'];
+          unset($fieldsOptions['tag']);
+          switch ($tag) {
+            case 'label':
+              $for = $fieldsOptions['for'];
+              $labelText = $fieldsOptions['label'];
+              unset($fieldsOptions['label']);
+              $fieldsOptions = $this->renderAttributes($fieldsOptions);
+              $label = '<label '.$fieldsOptions.'>'.$labelText.'</label>';
+              $this->html = str_replace($fieldCode,$label,$this->html);
+              break;
+            case 'field':
+              $type = $fieldsOptions['type'];
+              $name = $fieldsOptions['name'];
+              unset($fieldsOptions['type']);
+              unset($fieldsOptions['name']);
+              switch ($type) {
+                case 'text':
+                  $fieldsOptions = $this->renderAttributes($fieldsOptions);
+                  $textField = '<input type="'.$type.'" name="'.$name.'" '.$fieldsOptions.'/>';
+                  $this->html = str_replace($fieldCode,$textField,$this->html);
+                  break;
+                case 'textarea':
+                  $fieldsOptions = $this->renderAttributes($fieldsOptions);
+                  $textField = '<textarea name="'.$name.'" '.$fieldsOptions.'></textarea>';
+                  $this->html = str_replace($fieldCode,$textField,$this->html);
+                  break;
+                case 'select':
+                  $data = $fieldsOptions['options'];
+                  unset($fieldsOptions['options']);
+                  $fieldsOptions = $this->renderAttributes($fieldsOptions);
+                  $select = '<select name="'.$name.'" '.$fieldsOptions.'/>';
+                  foreach ($data as $option) {
+                    $select .= '<option>' . $option . '</option>';
+                  }
+                  $select .= '</select>';
+                  $this->html = str_replace($fieldCode,$select,$this->html);
+                  break;
+                case 'checkbox':
+                  $fieldsOptions = $this->renderAttributes($fieldsOptions);
+                  $checkbox ='<input name="'.$name.'" type="'.$type.'" '.$fieldsOptions.'>';
+                  $this->html = str_replace($fieldCode,$checkbox,$this->html);
+                  break;
+                case 'mask':
+                  $pattern = $fieldsOptions['pattern'];
+                  unset($fieldsOptions['pattern']);
+//                  $mask = Yii::app()->controller->widget('CMaskedTextField', array(
+//                      'model' => $this->forms[$formID],
+//                      'attribute' => $name,
+//                      'mask' => $pattern,
+//                      'placeholder' => '*',
+//                      'htmlOptions' => $fieldsOptions,
+//                  ),true);
+//                  $this->html = str_replace($fieldCode,$mask,$this->html);
+                  break;
+              }
+              break;
+            case 'error':
+              $name = $fieldsOptions['name'];
+              $text = $fieldsOptions['text'];
+              unset($fieldsOptions['name']);
+              unset($fieldsOptions['text']);
+              @$fieldsOptions['class'] .= ' lv2-form-error';
+              $fieldsOptions = $this->renderAttributes($fieldsOptions);
+              $error = '<div name="'.$name.'" '.$fieldsOptions.' >'.$text.'</div>';
+              $this->html = str_replace($fieldCode,$error,$this->html);
+              break;
+          }
+        }
+
+        $formEndCode = '</form>';
+        $formEndCode = '<input type="hidden" value="'.$formID.'" name="formID" id="formID">' . $formEndCode;
+        $formEndCode = '<input type="hidden" value="'.$formAction.'" name="FormLanding[redirect]" id="FormLanding_redirect">' . $formEndCode;
+        $id = 'lv-formLanding' . $formID . '-goods';
+        if ($alias !== null) {
+          $goodValue = [];
+          $totalPrice = 0;
+          $goods = ArrayHelper::index($this->getGoods(), 'alias');
+          $alias = explode(',', $alias);
+          foreach ($alias as $a) {
+            $a = trim($a);
+            if (isset($goods[$a])) {
+              $goodValue[$a] = ['quantity' => 1,'sum' =>  $this->getGoodPrice($goods[$a], 1)];
+              $totalPrice += $goodValue[$a]['sum'];
+            }
+          }
+          if (count($goodValue)) {
+            $formEndCode = '<input class="lv-input-goods" id=\''.$id.'\' type="hidden" value=\''.json_encode($goodValue).'\' name="FormLanding[goods]">' . $formEndCode;
+            $this->goodTotalPrices[$formID] = $totalPrice;
+          }
+        } else {
+          $formEndCode = '<input class="lv-input-goods" id="'.$id.'" type="hidden" name="FormLanding[goods]">' . $formEndCode;
+        }
+
+        $this->html = str_replace('{{form'.$formID.'End}}',$formEndCode,$this->html);
+      }
+    }
   }
 
   protected function getConfigParam($param)
@@ -510,4 +759,16 @@ class EmulatorRenderer extends LvBaseRenderer {
     echo $this->renderPartial($html, $data);
   }
 
-} 
+}
+
+class Good
+{
+  public $alias;
+  public $unity;
+  public $price;
+  public $name;
+
+  public function __construct()
+  {
+  }
+}

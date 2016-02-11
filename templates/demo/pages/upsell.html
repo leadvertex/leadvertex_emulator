@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{{page="Заказ оформлен"}}
+{{no_layout}}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="//yandex.st/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        if (!window.leadvertex) window.leadvertex = {};
+        /*]]>*/
+    </script>
+    <title>Спасибо за ваш заказ</title>
+    <link rel="stylesheet" href="//yandex.st/bootstrap/2.3.2/css/bootstrap.min.css"/>
+    <style>
+        body {
+            background: #d5d5d5;
+            color: white;
+            font-family: sans-serif;
+        }
+        .thanks {
+            background: green;
+            width: 60%;
+            margin: 50px auto;
+            padding: 50px 80px;
+            text-align: center;
+            border: 5px solid #ffffff;
+        }
+        h1 {
+            padding-top: 0;
+            margin-top: 0;
+            font-size: 50px;
+        }
+        p.lead {
+            font-size: 25px;
+            margin-bottom: 0;
+        }
+        ul>li {
+            text-align: left;
+        }
+        ul>li a {
+            color: white
+        }
+        hr {
+            padding: 0;
+            margin: 20px 0;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function(){
+            var $thanks = $('div.thanks');
+            var margin = (parseInt($('body').height()) - parseInt($thanks.outerHeight()))/2;
+            if (margin>0) $thanks.css('margin-top',margin+'px');
+        });
+    </script>
+</head>
+<body>
+<div class="thanks">
+    <h1>Заказ #{{order_number}}</h1>
+    <br>
+    <p class="lead">
+        Спасибо. Наши операторы свяжутся с вами в ближайшее время для уточнения подробностей вашего заказа
+    </p>
+
+    {{formUpdateBegin action="/clarify.html"}}
+    {{formUpdateEnd}}
+    [[formUpdate:]]
+    <hr>
+    <h3>Вы можете добавить «ЧАСЫ» к заказу в 1 клик!</h3>
+    {{good-button alias="watch" add="Добавить к заказу «ЧАСЫ»" remove="Удалить" add-class="btn btn-info btn-large" remove-class="hide" form="update" submit="1"}}
+    <br>
+    [[:formUpdate]]
+</div>
+</body>
+</html>

@@ -6,509 +6,535 @@
         <ul class="nav nav-tabs nav-stacked">
             <li><a href="#system">Системные</a></li>
             <li><a href="#variables">Настраиваемые переменные</a></li>
-            <li><a href="#prices">Цены</a></li>
-            <li><a href="#datetime">Дата и время</a></li>
-            <li><a href="#geo">География</a></li>
+            <li><a href="#goods">Товары и цены</a></li>
             <li><a href="#forms">Форма заказа</a></li>
             <li><a href="#form-update">Форма уточнения заказа</a></li>
+            <li><a href="#datetime">Дата и время</a></li>
+            <li><a href="#geo">География</a></li>
             <li><a href="#js">JavaScript, CSS и сторонние библиотеки</a></li>
             <li><a href="#faq">FAQ</a></li>
         </ul>
     </div>
     <div class="span9">
 
-        <div class="alert alert-info">
-            Эта страница содержит техническую информацию для верстальщиков. Здесь описаны технические принципы и особенности работы нашего шаблонизатора
-        </div>
-        <div class="alert">
-            Рекомендуем ознакомиться со страницей <a href="/landing.html">перенос лендинга</a> для понимания общих принципов работы. Также рекомендуем
-            ознакомиться с кодом этого демо-лендинга - в нем используются все возможности шаблонизатора.
-            <br/>
-            Не забывайте, что у нас есть <a href="https://github.com/XAKEPEHOK/leadvertex_emulator/">эмулятор нашего шаблонизатора</a>
-        </div>
-        <h2>Возможности шаблонизатора</h2>
-        <fieldset id="system">
-            <legend>Системные</legend>
-            <div class="alert alert-info">При создании собственных шаблонов обязательно учитывайте следующие особенности:</div>
-            <p>
-                <b>Все подключаемые ресурсы (стили, скрипты, изображения) должны находиться в папке <code>files/</code></b><br>
-                <code><span class="special">files</span></code> - возвращает путь к папке «files» шаблона. Имейте ввиду, что
-                простое прописывание в html-коде пути вида <code>&lt;img src=&quot;files/image.jpg&quot; /&gt;</code> приведет
-                к недоступности подключаемого ресурса. Необходимо использовать следующую конструкцию
-                <code>&lt;img src=&quot;<span class="special">files</span>/image.jpg&quot; /&gt;</code>
-            </p>
+    <div class="alert alert-info">
+        Эта страница содержит техническую информацию для верстальщиков. Здесь описаны технические принципы и особенности работы нашего шаблонизатора
+    </div>
+    <div class="alert">
+        Рекомендуем ознакомиться со страницей <a href="/landing.html">перенос лендинга</a> для понимания общих принципов работы. Также рекомендуем
+        ознакомиться с кодом этого демо-лендинга - в нем используются все возможности шаблонизатора.
+        <br/>
+        Не забывайте, что у нас есть <a href="https://github.com/XAKEPEHOK/leadvertex_emulator/">эмулятор нашего шаблонизатора</a>
+    </div>
+    <h2>Возможности шаблонизатора</h2>
+    <fieldset id="system">
+        <legend>Системные</legend>
+        <div class="alert alert-info">При создании собственных шаблонов обязательно учитывайте следующие особенности:</div>
+        <p>
+            <b>Все подключаемые ресурсы (стили, скрипты, изображения) должны находиться в папке <code>files/</code></b><br>
+            <code><span class="special">files</span></code> - возвращает путь к папке «files» шаблона. Имейте ввиду, что
+            простое прописывание в html-коде пути вида <code>&lt;img src=&quot;files/image.jpg&quot; /&gt;</code> приведет
+            к недоступности подключаемого ресурса. Необходимо использовать следующую конструкцию
+            <code>&lt;img src=&quot;<span class="special">files</span>/image.jpg&quot; /&gt;</code>
+        </p>
 
-            <p>
-                <code id="jquery"><span class="special">jquery</span></code> - подключает jQuery 1.9.1. Можете не использовать его если
-                вам нужна альтернативная версия jQuery. В любом случае, для более быстрой загрузки лендинга рекомендуем загружать jQuery
-                c CDN. Например, отсюда <a href="http://api.yandex.ru/jslibs/libs.xml#jquery">http://api.yandex.ru/jslibs/libs.xml#jquery</a>
-            </p>
+        <p>
+            <code id="jquery"><span class="special">jquery</span></code> - подключает jQuery 1.9.1. Можете не использовать его если
+            вам нужна альтернативная версия jQuery. В любом случае, для более быстрой загрузки лендинга рекомендуем загружать jQuery
+            c CDN. Например, отсюда <a href="http://api.yandex.ru/jslibs/libs.xml#jquery">http://api.yandex.ru/jslibs/libs.xml#jquery</a>
+        </p>
 
-            <p>
-                Ваши шаблоны должны быть в кодировке <b>UTF-8</b>
-            </p>
-            <p>
-                <code><span class="special">domain</span></code> - возвращает текущий домен. Текущее значение: «{{domain}}»
-            </p>
-            <p>
-                <code><span class="special">upsell</span></code> - возвращает параметры url для <a target="_blank"
-                                                                                                   href="http://blog.leadvertex.ru/otvechaem-na-voprosy/557-prodazha-dopolnitelnyx-tovarov-na-stranice-uspeshnogo-zakaza/">апселов</a>.
-                Текущее значение: <pre>{{upsell}}</pre>
+        <p>
+            Ваши шаблоны должны быть в кодировке <b>UTF-8</b>
+        </p>
+        <p>
+            <code><span class="special">domain</span></code> - возвращает текущий домен. Текущее значение: «{{domain}}»
+        </p>
+        <p>
+            <code><span class="special">webmaster</span></code> - возвращает ID вебмастера. Текущее значение: «{{webmaster}}».
             Используется в тех случаях, когда на странице успешного заказа предлагается посмотреть другие офферы. В таком случае,
             вы можете сделать ссылки на эти офферы партнерскими, и лиды, совершенные на них будут засчитаны от веб-мастера, который привел
-            текущего покупателя, в метках будет указано то, что это upsell, а также форма заказа на upsell-оффере уже будет заполнена
-            ранее введенными данными. Пример того, что может возвращать параметр <code><span class="special">upsell</span></code>:<br/>
-            <code>?f=2&utm_source=offer&utm_medium=upsell&fio=Иванов Иван Иванович&phone=+79871234567</code>
-            </p>
-            <p>
-                <code><span class="special">webmaster</span></code> - возвращает ID вебмастера. Текущее значение: «{{webmaster}}».
-                Используется в тех случаях, когда на странице успешного заказа предлагается посмотреть другие офферы. В таком случае,
-                вы можете сделать ссылки на эти офферы партнерскими, и лиды, совершенные на них будут засчитаны от веб-мастера, который привел
-                текущего покупателя. Например, ссылка на другой оффер может быть вида http://demo-1.leadvertex.info/?f={{webmaster}}
-            </p>
-            <hr/>
-            <p><code><span class="special">utm_source</span></code> - возвращает метку utm_source. Текущее значение: «{{utm_source}}»</p>
-            <p><code><span class="special">utm_medium</span></code> - возвращает метку utm_medium. Текущее значение: «{{utm_medium}}»</p>
-            <p><code><span class="special">utm_term</span></code> - возвращает метку utm_term. Текущее значение: «{{utm_term}}»</p>
-            <p><code><span class="special">utm_content</span></code> - возвращает метку utm_content. Текущее значение: «{{utm_content}}»</p>
-            <p><code><span class="special">utm_campaign</span></code> - возвращает метку utm_campaign. Текущее значение: «{{utm_campaign}}»</p>
-            <hr/>
-            <p>
-                <code><span class="special">order_number</span></code> - возвращает номер текущего заказа пользователя. Текущее значение: «{{order_number}}»
-            </p>
-            <p>
-                <code><span class="special">order_total</span></code> - возвращает итоговую стоимость оформленного заказа пользователя. Текущее значение: «{{order_total}}»
-            </p>
-            <hr/>
-            <p>
-                <code><span class="special">content</span></code> - В корне папки каждого домена есть главный файл layout.html -
-                это шаблон основной страницы, в которую обычно включается шапка и подвал, а контент прочих страниц загружается
-                из
-                отдельных файлов. Тег <span class="special">content</span> включает в содержимое главного файла layout.html
-                содержимое файла,
-                находящегося в папке pages. Т.е. запрос вида {{domain}}/page.html выведет внутри главного файла layout.html
-                содержимое файла
-                pages/page.html
-            </p>
-            <p>
-                <code><span class="special">no_layout</span></code> - если этот тег прописан в коде страницы из папки <code>pages/</code>,
-                то содержимое этой страницы будет отображено само по себе, т.е. без использования главного файла index.html
-                <br/>
-                Пример можете посмотреть на <a href="/success.html">странице успешного заказа</a>
-            </p>
-
-        </fieldset>
-        <fieldset id="variables">
-            <legend>Настраиваемые переменные</legend>
-            <p>
-                <code><span class="special">title</span></code> - возвращает заголовок, указанный в конфигурации проекта.
-                Текущее значение: «{{title}}»
-            </p>
-
-            <p>
-                <code><span class="special">meta_description</span></code> - возвращает мета-описание страницы, указанное в
-                конфигурации проекта.
-                Текущее значение: «{{meta_description}}»
-            </p>
-
-            <p>
-                <code><span class="special">meta_keywords</span></code> - возвращает мета-ключевые слова страницы, указаные в
-                конфигурации проекта.
-                Текущее значение: «{{meta_keywords}}»
-            </p>
-
-            <p>
-                <code><span class="special">email</span></code> - возвращает email администратора, указаный в конфигурации
-                проекта.
-                Текущее значение: «{{email}}». Может принимать следующие параметры:
-
-            <ul>
-                <li><code><span class="special">email|protected</span></code> - возвращает email-адрес, защищенный от
-                    спам-ботов.
-                    Выглядит на странице как обычно: «{{email|protected}}», но посмотрите код страницы
-                <li><code><span class="special">email="email@example.com"</span></code> - возвращает значение:
-                    «{{email="email@example.com"}}»
-                </li>
-                <li><code><span class="special">email="email@example.com"|protected"</span></code> - возвращает произвольный
-                    email,
-                    защищенный от спама: «{{email="email@example.com"|protected}}»
-                </li>
-            </ul>
-            </p>
-            <p>
-                <code><span class="special">phone</span></code> - возвращает телефон, указаный в конфигурации проекта.
-                Текущее значение: «{{phone}}»
-            </p>
-
-            <div class="alert alert-info">
-                Вы можете переопределять переменные из файлов шаблонов. Например, вы хотите изменить <code><span class="special">title</span></code>
-                для страницы. Для этого в начале страницы пропишите <code><span class="special">title="Ваш текст"</span></code>
-                <br/>
-                Рекомендуем посмотреть код этого демо-лендинга. Он наглядно это иллюстрирует на примере заголовков страниц и активных пунктов меню
-            </div>
-        </fieldset>
-
-        <fieldset id="prices">
-            <legend>Цены</legend>
-            <p>
-                <code><span class="special">price</span></code> - возвращает стоимость товара, указанную в конфигурации проекта.
-                Текущее значение: «{{price}}». Возможны варианты: <code><span class="special">price+500</span></code>,
-                <code><span class="special">price*2</span></code>, <code><span class="special">price-500</span></code>,
-                <code><span class="special">price/2</span></code>,<code><span class="special">price+30%</span></code>
-            </p>
-            <p>
-                <code><span class="special">price_old</span></code> - возвращает старую стоимость товара, указанную в
-                конфигурации проекта. Текущее значение: «{{price_old}}». Также возможны арифметические операции.
-            </p>
-            <p>
-                <code><span class="special">price for=5</span></code> - возвращает стоимость пяти единиц товара c учетом скидок.
-                Текущее значение: «{{price for=5}}»
-            </p>
-            <p>
-                <code><span class="special">diff_price_sum</span></code> - Возвращает разницу между старой и новой ценой.
-                Текущее значение: «{{diff_price_sum}}»
-            </p>
-            <p>
-                <code><span class="special">diff_price_percent</span></code> - Возвращает разницу между старой и новой ценой в процентах.
-                Текущее значение: «{{diff_price_percent}}»
-            </p>
-
-            <h4>Ценовые опции</h4>
-            <p id="price_options">
-                На тарифах линейки «Професиональный» можно устанавливать <a href="#">ценовые опции</a> в зависимости от выбранных параметров заказа.
-                Например, можно сделать параметр «комплектация» с 3-мя вариантами:
-            </p>
-            <ul>
-                <li><code>Базовая</code> + 0 руб</li>
-                <li><code>Расширенная</code> + 1000 руб</li>
-                <li><code>Топовая</code> + 3500 руб</li>
-            </ul>
-            <p>
-                <code><span class="special">price_multi</span></code> - Возвращает стоимость единицы товара с выбранными ценовыми опциями.
-                Текущее значение: «{{price_multi}}». При смене ценовых опций сумма пересчитывается и обновляется на лендинге автоматически
-            </p>
-            <p>
-                <code><span class="special">price_option additional1="Расширенная"</span></code> - Возвращает стоимость ценовой опции.
-                Текущее значение: «{{price_option additional1="Расширенная"}}». Не изменятся на лендинге. Параметр <code>additional1</code>
-                - название поля формы. Может принимать значения, указанные в списке ниже. Значение параметра - название ценовой опции, указанное в настройках
-                полей формы. Если хотите получить сумму цены товара и его ценовой опции, то выберите <code><span class="special">price additional1="Расширенная"</span></code>,
-                пример значение: {{price additional1="Расширенная"}}
-            </p>
-            <ul>
-                <li>fio</li>
-                <li>country</li>
-                <li>postIndex</li>
-                <li>region</li>
-                <li>city</li>
-                <li>address</li>
-                <li>house</li>
-                <li>flat</li>
-                <li>phone</li>
-                <li>email</li>
-                <li>quantity</li>
-                <li>comment</li>
-                <li>checkboxPersonalData</li>
-                <li>checkboxAgreeTerms</li>
-                <li>additional1</li>
-                <li>additional2</li>
-                <li>additional3</li>
-                <li>additional4</li>
-            </ul>
-
-            <h4>Цена доставки</h4>
-            <p id="delivery_price">
-                Цена доставки может зависеть от количества товаров. Например, в настройках может быть установлен  параметр
-                «Применять цену доставки к каждому товару» - в таком случае, цена доставки будет умножаться на количество товаров.
-                В связи с этим есть несколько особенностей использования данного тега:
-            </p>
-            <ul>
-                <li>
-                    <code><span class="special">price_delivery</span></code> - возвращает стоимость доставки товара. Текущее значение: «{{price_delivery}}».
-                    <b>Изменяется автоматически</b> при смене количества товара. Использование данного тега целесообразно в форме заказа для того,
-                    чтобы ваш клиент видел сколько и на что он тратит.
-                </li>
-                <li>
-                    <code><span class="special">price_delivery=1</span></code> - возвращает стоимость доставки одной единицы товара.
-                    Текущее значение: «{{price_delivery=1}}». <b>Не изменяется</b> автоматически. Целесообразно использовать например в
-                    описании условий доставки в тексте страницы
-                </li>
-                <li></li>
-            </ul>
-
-
-            <p id="total_price">
-                <code><span class="special">price_total</span></code> - возвращает цена_товара*количество - скидка +доставка.
-                Текущее значение: «{{price_total}}». При смене количества сумма пересчитывается и обновляется автоматически
-            </p>
-
-            <!--Количественные скидки-->
-            <p>
-                В настройках оффера предприниматель может устанавливать скидки на товар, в зависимости от его количества
-            </p>
-            <ul>
-                <li><code><span class="special">quantity_discount_sum</span></code> - возвращает текущую сумму скидки за выбранное количество товара.
-                    Текущее значение: «{{quantity_discount_sum}}». <b>Изменяется автоматически</b> при смене количества товара.
-                </li>
-                <li><code><span class="special">quantity_discount_sum=5</span></code> - возвращает текущую сумму скидки за 5 единиц товара.
-                    Текущее значение: «{{quantity_discount_sum=5}}». <b>Не изменяется</b> автоматически.
-                </li>
-                <li><code><span class="special">quantity_discount_percent</span></code> - возвращает текущую сумму скидки в процентах за выбранное количество товара.
-                    Текущее значение: «{{quantity_discount_percent}}». <b>Изменяется автоматически</b> при смене количества товара.
-                </li>
-                <li><code><span class="special">quantity_discount_percent=5</span></code> - возвращает текущую сумму скидки в процентах за 5 единиц товара.
-                    Текущее значение: «{{quantity_discount_percent=5}}». <b>Не изменяется</b> автоматически.
-                </li>
-            </ul>
-            <p>
-                <code><span class="special">currency</span></code> - возвращает валюту продаваемого товара.
-                Текущее значение: «{{currency}}».
-            </p>
-        </fieldset>
-
-        <fieldset id="datetime">
-            <legend>Дата и время</legend>
-            <p>
-                <code><span class="special">today</span></code> - возвращает текущую дату.
-                Текущее значение: «{{today}}»
-            </p>
-
-            <p>
-                <code><span class="special">year</span></code> - возвращает текущий год.
-                Текущее значение: «{{year}}»
-            </p>
-
-            <p>
-                <code><span class="special">from_to</span></code> - возвращает диапазон дат (по умолчанию за 7 дней), где
-                последний день является текущим.
-                Текущее значение: «{{from_to}}»
-            </p>
-
-            <p>
-                <code><span class="special">from_to=5</span></code> - возвращает диапазон дат за 3 дня (параметр изменяемый).
-                Текущее значение: «{{from_to=5}}»
-            </p>
-
-            <p>
-                <code><span class="special">only_to</span></code> - возвращает текущую дату + 2 дня.
-                Текущее значение: «{{only_to}}»
-            </p>
-
-            <p>
-                <code><span class="special">only_to=5</span></code> - возвращает текущую дату + 5 дней (параметр изменяемый).
-                Текущее значение: «{{only_to=5}}»
-            </p>
-        </fieldset>
-        <fieldset id="geo">
-            <legend>География</legend>
-            <div class="alert alert-info">Если определить географию невозможно, то возвращается «Москва, Московская область»
-            </div>
-            <p>
-                <code><span class="special">geo_city</span></code> - возвращает город пользователя по IP.
-                Текущее значение: «{{geo_city}}»
-            </p>
-
-            <p>
-                <code><span class="special">geo_region</span></code> - возвращает регион пользователя по IP.
-                Текущее значение: «{{geo_region}}»
-            </p>
-
-            <p>
-                <code><span class="special">geo_country</span></code> - возвращает страну пользователя по IP.
-                Текущее значение: «{{geo_country}}»
-            </p>
-
-            <p>
-                <code><span class="special">geo_country_code</span></code> - возвращает ISO-код страны пользователя по IP.
-                Текущее значение: «{{geo_country_code}}»
-            </p>
-
-            <p>О том, как реализовать простейший гео-таргетинг смотрите в <a href="#collapseGeoTargeting">FAQ</a></p>
-
-        </fieldset>
-        <fieldset id="forms">
-            <legend>Форма заказа</legend>
-            <div class="alert alert-info">
-                При отображении формы заказа к ней автоматически подключаются некоторые стили. В большинстве случаев эти стили нужны чтобы не
-                стилизовать форму «с нуля». Однако иногда некоторые из них (например, border и box-sizing: border-box;) могут мешать. Чтобы исключить
-                мешающие стили, подключайте форму <code><span class="special">form|no_css</span></code> или <code><span class="special">form_2|no_css</span></code>
-            </div>
-            <div class="row-fluid">
-                <div class="span6">
-                    <script>window.leadvertex.form.placeholderOnly(1);</script>
-                    <style>#lv-form {width: auto;}</style>
-                    {{form}}
-                </div>
-                <div class="span6">
-                    <br/>
-                    <ul>
-                        <li>Цена:</b> {{price}} руб</li>
-                        <li>Скидка:</b> {{quantity_discount_percent}}%</li>
-                        <li>Скидка при заказе 5 шт:</b> {{quantity_discount_percent=5}}%</li>
-                        <li>Вы экономите:</b> {{quantity_discount_sum}} руб</li>
-                        <li>При заказе 5 шт вы экономите:</b> {{quantity_discount_sum=5}} руб</li>
-                        <li>Доставка:</b> {{delivery_price}} руб</li>
-                        <li>Доставка 5 шт:</b> {{delivery_price=5}} руб</li>
-                        <li>Итого (+ доставка и НДС):</b> {{total_price}} руб</li>
-                    </ul>
-                </div>
-            </div>
+            текущего покупателя. Например, ссылка на другой оффер может быть вида http://demo-1.leadvertex.info/?f={{webmaster}}
+        </p>
+        <hr/>
+        <p>
+            <code><span class="special-if">webmaster=1:</span> ... content ... <span class="special-if">:webmaster=1</span></code> -
+            условный тег отобразит все, что находится между открывающим и закрывающим тегом для вебмастера с ID = 1. Например, вы
+            можете вставлять отдельные счетчики и коды на лендинг только для конкретных веб-мастеров
+        </p>
+        <hr>
+        <p><code><span class="special">utm_source</span></code> - возвращает метку utm_source. Текущее значение: «{{utm_source}}»</p>
+        <p><code><span class="special">utm_medium</span></code> - возвращает метку utm_medium. Текущее значение: «{{utm_medium}}»</p>
+        <p><code><span class="special">utm_term</span></code> - возвращает метку utm_term. Текущее значение: «{{utm_term}}»</p>
+        <p><code><span class="special">utm_content</span></code> - возвращает метку utm_content. Текущее значение: «{{utm_content}}»</p>
+        <p><code><span class="special">utm_campaign</span></code> - возвращает метку utm_campaign. Текущее значение: «{{utm_campaign}}»</p>
+        <hr/>
+        <p>
+            <code><span class="special">order_number</span></code> - возвращает номер текущего заказа пользователя. Текущее значение: «{{order_number}}»
+        </p>
+        <p>
+            <code><span class="special">order_total</span></code> - возвращает итоговую стоимость оформленного заказа пользователя. Текущее значение: «{{order_total}}»
+        </p>
+        <hr/>
+        <p>
+            <code><span class="special">content</span></code> - В корне папки каждого домена есть главный файл layout.html -
+            это шаблон основной страницы, в которую обычно включается шапка и подвал, а контент прочих страниц загружается
+            из
+            отдельных файлов. Тег <span class="special">content</span> включает в содержимое главного файла layout.html
+            содержимое файла,
+            находящегося в папке pages. Т.е. запрос вида {{domain}}/page.html выведет внутри главного файла layout.html
+            содержимое файла
+            pages/page.html
+        </p>
+        <p>
+            <code><span class="special">no_layout</span></code> - если этот тег прописан в коде страницы из папки <code>pages/</code>,
+            то содержимое этой страницы будет отображено само по себе, т.е. без использования главного файла index.html
             <br/>
-            <div class="alert alert-info">
-                На одной странице возможно размещать не более девяти форм заказа используя
-                <code><span class="special">form</span></code>, <code><span class="special">form2</span></code>,
-                <code><span class="special">form3</span></code> ...
-            </div>
-            <ul>
-                <li><a href="/form.html">Примеры разных конфигураций формы заказа</a></li>
-            </ul>
-        </fieldset>
-        <fieldset id="form-update">
-            <legend>Форма уточнения заказа</legend>
-            <p>
-                Форма уточнения заказа используется на странице успешного оформления заказа, и служит для того, чтобы предложить
-                клиентам дополнить данные о себе (например, город, адрес и индекс) или совершать апселы, которые будут добавлены
-                в заказ.
-            </p>
-            <p>
-                <span class="label label-warning">Важно</span> Форма уточнения заказа <b>не может быть выведена на одной странице
-                с формой заказа</b>.
-                Также, форма уточнения заказа выводится только в течение 10 минут после того, как основной заказ уже был совершен.
-                Это сделано для того, чтобы избежать конфликтов у операторов прозвона и клиентов, уточняющих данные заказа. После
-                использования формы уточнения заказа или по истечению 10 минут она исчезнет, и не появится у клиента до тех пор,
-                пока он не сделает новый заказ
-            </p>
-            <p>
-                Для вывода формы уточнения заказа используйте тег <code><span class="special">form_update</span></code>. Пример
-                вывода такой формы вы можете увидеть, если сделаете заказ <a target="_blank" href="http://demo-1.leadvertex.info">здесь</a>,
-                либо включите в настройках полей формы в своём демо оффере какое-либо из уточняющих полей
-            </p>
-            <div class="spoiler">
-                <div class="spoiler-btn">Пример кода: Как лучше вставлять форму уточнения заказа</div>
-                <div class="spoiler-body in">
-                    <p>
-                        Часто возникает необходимость вывести вместе с формой уточнения заказа дополнительный контент, при этом
-                        отображать этот контент нужно только в случае, если сама форма уточнения видима. Для этого просто оберните
-                        дополнительный контент и форму уточнения в любой html-элемент, указав ему id <code>#lv-update</code>
-                    </p>
+            Пример можете посмотреть на <a href="/success.html">странице успешного заказа</a>
+        </p>
+
+    </fieldset>
+    <fieldset id="variables">
+        <legend>Пользовательские переменные</legend>
+        <p>
+            Вы можете определять свои или переопределять существующие переменные из файлов шаблонов. Например, мы рекомендуем
+            в файле <code>layout.html</code> определять несколько переменных, которые будут использованы в других местах в коде лендинга:
+        </p>
                 <pre class="sourceCode">
-                    &lt;div id=&quot;lv-update&quot;&gt;
-                        &lt;p&gt;&#1055;&#1086;&#1084;&#1086;&#1075;&#1080;&#1090;&#1077; &#1085;&#1072;&#1084; &#1091;&#1089;&#1082;&#1086;&#1088;&#1080;&#1090;&#1100; &#1086;&#1090;&#1087;&#1088;&#1072;&#1074;&#1082;&#1091;. &#1059;&#1082;&#1072;&#1078;&#1080;&#1090;&#1077; &#1074;&#1072;&#1096; &#1075;&#1086;&#1088;&#1086;&#1076;, &#1072;&#1076;&#1088;&#1077;&#1089; &#1080; &#1087;&#1086;&#1095;&#1090;&#1086;&#1074;&#1099;&#1081; &#1080;&#1085;&#1076;&#1077;&#1082;&#1089;&lt;/p&gt;
-                        [[form_update]]
-                    &lt;/div&gt;</pre>
-                    <p>
-                        При отсутствии формы уточнения заказа весь блок <code>#lv-update</code> будет скрыт
-                    </p>
-                </div>
-            </div>
-            <br/>
-            <div class="alert alert-info">
-                По аналогии с <a href="#forms">формой заказа</a> при отображении формы уточнения заказа к ней автоматически
-                подключаются некоторые стили. Чтобы исключить мешающие стили, подключайте используйте следующий модификатор
-                <code><span class="special">form_update|no_css</span></code>. Также, доступны методы <code>window.leadvertex.form</code>
-                описанные на странице <a href="/form.html">примерами форм заказа</a>. Единственное отличие - вместо номера формы нужно
-                передавать строку <code>'update'</code>
-            </div>
-        </fieldset>
-        <fieldset id="js">
-            <legend>JavaScript, CSS и сторонние библиотеки</legend>
-            <p>О том, как подключить к проекту jQuery, описано <a href="#jquery">выше</a></p>
+[[currency="руб"]]
+[[price_old="3900"]]
+[[phone="8-800-2000-600"]]
+[[email="mail@example.com"]]</pre>
 
-            <p>
-                Подключать сторонние, популярные библиотеки типа bootstrap и moderniz мы рекомендуем с
-                <a href="http://api.yandex.ru/jslibs/">Яндекс CDN</a> - такой подход поможет вам обеспечить более высокую
-                скорость загрузки страниц, что повысит вашу конверсию и снизит нагрузку на наши сервера
-            </p>
-            <hr/>
-            <div class="alert alert-info">
-                Есть определенные вещи, которые очень часто используются в лендингах. Например, обратный отсчет времени для
-                стимулирования
-                клиента заказать товар/услугу быстрее. Ниже приведены готовые скрипты, которые позволят вам проще подключать
-                часто
-                требуемый функционал. Список будет пополняться.
-            </div>
-            <h5>Обратный отсчет времени</h5>
+        <p>
+            Используя такой подход в файле <code>layout.html</code> в любом месте на любой странице вы сможете использовать
+            объявленные ранее переменные просто вызывая их (<code><span class="special">currency</span></code>,
+            <code><span class="special">price_old</span></code>, <code><span class="special">phone</span></code>,
+            <code><span class="special">email</span></code>) в любом месте на странице
+        </p>
+        <p>
+            При таком подходе вы легко сможете изменить валюту на лендинге и контактные данные отредактировав всего один файл
+        </p>
 
-            <p>
-                <code><span class="special">countdown.js</span></code> - подключает скрипт таймера обратного отсчета.
-                {{countdown.js}}
-            </p>
+    </fieldset>
 
-            <p>
-                Время отсчета таймера задается в секундах в любом месте страницы (или в вашем скрипте). В данном примере: 560
-                секунд
-                <code>
-                    &lt;script&gt;window.leadvertex.seconds = <b>560</b>&lt;/script&gt;
-                </code>
-                <script>window.leadvertex.seconds = 560</script>
-            </p>
-            <p>
-                Далее, прописав классы к нужным элементам их содержимое будет заменяться соответствующими значениями:
+    <fieldset id="goods">
+        <legend>Товары и цены</legend>
+
+        <p id="alias">
+            Информация о товарах задается на складе. Каждый товар на складе имеет свой алиас (техническое название,
+            которое используется в коде лендингов). Например, такой товар как «Зеленый кофе» может иметь алиас «coffee».
+            Алиас для каждого товара вы можете посмотреть в списке товаров на складе
+        </p>
+
+        <h5>Общее</h5>
+
+        <p>
+            <code><span class="special">good-unity alias="alias_tovara"</span></code> - возвращает измерения товара, заданную
+            на складе (например: шт, уп, ед или что-либо другое)
+        </p>
+
+        <h5 id="price">Цена товара</h5>
+
+        <p>
+            Цена товара формируется исходя из цены, указанной на складе. Для каждого товара может быть задано несколько цен,
+            в зависимости от количества. Например, 1 единица товара может стоить 2000, а 2 единицы - 3500.
+        </p>
+
+        <p>
+            <code><span class="special">good-price alias="alias_tovara"</span></code> - возвращает стоимость одной единицы для заданного товара.
+        </p>
+
+        <p>
+            <code><span class="special">good-price alias="alias_tovara" for=3</span></code> - возвращает стоимость трех единиц товара.
+        </p>
+
+        <p>
+            <code><span class="special">good-price-total form="1"</span></code> - возвращает итоговую стоимость всех добавленных
+            в форму товаров. Параметр <code>form</code> задает номер формы, для которой нужно рассчитать итоговую стоимость
+        </p>
+
+
+        <h5>Цена доставки</h5>
+        <p id="delivery_price">
+            Для указания цены доставки нет специальных тегов. Доставка добавляется как отдельный товар на склад, у которого
+            просто не списываются остатки (Это важно! При добавлении товара уберите галочку «Вести учет остатков этого товара»).
+            Вы можете добавить на склад 2 товара, например, товар с алиасом «pochta» и «courier» задав для каждого свою цену
+            и выводить ее как цену обычного товара (см. выше)
+        </p>
+    </fieldset>
+
+
+    <fieldset id="forms">
+        <legend>Форма заказа</legend>
+        <div class="alert alert-info">
+            Обязательно ознакомьтесь с информацией об <a href="#alias">алиасах</a> перед тем, как разбираться с формой заказа
+        </div>
+        <p>
+            Вы можете разместить на одной странице до 10 различных форм заказа с разным набором полей и правилами валидации.
+            В любой из форм возможен следующий набор полей:
+        </p>
+        <ul id="formFields">
+            <li><code>fio</code> - ФИО</li>
+            <li><code>country</code> - Страна</li>
+            <li><code>postIndex</code> - Почтовый индекс</li>
+            <li><code>region</code> - Регион</li>
+            <li><code>city</code> - Город</li>
+            <li><code>address</code> - Адрес</li>
+            <li><code>house</code> - Дом</li>
+            <li><code>flat</code> - Квартира</li>
+            <li><code>phone</code> - Телефон</li>
+            <li><code>email</code> - Email</li>
+            <li><code>comment</code> - Комментарий</li>
+            <li><code>checkboxAgreeTerms</code> - Галочка «Согласен с условиями покупки»</li>
+            <li><code>additional1</code> - <code>additional15</code> - набор из 15 доп.полей под любые нужды</li>
+        </ul>
+
+        <h5>Специальные теги формы заказа</h5>
+
+        <div class="alert alert-info">
+            К любому специальному тегу вы можете дописывать <b>любые атрибуты</b>, которые попадут в html тег. Например,
+            <code><span class="special">form1Begin action="/success.html" style="display: block;" class="form"</span></code> добавит к html-тегу
+            атрибуты style и class
+            <code>&lt;form ... style="display: block;" class="form"&gt;</code>
+        </div>
+
+        <p>
+            <code><span class="special">form1Begin action="/success.html" alias="alias1, alias2"</span></code>
+            <br>
+            Форма заказа обязательно начинается со специального открывающего тега form1Begin.
+            В параметре <code>alias</code> передается <a href="#alias">алиас товара</a>, который по умолчанию будет поступать в админку при
+            отправке формы. Можно указать несколько алиасов через запятую или не указывать их вообще
+        </p>
+        <hr>
+        <p>
+            <code><span class="special">form1Label for="fio" label="Ф.И.О. &lt;span&gt;*&lt;/span&gt;"</span></code>
+            <br>
+            Необязательный тег. Возвращает заголовок (тег <code>&lt;label&gt;</code>) для указанного поля в атрибуте «for».
+        </p>
+        <hr>
+        <p>
+            <code><span class="special">form1Field name="fio" required="1" type="text" validator="~^.+$~"</span></code>
+            <br>
+            Поле формы. Имеет ряд специальных атрибутов:
             <ul>
-                <li><code>.lv_countdown_days</code> Дней: <span class="lv_countdown_days"></span></li>
-                <li><code>.lv_countdown_hours</code> Часов: <span class="lv_countdown_hours"></span></li>
-                <li><code>.lv_countdown_minutes</code> Минут: <span class="lv_countdown_minutes"></span></li>
-                <li><code>.lv_countdown_seconds</code> Секунд: <span class="lv_countdown_seconds"></span></li>
+                <li><code>name</code> - название поля</li>
+                <li><code>required</code> - обязательность заполнения (0 или 1)</li>
+                <li>
+                    <code>type</code> - тип поля
+                    <ul>
+                        <li><code>text</code> - однострочное поле (input)</li>
+                        <li><code>textarea</code> - многострочное однострочное поле</li>
+                        <li><code>select</code> - выпадающий список</li>
+                        <li><code>mask</code> - маска (input)</li>
+                        <li><code>checkbox</code> - галочка</li>
+                    </ul>
+                </li>
+                <li>
+                    <code>validator</code> - правило валидации поля (зависит от типа)
+                    <ul>
+                        <li>
+                            Если тип поля <code>text</code> или <code>textarea</code> - <a href="https://ru.wikipedia.org/wiki/%D0%A0%D0%B5%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D1%8B%D0%B5_%D0%B2%D1%8B%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F">регулярное выражение</a>.
+                            Примеры регулярных выражений:
+                            <ul>
+                                <li><code>~^.+$~</code> - любые символы</li>
+                                <li><code>~^.{5,20}$~</code> - строка из любых символов длинной от 5 до 20 символов</li>
+                                <li><code>~^.{20}$~</code> - строка из любых символов длинной ровно 20 символов</li>
+                                <li><code>~^\d{20}$~</code> - строка из цифр длинной ровно 20 символов</li>
+                                <li><code>~\+?\d{9,15}~</code> - проверка номера телефона</li>
+                            </ul>
+                        </li>
+                        <li>Если тип поля <code>select</code> - список значений через запятую. Например, <code>Россия, Украина, Казахстан</code></li>
+                        <li>Если тип поля <code>mask</code> - <a href="http://blog.leadvertex.ru/news/385-novyj-tip-dannyx-maska-telefon-v-formate-7/">маска</a>. Например, <code>+7 (***) ***-**-**</code></li>
+                    </ul>
+                </li>
             </ul>
-            </p>
-            <p>
-                После истечения времени счетчик пойдет повторно
-            </p>
+        </p>
+        <hr>
+        <p>
+            <code><span class="special">form1Error name="fio" text="Поле «Ф.И.О» заполнено неверно"</span></code>
+            <br>
+            Выводит сообщение об ошибки заполнения поля.
+        </p>
+        <hr>
+        <p>
+            <code><span class="special">form1End</span></code>
+            <br>
+            Обязательный тег, закрывающйи форму
+        </p>
+        <hr>
 
-        </fieldset>
-        <fieldset id="faq">
-            <legend>FAQ</legend>
-            <div class="accordion" id="accordion">
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseForms">
-                            Как мне изменить внешний вид формы заказа?
-                        </a>
-                    </div>
-                    <div id="collapseForms" class="accordion-body collapse">
-                        <div class="accordion-inner">
-                            <b><a href="/form.html">Примеры разных конфигураций формы заказа</a></b>
-                            <br/>
-                            Разметка формы заказа содержит достаточно вложенных друг в друга элементов, что позволяет придавать
-                            ей практически любой вид средствами CSS, будь то раположение полей в 2 колонки или изменение любых
-                            параметров отдельного поля.
-                            <br/>
-                            Кроме того, вы можете испольовать javascript для более тонкой кастомизации
-                        </div>
-                    </div>
+        <h5>Интерактивные теги формы</h5>
+
+        <p>
+            <code><span class="special">good-button alias="braslet" form="1" add="Добавить" remove="Удалить" add-class="add" remove-class="remove"</span></code>
+            <br>
+            Этот тег создает кнопку, которая добавляет товар с алиасом «braslet» к заказу. Имеет ряд специальных атрибутов:
+            <ul>
+                <li><code>alias</code> - обязательный атрибут, в котором необходимо указать алиас товара</li>
+                <li><code>form</code> - номер формы заказы (для формы уточнения заказа необходимо указать «update»), в которую необходимо добавить товар, если атрибут не указан, то товар добавится ко всем формам</li>
+                <li><code>add</code> - текст кнопки, пока товар не добавлен к заказу</li>
+                <li><code>remove</code> - текст кнопки после добавления товара к заказу</li>
+                <li><code>add-class</code> - класс кнопки, пока товар не добавлен к заказу</li>
+                <li><code>remove-class</code> - класс кнопки после добавления товара к заказу</li>
+                <li><code>submit</code> - делает из кнопки однокликовый апсел, если поставить значение «1», то при нажатии на кнопку товар добавится к заказу и
+                клиента переведет на страницу успешного заказа</li>
+            </ul>
+        </p>
+        <hr>
+
+        <p>
+            <code><span class="special">good-quantity alias="braslet" form="1" empty="Выберите товар"</span></code>
+            <br>
+            Этот тег позволяет добавить к заказу сразу несколько экземпляров одного и того же товара. Создает выпадающий
+            список с количеством от 1 до 10 для добавления товара с алиасом «braslet» к заказу. Имеет ряд специальных атрибутов:
+        <ul>
+            <li><code>alias</code> - обязательный аттрибут, в котором нужно указать алиас товара</li>
+            <li><code>form</code> - номер формы заказы (для формы уточнения заказа необходимо указать «update»), в которую необходимо добавить товар, если аттрибут не указан, то товар добавится ко всем формам</li>
+            <li>
+                <code>empty</code> - необязательный атрибут. Текст, который будет отображаться в списке на первом месте, пока не выбрано количество товара
+            </li>
+        </ul>
+        </p>
+        <hr>
+
+        <p>
+            <code><span class="special">good-select alias="alias1,alias2" form="1" empty="Выберите количество"</span></code>
+            <br>
+            Этот тег позволяет выбрать какой-либо товар из списка представленных. Создает выпадающий список с названиями товаров. Имеет ряд специальных атрибутов:
+        <ul>
+            <li><code>alias</code> - обязательный аттрибут, в котором нужно указать алиасы товара через запятую. Например, <code>alias1, alias2</code></li>
+            <li><code>form</code> - номер формы заказы (для формы уточнения заказа необходимо указать «update»), в которую необходимо добавить товар</li>
+            <li><code>empty</code> - необязательный атрибут. Текст, который будет отображаться в списке на первом месте, пока не выбран товар</li>
+        </ul>
+        </p>
+        <hr>
+
+        <p>
+            Вы можете смешивать обычные теги с тегами нашего шаблонизатора, а также добавлять к ним любые атрибуты,
+            например прописывать стили, placeholder'ы, data-атрибуты, классы и идентификаторы
+        </p>
+        <pre class="sourceCode">
+[[form1Begin action="/upsell.html" alias="id1, id2"]]
+    &lt;div&gt;
+        [[form1Label for="fio" label="Ф.И.О. &lt;span&gt;*&lt;/span&gt;"]]
+        [[form1Field name="fio" type="text" required="1" validator="~^.+$~" placeholder="Как вас зовут?"]]
+        [[form1Error name="fio" text="Поле «Ф.И.О» заполнено неверно" class="error" style="color: red"]]
+    &lt;/div&gt;
+    &lt;div&gt;
+        [[form1Label for="fio" label="Страна"]]
+        [[form1Field name="fio" type="select" required="1" validator="Россия, Украина, Казахстан, Республика Беларусь"]]
+        [[form1Error name="fio" text="Поле «Страна» заполнено неверно" class="error" style="color: red"]]
+    &lt;/div&gt;
+    &lt;div&gt;
+        [[form1Label for="quantity" label="Количество" data-hint="что-нибудь2"]]
+        [[good-quantity alias="id1" empty="Удалить" form="1"]]
+    &lt;/div&gt;
+    &lt;div&gt;
+        [[form1Label for="phone" label="Телефон &lt;span&gt;*&lt;/span&gt;" data-hint="Мы перезвоним в течение 15 минут"]]
+        [[form1Field name="phone" type="mask" required="1" validator="+7(999)999-99-99" class="textField"]]
+        [[form1Error name="phone" text="Поле «Телефон» заполнено неверно" style="color: red"]]
+    &lt;/div&gt;
+    &lt;div&gt;
+        [[form1Field name="checkboxAgreeTerms" type="checkbox" required="1" style="margin: 0"]]
+        [[form1Label for="checkboxAgreeTerms" label="Я принимаю условия" style="display: inline-block" ]]
+        [[form1Error name="checkboxAgreeTerms" text="Вы должны согласиться с условиями покупки" style="color: red"]]
+    &lt;/div&gt;
+    &lt;hr&gt;
+    &lt;button type="submit" class="btn btn-success" style="width: 100%">Оформить заказ&lt;/button&gt;
+[[form1End]]</pre>
+
+    </fieldset>
+    <fieldset id="form-update">
+            <legend>Форма уточнения заказа</legend>
+        <p>
+            Форма уточнения заказа используется на странице успешного оформления заказа, и служит для того, чтобы предложить
+            клиентам дополнить данные о себе (например, город, адрес и индекс) или совершать апселы, которые будут добавлены
+            в заказ.
+        </p>
+        <p>
+            <span class="label label-warning">Важно</span> Форма уточнения заказа <b>не может быть выведена на одной странице
+            с формой заказа</b>.
+            Также, форма уточнения заказа выводится только в течение 10 минут после того, как основной заказ уже был совершен.
+            Это сделано для того, чтобы избежать конфликтов у операторов прозвона и клиентов, уточняющих данные заказа. После
+           использования формы уточнения заказа или по истечению 10 минут она исчезнет, и не появится у клиента до тех пор,
+            пока он не сделает новый заказ
+        </p>
+        <p>
+                Для вывода формы уточнения заказа используются те же теги, что и для вывода основной форма, только вместо номера
+                формы указывается <code>Update</code>. Пример
+        <pre class="sourceCode">
+[[formUpdateBegin action="/upsell.html" alias="id1, id2"]]
+    &lt;div&gt;
+        [[formUpdateLabel for="address" label="Адрес"]]
+        [[formUpdateField name="address" type="text" validator="~^.+$~"]]
+        [[formUpdateError name="address" text="Поле «Адрес» заполнено неверно"]]
+    &lt;/div&gt;
+    &lt;div&gt;
+        [[formUpdateLabel for="postIndex" label="Почтовый индекс"]]
+        [[formUpdateField name="postIndex" type="text" validator="~^.+$~"]]
+        [[formUpdateError name="postIndex" text="Поле «Почтовый индекс» заполнено неверно"]]
+    &lt;/div&gt;
+    &lt;hr&gt;
+    &lt;button type="submit" class="btn btn-success" style="width: 100%">Уточнить данные&lt;/button&gt;
+[[formUpdateEnd]]</pre>
+                Результат вывода такой формы вы можете увидеть, если сделаете заказ <a target="_blank" href="http://demo-1.leadvertex.info">здесь</a>,
+                либо включите в настройках полей формы в своём демо оффере какое-либо из уточняющих полей
+        </p>
+
+
+
+        <h5>Условные теги</h5>
+        <p>
+            <code><span class="special-if">formUpdate:</span> ... content ... <span class="special-if">:formUpdate</span></code>
+            Условные теги formUpdate выведут находящееся в них содержимое, если на лендинге в настоящий момент доступна
+            форма уточнения заказа.
+        </p>
+
+    </fieldset>
+
+    <fieldset id="datetime">
+        <legend>Дата и время</legend>
+        <p>
+            <code><span class="special">today</span></code> - возвращает текущую дату.
+            Текущее значение: «{{today}}»
+        </p>
+
+        <p>
+            <code><span class="special">year</span></code> - возвращает текущий год.
+            Текущее значение: «{{year}}»
+        </p>
+
+        <p>
+            <code><span class="special">from_to</span></code> - возвращает диапазон дат (по умолчанию за 7 дней), где
+            последний день является текущим.
+            Текущее значение: «{{from_to}}»
+        </p>
+
+        <p>
+            <code><span class="special">from_to=5</span></code> - возвращает диапазон дат за 3 дня (параметр изменяемый).
+            Текущее значение: «{{from_to=5}}»
+        </p>
+
+        <p>
+            <code><span class="special">only_to</span></code> - возвращает текущую дату + 2 дня.
+            Текущее значение: «{{only_to}}»
+        </p>
+
+        <p>
+            <code><span class="special">only_to=5</span></code> - возвращает текущую дату + 5 дней (параметр изменяемый).
+            Текущее значение: «{{only_to=5}}»
+        </p>
+    </fieldset>
+    <fieldset id="geo">
+        <legend>География</legend>
+        <div class="alert alert-info">Если определить географию невозможно, то возвращается «Москва, Московская область»
+        </div>
+        <p>
+            <code><span class="special">geo_city</span></code> - возвращает город пользователя по IP.
+            Текущее значение: «{{geo_city}}»
+        </p>
+
+        <p>
+            <code><span class="special">geo_region</span></code> - возвращает регион пользователя по IP.
+            Текущее значение: «{{geo_region}}»
+        </p>
+
+        <p>
+            <code><span class="special">geo_country</span></code> - возвращает страну пользователя по IP.
+            Текущее значение: «{{geo_country}}»
+        </p>
+
+        <p>
+            <code><span class="special">geo_country_code</span></code> - возвращает ISO-код страны пользователя по IP.
+            Текущее значение: «{{geo_country_code}}»
+        </p>
+
+        <p>О том, как реализовать простейший гео-таргетинг смотрите в <a href="#collapseGeoTargeting">FAQ</a></p>
+
+    </fieldset>
+    <fieldset id="js">
+        <legend>JavaScript, CSS и сторонние библиотеки</legend>
+        <p>О том, как подключить к проекту jQuery, описано <a href="#jquery">выше</a></p>
+
+        <p>
+            Подключать сторонние, популярные библиотеки типа bootstrap и moderniz мы рекомендуем с
+            <a href="http://api.yandex.ru/jslibs/">Яндекс CDN</a> - такой подход поможет вам обеспечить более высокую
+            скорость загрузки страниц, что повысит вашу конверсию и снизит нагрузку на наши сервера
+        </p>
+        <hr/>
+        <div class="alert alert-info">
+            Есть определенные вещи, которые очень часто используются в лендингах. Например, обратный отсчет времени для
+            стимулирования
+            клиента заказать товар/услугу быстрее. Ниже приведены готовые скрипты, которые позволят вам проще подключать
+            часто
+            требуемый функционал. Список будет пополняться.
+        </div>
+        <h5>Обратный отсчет времени</h5>
+
+        <p>
+            <code><span class="special">countdown.js</span></code> - подключает скрипт таймера обратного отсчета.
+            {{countdown.js}}
+        </p>
+
+        <p>
+            Время отсчета таймера задается в секундах в любом месте страницы (или в вашем скрипте). В данном примере: 560
+            секунд
+            <code>
+                &lt;script&gt;window.leadvertex.seconds = <b>560</b>&lt;/script&gt;
+            </code>
+            <script>window.leadvertex.seconds = 560</script>
+        </p>
+        <p>
+            Далее, прописав классы к нужным элементам их содержимое будет заменяться соответствующими значениями:
+        <ul>
+            <li><code>.lv_countdown_days</code> Дней: <span class="lv_countdown_days"></span></li>
+            <li><code>.lv_countdown_hours</code> Часов: <span class="lv_countdown_hours"></span></li>
+            <li><code>.lv_countdown_minutes</code> Минут: <span class="lv_countdown_minutes"></span></li>
+            <li><code>.lv_countdown_seconds</code> Секунд: <span class="lv_countdown_seconds"></span></li>
+        </ul>
+        </p>
+        <p>
+            После истечения времени счетчик пойдет повторно
+        </p>
+
+    </fieldset>
+    <fieldset id="faq">
+        <legend>FAQ</legend>
+        <div class="accordion" id="accordion">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseGeoTargeting">
+                        Как мне реализовать простейший гео-таргетинг?
+                    </a>
                 </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseGeoTargeting">
-                            Как мне реализовать простейший гео-таргетинг?
-                        </a>
-                    </div>
-                    <div id="collapseGeoTargeting" class="accordion-body collapse">
-                        <div class="accordion-inner">
-                            Используя <a href="#geo">географические теги</a> вы можете сделать простейший редирект на другой сайт
-                            если страна посетителя не соответствует заданной. Например, вы работаете по России, и к вам заходит
-                            пользователь с Украины. Вы можете перенаправить пользователя с украины на другой сайт используя следующий код
+                <div id="collapseGeoTargeting" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        Используя <a href="#geo">географические теги</a> вы можете сделать простейший редирект на другой сайт
+                        если страна посетителя не соответствует заданной. Например, вы работаете по России, и к вам заходит
+                        пользователь с Украины. Вы можете перенаправить пользователя с украины на другой сайт используя следующий код
                         <pre class="sourceCode">&lt;script&gt;
   if ('&#123;&#123;geo_country_code&#125;&#125;'=='UA')
     window.location.href = 'http://&#1076;&#1088;&#1091;&#1075;&#1086;&#1081;-&#1089;&#1072;&#1081;&#1090;.ru/?f=&#123;&#123;webmaster&#125;&#125;';
 &lt;/script&gt;</pre>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseEmu">
-                            Я хочу редактировать шаблон у себя на компьютере и видеть результат
-                        </a>
-                    </div>
-                    <div id="collapseEmu" class="accordion-body collapse">
-                        <div class="accordion-inner">
-                            Вы можете использовать <a href="https://github.com/XAKEPEHOK/leadvertex_emulator/">эмулятор</a>
-                            нашего шаблонизатора у себя на компьютере
-                        </div>
                     </div>
                 </div>
             </div>
-        </fieldset>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseEmu">
+                        Я хочу редактировать шаблон у себя на компьютере и видеть результат
+                    </a>
+                </div>
+                <div id="collapseEmu" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        Вы можете использовать <a href="https://github.com/XAKEPEHOK/leadvertex_emulator/">эмулятор</a>
+                        нашего шаблонизатора у себя на компьютере
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
     </div>
 </div>
 

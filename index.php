@@ -2,6 +2,7 @@
 define('TEMPLATE',false);
 include_once('engine/LvBaseRenderer.php');
 include_once('engine/EmulatorRenderer.php');
+include_once('engine/ArrayHelper.php');
 
 if (!TEMPLATE && !isset($_COOKIE['lv_lastcheck'])) {
   $checked = false;
@@ -39,5 +40,22 @@ if (!TEMPLATE && isset($_GET['tar']) && $_GET['tar']==1 && is_dir($basePath)) {
   readfile($filename);
 }
 
-$renderer = new EmulatorRenderer($basePath);
+$_COOKIE['orderUpdateTime'] = time() + 120 * 60 * 60;
+
+$renderer = new EmulatorRenderer($basePath, $page);
+
+$varsHtml = $renderer->getViewFile('vars');
+$data = [];
+if (preg_match_all('~(?:\{\{([a-z\d_-]+)="([^\}"]*)"\}\})~ui', $varsHtml, $matches_all, PREG_SET_ORDER) > 0) {
+  foreach ($matches_all as $matches) {
+    $key = strtolower($matches[1]);
+    if (isset($data[$key]) === false || (isset($data[$key]) && is_scalar($data[$key]))) $data[$matches[1]] = $matches[2];
+  }
+}
+//Создаем модели форм исходя их кода на лендинге
+if (count($data)) {
+  $renderer->upsellTime = ArrayHelper::getValue($data, 'upsell_time', $renderer->upsellTime);
+  $renderer->upsellHide = ArrayHelper::getValue($data, 'upsell_hide', $renderer->upsellHide);
+}
+
 $renderer->render($page,[]);
