@@ -3,8 +3,6 @@
 {{no_layout}}
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="//yandex.st/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript">
         /*<![CDATA[*/
@@ -97,7 +95,7 @@
         </div>
         <div class="lv-row">
             {{formUpdateLabel for="phone" label="Телефон"}}
-            {{formUpdateField name="phone" type="text" validator="+7(999)999-99-99"}}
+            {{formUpdateField name="phone" type="mask" validator="+7(999)999-99-99"}}
             {{formUpdateError name="phone" text="Необходимо заполнить поле «Телефон»." style="color:red;"}}
         </div>
         <div class="lv-form-submit">

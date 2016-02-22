@@ -611,10 +611,10 @@ abstract class LvBaseRenderer {
     $regexp = '~\{\{form_update(?:\|(no_css))?\}\}~i';
     if ($this->tagExists('form_update'))
       $this->registerScriptFile('/js/formHelper.js');
-    $this->html = preg_replace_callback($regexp,function ($matches){
-      $noCss = isset($matches[1]);
-      return $this->renderFormUpdate($this->data['__update'],$noCss);
-    },$this->html);
+      $this->html = preg_replace_callback($regexp,function ($matches){
+        $noCss = isset($matches[1]);
+        return $this->renderFormUpdate($this->data['__update'],$noCss);
+      },$this->html);
   }
 
   protected function tagPhone()
@@ -675,14 +675,14 @@ abstract class LvBaseRenderer {
     }
   }
 
-  public function getViewFile($viewName = 'index')
+  public function getViewFile($viewName = 'index', $notFound = true)
   {
     $file = $this->themePath.'/'.$viewName.'.html';
     $file = str_replace('//','/',$file);
     $exists = is_dir(dirname($file)) && file_exists($file);
 
     if (!in_array($viewName,['layout', 'index', 'pages/index']) && $exists === false) {
-      http_response_code(404);
+      if ($notFound) http_response_code(404);
       $file = $this->themePath.'/pages/index.html';
       $file = str_replace('//','/',$file);
       $exists = is_dir(dirname($file)) && file_exists($file);
@@ -696,12 +696,12 @@ abstract class LvBaseRenderer {
 
   public function getFormsData()
   {
-    $layout = $this->getViewFile('layout');
-    if ($layout === false) $layout = $this->getViewFile('index');
+    $layout = $this->getViewFile('layout', false);
+    if ($layout === false) $layout = $this->getViewFile('index', false);
     $html = $layout === false ? '{{content}}' : $layout;
 
     if (stripos($html, '{{content}}') !== false) {
-      $page = (string)$this->getViewFile('pages/' . $this->page);
+      $page = (string)$this->getViewFile('pages/' . $this->page, false);
       if (stripos($page, '{{no_layout}}') === false) $html = str_replace('{{content}}', $page, $html);
       else $html = str_replace('{{no_layout}}', '', $page);
     }

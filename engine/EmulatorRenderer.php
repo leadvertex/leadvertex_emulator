@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 3.5;
+  const VERSION = 4.0;
 
   protected $scripts = array();
   protected $config = array();
@@ -111,7 +111,7 @@ class EmulatorRenderer extends LvBaseRenderer {
     $goods = [];
     foreach ($xmlParams as $xmlParam) {
       $good = new Good();
-      $good->alias = (string)$xmlParam['id'];
+      $good->alias = (string)$xmlParam['alias'];
       $good->unity = (string)$xmlParam['unity'];
       $good->price = (string)$xmlParam['price'];
       $good->name = (string)$xmlParam['name'];
@@ -410,16 +410,13 @@ class EmulatorRenderer extends LvBaseRenderer {
                   $this->html = str_replace($fieldCode,$checkbox,$this->html);
                   break;
                 case 'mask':
+                  $this->registerScriptFile('/assets/jquery.mask.js');
                   $pattern = $fieldsOptions['pattern'];
                   unset($fieldsOptions['pattern']);
-//                  $mask = Yii::app()->controller->widget('CMaskedTextField', array(
-//                      'model' => $this->forms[$formID],
-//                      'attribute' => $name,
-//                      'mask' => $pattern,
-//                      'placeholder' => '*',
-//                      'htmlOptions' => $fieldsOptions,
-//                  ),true);
-//                  $this->html = str_replace($fieldCode,$mask,$this->html);
+                  $this->registerScript('mask-'.$name,'$(document).ready(function(){$("#'.$fieldsOptions['id'].'").mask("'.$pattern.'");});');
+                  $fieldsOptions = $this->renderAttributes($fieldsOptions);
+                  $mask = '<input type="text" name="'.$name.'" '.$fieldsOptions.'/>';
+                  $this->html = str_replace($fieldCode,$mask,$this->html);
                   break;
               }
               break;

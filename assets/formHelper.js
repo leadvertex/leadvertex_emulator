@@ -206,6 +206,8 @@ lvjq1(document).ready(function(){
         var alias = lvjq1(this).attr('data-lv-alias');
         var addText = lvjq1(this).attr('data-lv-add-text');
         var removeText = lvjq1(this).attr('data-lv-remove-text');
+        var addClass = lvjq1(this).attr('data-lv-add-class');
+        var removeClass = lvjq1(this).attr('data-lv-remove-class');
         var addRemove = lvjq1(this).attr('data-lv-add-remove');
         var sum = lvjq1(this).attr('data-lv-price');
         var submitOnClick = lvjq1(this).attr('data-lv-submit');
@@ -222,11 +224,15 @@ lvjq1(document).ready(function(){
             case 'add':
                 lvjq1(this).text(removeText);
                 lvjq1(this).attr('data-lv-add-remove', 'remove');
+                lvjq1(this).removeClass(addClass);
+                lvjq1(this).addClass(removeClass);
                 addGood(alias, 1, sum, input, form, submitOnClick);
                 break;
             case 'remove':
                 lvjq1(this).text(addText);
                 lvjq1(this).attr('data-lv-add-remove', 'add');
+                lvjq1(this).removeClass(removeClass);
+                lvjq1(this).addClass(addClass);
                 removeGood(alias, input, form);
                 break;
         }
@@ -298,14 +304,14 @@ lvjq1(document).ready(function(){
         }
     });
 
-    function addGood(goodId, quantity, sum, input, form, submitOnClick) {
-        window.leadvertex.goods.added = lvjq1(input).val() != "" ? JSON.parse(lvjq1(input).val()) : {};
+    function addGood(goodId, quantity, sum, selector, form, submitOnClick) {
+        window.leadvertex.goods.added = lvjq1(selector).val() != "" ? JSON.parse(lvjq1(selector).val()) : {};
         window.leadvertex.goods.added[goodId] = {
             "quantity": quantity,
             "sum": sum
         };
         console.log(window.leadvertex.goods.added);
-        lvjq1(input).val(JSON.stringify(window.leadvertex.goods.added));
+        lvjq1(selector).val(JSON.stringify(window.leadvertex.goods.added));
         if (submitOnClick == 1) {
             form = '.lv2-form' + form;
             console.log(form);
@@ -313,13 +319,15 @@ lvjq1(document).ready(function(){
         }
         reCalcGoodPriceTotal(form);
     }
-    function removeGood(goodId, input, form) {
-        window.leadvertex.goods.added = lvjq1(input).val() != "" ? JSON.parse(lvjq1(input).val()) : {};
+
+    function removeGood(goodId, selector, form) {
+        window.leadvertex.goods.added = lvjq1(selector).val() != "" ? JSON.parse(lvjq1(selector).val()) : {};
         if (window.leadvertex.goods.added[goodId]) delete window.leadvertex.goods.added[goodId];
         console.log(window.leadvertex.goods.added);
-        lvjq1(input).val(JSON.stringify(window.leadvertex.goods.added));
+        lvjq1(selector).val(JSON.stringify(window.leadvertex.goods.added));
         reCalcGoodPriceTotal(form);
     }
+
     function reCalcGoodPriceTotal(form) {
         console.log(form);
         lvjq1('.lv-good-price-total').each(function (i, e) {

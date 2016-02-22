@@ -42,6 +42,15 @@ span.special:after {
     content: '}}'
 }
 
+span.special-if:before {
+    content: '[[';
+    display: inline
+}
+
+span.special-if:after {
+    content: ']]'
+}
+
 .hero-unit {
     padding: 25px;
 }

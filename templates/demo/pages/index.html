@@ -34,7 +34,7 @@
                     {{form1Field name="fio" class="lv-input-fio" type="text" placeholder="ФИО" validator="~^.+$~"}}
                 </div>
                 <div class="lv-row">
-                    {{form1Field name="phone" type="text" placeholder="Телефон *" required="1" validator="+7(999)999-99-99"}}
+                    {{form1Field name="phone" type="mask" placeholder="Телефон *" required="1" validator="+7(999)999-99-99"}}
                     {{form1Error name="phone" text="Необходимо заполнить поле «Телефон»."}}
                 </div>
                 <div class="lv-row">
