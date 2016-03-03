@@ -503,11 +503,11 @@ abstract class LvBaseRenderer {
 
     if (is_array($param)) {
       foreach ($param as $string) {
-        preg_match('~([a-z\-\d]+)="([^"]*)"~',$string,$matches);
+        preg_match('~([a-zA-Z\-\d]+)="([^"]*)"~',$string,$matches);
         $result[$matches[1]] = $matches[2];
       }
     } else {
-      preg_match('~([a-z\-\d]+)="([^"]*)"~',$param,$matches);
+      preg_match('~([a-zA-Z\-\d]+)="([^"]*)"~',$param,$matches);
       $result = [trim($matches[1]),trim($matches[2])];
     }
 
@@ -611,10 +611,10 @@ abstract class LvBaseRenderer {
     $regexp = '~\{\{form_update(?:\|(no_css))?\}\}~i';
     if ($this->tagExists('form_update'))
       $this->registerScriptFile('/js/formHelper.js');
-      $this->html = preg_replace_callback($regexp,function ($matches){
-        $noCss = isset($matches[1]);
-        return $this->renderFormUpdate($this->data['__update'],$noCss);
-      },$this->html);
+    $this->html = preg_replace_callback($regexp,function ($matches){
+      $noCss = isset($matches[1]);
+      return $this->renderFormUpdate($this->data['__update'],$noCss);
+    },$this->html);
   }
 
   protected function tagPhone()

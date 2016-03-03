@@ -22,6 +22,11 @@ class EmulatorRenderer extends LvBaseRenderer {
       if (is_dir($this->themePath)) file_put_contents($this->themePath.'/config.xml',$xml);
       else $this->_landing = false;
     }
+    if (!file_exists($this->themePath.'/vars.html')) {
+      $vars = file_get_contents('assets/vars.html');
+      if (is_dir($this->themePath)) file_put_contents($this->themePath.'/vars.html',$vars);
+      else $this->_landing = false;
+    }
   }
   private function registerFile($filename,$onTop = false)
   {
@@ -109,13 +114,15 @@ class EmulatorRenderer extends LvBaseRenderer {
     $xmlParams = $this->_xml->goods->good;
     /** @var $xmlParams [] SimpleXMLElement */
     $goods = [];
-    foreach ($xmlParams as $xmlParam) {
-      $good = new Good();
-      $good->alias = (string)$xmlParam['alias'];
-      $good->unity = (string)$xmlParam['unity'];
-      $good->price = (string)$xmlParam['price'];
-      $good->name = (string)$xmlParam['name'];
-      $goods[] = $good;
+    if (count($xmlParams)) {
+      foreach ($xmlParams as $xmlParam) {
+        $good = new Good();
+        $good->alias = (string)$xmlParam['alias'];
+        $good->unity = (string)$xmlParam['unity'];
+        $good->price = (string)$xmlParam['price'];
+        $good->name = (string)$xmlParam['name'];
+        $goods[] = $good;
+      }
     }
     return $goods;
   }
@@ -450,7 +457,7 @@ class EmulatorRenderer extends LvBaseRenderer {
             }
           }
           if (count($goodValue)) {
-            $formEndCode = '<input class="lv-input-goods" id=\''.$id.'\' type="hidden" value=\''.json_encode($goodValue).'\' name="FormLanding[goods]">' . $formEndCode;
+            $formEndCode = '<input class="lv-input-goods" id="'.$id.'" type="hidden" value=\''.json_encode($goodValue).'\' name="FormLanding[goods]">' . $formEndCode;
             $this->goodTotalPrices[$formID] = $totalPrice;
           }
         } else {
