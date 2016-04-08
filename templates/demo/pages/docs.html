@@ -215,6 +215,7 @@
             <li><code>email</code> - Email</li>
             <li><code>comment</code> - Комментарий</li>
             <li><code>checkboxAgreeTerms</code> - Галочка «Согласен с условиями покупки»</li>
+            <li><code>paymentOn</code> - Способ оплаты</li>
             <li><code>additional1</code> - <code>additional15</code> - набор из 15 доп.полей под любые нужды</li>
         </ul>
 
@@ -256,6 +257,7 @@
                         <li><code>select</code> - выпадающий список</li>
                         <li><code>mask</code> - маска (input)</li>
                         <li><code>checkbox</code> - галочка</li>
+                        <li><code>payment</code> - выпадающий список для выбора способа оплаты</li>
                     </ul>
                 </li>
                 <li>
@@ -274,6 +276,14 @@
                         </li>
                         <li>Если тип поля <code>select</code> - список значений через запятую. Например, <code>Россия, Украина, Казахстан</code></li>
                         <li>Если тип поля <code>mask</code> - <a href="http://blog.leadvertex.ru/news/385-novyj-tip-dannyx-maska-telefon-v-formate-7/">маска</a>. Например, <code>+7 (***) ***-**-**</code></li>
+                        <li>Если тип поля <code>payment</code> - может принимать следующие значения
+                            <ul>
+                                <li><code>~0,1~</code> - сгенерирует выпадающий список в следующем порядке: Online, При получении</li>
+                                <li><code>~1,0~</code> - сгенерирует выпадающий список в следующем порядке: При получении, Online</li>
+                                <li><code>~1~</code> - сгенерирует скрытое поле со значением - Online</li>
+                                <li><code>~0~</code> - сгенерирует скрытое поле со значением - При получении</li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
             </ul>

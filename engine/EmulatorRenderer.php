@@ -425,6 +425,25 @@ class EmulatorRenderer extends LvBaseRenderer {
                   $mask = '<input type="text" name="'.$name.'" '.$fieldsOptions.'/>';
                   $this->html = str_replace($fieldCode,$mask,$this->html);
                   break;
+                case 'payment':
+                  @$fieldsOptions['class'] .= ' lv-input-paymentOn';
+                  if (isset($fieldsOptions['options'])) {
+                    $data = $fieldsOptions['options'];
+                    unset($fieldsOptions['options']);
+                    $fieldsOptions = $this->renderAttributes($fieldsOptions);
+                    if (count($data) > 1) {
+                      $select = '<select name="'.$name.'" '.$fieldsOptions.'/>';
+                      foreach ($data as $key => $option) {
+                        $select .= '<option value="'.$key.'">' . $option . '</option>';
+                      }
+                      $select .= '</select>';
+                      $this->html = str_replace($fieldCode,$select,$this->html);
+                    } else {
+                      $paymentHidden = '<input type="hidden" value="'.key($data).'" name="FormLanding[paymentOn]" id="FormLanding_paymentOn">';
+                      $this->html = str_replace($fieldCode,$paymentHidden,$this->html);
+                    }
+                  }
+                  break;
               }
               break;
             case 'error':

@@ -551,6 +551,32 @@ abstract class LvBaseRenderer {
         case 'checkbox':
           $rules[] = [$name, 'in', 'range' => [0,1]];
           break;
+        case 'payment':
+          switch ($validator) {
+            case '1,0':
+              $fieldParams['options'] = [
+                1 => 'Online',
+                0 => 'При получении',
+              ];
+              break;
+            case '0':
+              $fieldParams['options'] = [
+                0 => 'При получении',
+              ];
+              break;
+            case '1':
+              $fieldParams['options'] = [
+                1 => 'Online',
+              ];
+              break;
+            default:
+              $fieldParams['options'] = [
+                0 => 'При получении',
+                1 => 'Online',
+              ];
+              break;
+          }
+          break;
         default:
           $rules[] = [$name, 'match', 'pattern' => $validator];
           break;
@@ -841,8 +867,8 @@ abstract class LvBaseRenderer {
       if ($formId != 'Update' && !count($values)) unset($forms[$formId]);
     }
 //    $forms = array_filter($forms,function($value){ return count($value);});
-    if (count($forms) > 10) $forms = array_slice($forms, 0, 10, true);
-    if (count($this->formCodes) > 10) $this->formCodes = array_slice($this->formCodes, 0, 10, true);
+    if (count($forms) > 20) $forms = array_slice($forms, 0, 20, true);
+    if (count($this->formCodes) > 20) $this->formCodes = array_slice($this->formCodes, 0, 20, true);
 
     return $forms;
   }
