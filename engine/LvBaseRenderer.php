@@ -271,10 +271,16 @@ abstract class LvBaseRenderer {
             unset($htmlParams['alias']);
             unset($htmlParams['empty']);
             unset($htmlParams['form']);
+            $maxValue = 10;
+            if (isset($htmlParams['max'])) {
+              $maxValue = (int)$htmlParams['max'];
+              if ($maxValue < 0 || $maxValue > 30) $maxValue = 10;
+              unset($htmlParams['max']);
+            }
             $htmlParams = $this->renderAttributes($htmlParams);
             $select = '<select class="lv-good-quantity ' . $cssClass .  '" data-lv-alias="'. $selectParams[$alias]['alias'] .'" data-lv-prices=\''. json_encode($prices) .'\' data-lv-max-quantity="'. $maxQuantity .'" '. $formID . ' ' . $htmlParams . '>';
             if (isset($selectParams[$alias]['empty'])) $select .= '<option value="0">' . $selectParams[$alias]['empty'] . '</option>';
-            for ($j = 1; $j <= 10; $j++) {
+            for ($j = 1; $j <= $maxValue; $j++) {
               $select .= '<option value="'. $j .'">' . $j . ' ' . $goods[$alias]->unity . '</option>';
             }
             $select .= '</select>';
@@ -370,10 +376,19 @@ abstract class LvBaseRenderer {
               'data-lv-remove-class' => $btnParams[$alias]['remove-class'],
             ];
 
+            unset($btnParams[$alias]['alias']);
+            unset($btnParams[$alias]['class']);
+            unset($btnParams[$alias]['add']);
+            unset($btnParams[$alias]['add-class']);
+            unset($btnParams[$alias]['remove']);
+            unset($btnParams[$alias]['remove-class']);
+
+            $htmlParams = $this->renderAttributes($btnParams[$alias]);
+
             if (isset($btnParams[$alias]['form'])) $attributes['data-lv-form'] = $btnParams[$alias]['form'];
             if (isset($btnParams[$alias]['submit'])) $attributes['data-lv-submit'] = $btnParams[$alias]['submit'];
 
-            $button = '<button '. $this->renderAttributes($attributes) .'>' . $btnParams[$alias]['add'] . '</button>';
+            $button = '<button '. $this->renderAttributes($attributes) .' '. $htmlParams .'>' . $attributes['data-lv-add-text'] . '</button>';
             $this->html = str_replace($replace, $button, $this->html);
           }
         }
@@ -503,12 +518,10 @@ abstract class LvBaseRenderer {
 
     if (is_array($param)) {
       foreach ($param as $string) {
-        preg_match('~([a-zA-Z\-\d]+)="([^"]*)"~',$string,$matches);
-        $result[$matches[1]] = $matches[2];
+        if (preg_match('~([a-zA-Z\-\d]+)="([^"]*)"~', $string, $matches)) $result[$matches[1]] = $matches[2];
       }
     } else {
-      preg_match('~([a-zA-Z\-\d]+)="([^"]*)"~',$param,$matches);
-      $result = [trim($matches[1]),trim($matches[2])];
+      if (preg_match('~([a-zA-Z\-\d]+)="([^"]*)"~', $param, $matches)) $result = [trim($matches[1]), trim($matches[2])];
     }
 
     return $result;
