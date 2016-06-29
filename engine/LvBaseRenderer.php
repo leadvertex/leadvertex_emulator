@@ -905,7 +905,7 @@ abstract class LvBaseRenderer {
     if (count($this->matchesFormUpdateIf) && count($this->matchesFormUpdateEndIf)) $this->tagIfFormUpdate();
     if (count($this->matchesWebmasterIf) && count($this->matchesWebmasterEndIf)) $this->tagIfWebmaster();
 
-    preg_match_all('~\{\{([^\}\|=\s]{1,200})[^\}]{0,200}\}\}~u',$this->html,$this->matches);
+    preg_match_all('~\{\{([^\}\|=\s]{1,1000})[^\}]{0,1000}\}\}~u',$this->html,$this->matches);
     $this->matches = array_flip($this->matches[1]);
 
     $this->data = array_merge($data, array(
