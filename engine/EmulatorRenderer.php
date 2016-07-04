@@ -417,10 +417,10 @@ class EmulatorRenderer extends LvBaseRenderer {
                   $this->html = str_replace($fieldCode,$checkbox,$this->html);
                   break;
                 case 'mask':
-                  $this->registerScriptFile('/assets/jquery.mask.js');
+                  $this->registerScriptFile('/assets/jquery.maskedinput.js');
                   $pattern = $fieldsOptions['pattern'];
                   unset($fieldsOptions['pattern']);
-                  $this->registerScript('mask-'.$name,'$(document).ready(function(){$("#'.$fieldsOptions['id'].'").mask("'.$pattern.'");});');
+                  $this->registerScript('mask-'.$name,'lvjq1(document).ready(function(){lvjq1("#'.$fieldsOptions['id'].'").mask("'.$pattern.'",{"placeholder":"*"});});');
                   $fieldsOptions = $this->renderAttributes($fieldsOptions);
                   $mask = '<input type="text" name="'.$name.'" '.$fieldsOptions.'/>';
                   $this->html = str_replace($fieldCode,$mask,$this->html);
