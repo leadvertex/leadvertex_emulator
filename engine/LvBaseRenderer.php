@@ -33,6 +33,7 @@ abstract class LvBaseRenderer {
   abstract protected function renderAttributes($attributes);
 
   abstract protected function getGoods();
+	abstract protected function getGoodsPrices();
   abstract protected function getGoodPrices($price);
   abstract protected function getGoodPrice($good, $quantity);
   abstract protected function getGoodUnity($good);
@@ -924,6 +925,10 @@ abstract class LvBaseRenderer {
     $this->tagDeliveryPrice();
 
     $this->registerScript('window.leadvertex','if (!window.leadvertex) window.leadvertex = {};');
+		$goodsPrices = $this->getGoodsPrices();
+		if (count($goodsPrices)) {
+			$this->registerScript('window.leadvertex.goodsPrices', 'if (!window.leadvertex.goodsPrices) window.leadvertex.goodsPrices = ' . json_encode($goodsPrices) . ';');
+		}
 
 
     return $this->html;

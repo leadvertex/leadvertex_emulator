@@ -1,6 +1,6 @@
 <?php
 class EmulatorRenderer extends LvBaseRenderer {
-  const VERSION = 4.0;
+  const VERSION = 4.1;
 
   protected $scripts = array();
   protected $config = array();
@@ -119,6 +119,21 @@ class EmulatorRenderer extends LvBaseRenderer {
     }
     return $goods;
   }
+	protected function getGoodsPrices()
+	{
+		$goodsPrices = [];
+		$goods = $this->getGoods();
+		/** @var Good $good */
+		foreach ($goods as $good) {
+			$prices = $this->getGoodPrices($good->price);
+			$goodsPrices[$good->alias] = [
+				'prices' => $prices,
+				'maxQuantity' => max(array_keys($prices)),
+			];
+		}
+
+		return $goodsPrices;
+	}
   protected function getGoodPrices($price)
   {
     $lines = explode(',', $price);
