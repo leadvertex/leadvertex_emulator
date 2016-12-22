@@ -842,8 +842,8 @@ abstract class LvBaseRenderer {
       if ($formId != 'Update' && !count($values)) unset($forms[$formId]);
     }
 //    $forms = array_filter($forms,function($value){ return count($value);});
-    if (count($forms) > 10) $forms = array_slice($forms, 0, 10, true);
-    if (count($this->formCodes) > 10) $this->formCodes = array_slice($this->formCodes, 0, 10, true);
+    if (count($forms) > 30) $forms = array_slice($forms, 0, 30, true);
+    if (count($this->formCodes) > 30) $this->formCodes = array_slice($this->formCodes, 0, 30, true);
 
     return $forms;
   }
