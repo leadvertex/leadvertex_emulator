@@ -58,4 +58,4 @@ if (count($data)) {
   $renderer->upsellHide = ArrayHelper::getValue($data, 'upsell_hide', $renderer->upsellHide);
 }
 
-$renderer->render($page,[]);
+$renderer->render($page, $data);

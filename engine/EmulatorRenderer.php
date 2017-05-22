@@ -6,6 +6,7 @@ class EmulatorRenderer extends LvBaseRenderer {
   protected $config = array();
   /** @var \SimpleXMLElement */
   private $_xml;
+  private $_vars;
   private $_discount = [];
   private $_fields;
 
@@ -22,6 +23,10 @@ class EmulatorRenderer extends LvBaseRenderer {
       if (is_dir($this->themePath)) file_put_contents($this->themePath.'/config.xml',$xml);
       else $this->_landing = false;
     }
+    if (!file_exists($this->themePath.'/vars.html')) {
+    	$this->_vars = file_get_contents('assets/vars.html');
+			if (is_dir($this->themePath)) file_put_contents($this->themePath.'/vars.html',$this->_vars);
+		}
   }
   private function registerFile($filename,$onTop = false)
   {
