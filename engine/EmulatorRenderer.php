@@ -25,7 +25,8 @@ class EmulatorRenderer extends LvBaseRenderer {
     }
     if (!file_exists($this->themePath.'/vars.html')) {
     	$this->_vars = file_get_contents('assets/vars.html');
-			if (is_dir($this->themePath)) file_put_contents($this->themePath.'/vars.html',$this->_vars);
+			if (is_dir($this->themePath)) file_put_contents($this->themePath.'/vars.html',$vars);
+			else $this->_landing = false;
 		}
   }
   private function registerFile($filename,$onTop = false)
