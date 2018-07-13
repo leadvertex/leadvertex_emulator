@@ -30,7 +30,7 @@ define('LV_LANDING',$landing);
 $basePath = __DIR__.'/templates/'.LV_LANDING;
 
 if (!TEMPLATE && isset($_GET['tar']) && $_GET['tar']==1 && is_dir($basePath)) {
-  $filename = $basePath.'.tar';
+  $filename = '/tmp/'. basename($basePath.'.tar');
   $phar = new PharData($filename);
   $phar->buildFromDirectory($basePath);
   header('Content-Description: File Transfer');
@@ -38,6 +38,8 @@ if (!TEMPLATE && isset($_GET['tar']) && $_GET['tar']==1 && is_dir($basePath)) {
   header('Content-Length: ' . filesize($filename));
   header('Content-Disposition: attachment; filename=' . basename($filename));
   readfile($filename);
+  unlink($filename);
+  exit;
 }
 
 $_COOKIE['orderUpdateTime'] = time() + 120 * 60 * 60;
