@@ -4,10 +4,10 @@ abstract class LvBaseRenderer {
   protected $html;
   protected $data;
   protected $matches;
-  protected $matchesFormUpdateIf;
-  protected $matchesFormUpdateEndIf;
-  protected $matchesWebmasterIf;
-  protected $matchesWebmasterEndIf;
+  protected $matchesFormUpdateIf = [];
+  protected $matchesFormUpdateEndIf = [];
+  protected $matchesWebmasterIf = [];
+  protected $matchesWebmasterEndIf = [];
   protected $themePath;
   protected $page;
   protected $priceOptions = [];

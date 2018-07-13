@@ -31,7 +31,6 @@ class EmulatorRenderer extends LvBaseRenderer {
   }
   private function registerFile($filename,$onTop = false)
   {
-    $filename = strtolower($filename);
     $ext = substr(strrchr($filename, '.'), 1);
     if (!isset($this->scripts[$filename])) {
       if ($onTop === true) {
