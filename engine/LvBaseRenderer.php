@@ -37,6 +37,7 @@ abstract class LvBaseRenderer {
   abstract protected function getGoodPrices($price);
   abstract protected function getGoodPrice($good, $quantity);
   abstract protected function getGoodUnity($good);
+	abstract protected function getGoodReserve($alias);
   abstract protected function getUpdateFormCookie();
   abstract protected function getConfigParam($param);
   abstract protected function getFiles();
@@ -476,6 +477,26 @@ abstract class LvBaseRenderer {
       }
     }
   }
+	protected function tagGoodReserve()
+	{
+		if ($this->tagExists('good-reserve')) {
+			$regexp = '~\{\{good-reserve\s+' . str_repeat("([a-z\\-\\d]+=(?:'|\")[^'\"]*(?:'|\"))?\\s*",1) . '\}\}~ui';
+			if (preg_match_all($regexp, $this->html, $matches, PREG_SET_ORDER) > 0) {
+				$goods = ArrayHelper::index($this->getGoods(), 'alias');
+				foreach($matches as $params) {
+
+					$replace = $params[0];
+					unset($params[0]);
+					$param = $this->parserParams($params);
+					if (!isset($param['alias'])) continue;
+					$alias = $param['alias'];
+					if (isset($goods[$alias])) {
+						$this->html = str_replace($replace, $this->getGoodReserve($alias), $this->html);
+					}
+				}
+			}
+		}
+	}
 
   protected function tagGoodPriceTotal()
   {
@@ -900,6 +921,7 @@ abstract class LvBaseRenderer {
     $this->tagGoodPrice();
     $this->tagGoodUnity();
     $this->tagGoodPriceTotal();
+    $this->tagGoodReserve();
 
     $this->tagUtm('source');
     $this->tagUtm('medium');

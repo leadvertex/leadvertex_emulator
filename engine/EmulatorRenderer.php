@@ -120,6 +120,7 @@ class EmulatorRenderer extends LvBaseRenderer {
       $good->unity = (string)$xmlParam['unity'];
       $good->price = (string)$xmlParam['price'];
       $good->name = (string)$xmlParam['name'];
+      $good->reserve = (string)$xmlParam['reserve'];
       $goods[] = $good;
     }
     return $goods;
@@ -164,6 +165,14 @@ class EmulatorRenderer extends LvBaseRenderer {
     $goods = ArrayHelper::index($goods,'alias');
     if (isset($goods[$alias])) {
       return $goods[$alias]->unity;
+    } else return '';
+  }
+  protected function getGoodReserve($alias)
+  {
+    $goods = $this->getGoods();
+    $goods = ArrayHelper::index($goods,'alias');
+    if (isset($goods[$alias])) {
+      return $goods[$alias]->reserve;
     } else return '';
   }
   protected function getUpdateFormCookie()
@@ -784,6 +793,7 @@ class Good
   public $unity;
   public $price;
   public $name;
+  public $reserve;
 
   public function __construct()
   {
